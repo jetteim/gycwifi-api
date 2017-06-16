@@ -1,0 +1,21 @@
+---
+tmp_dir: '/tmp/packs'
+zip_dir: '/tmp/zips'
+skel_dir: 'assets/package'
+common:
+  own_name: enter.gycwifi.com
+  vpn_server: vpn.gycwifi.com
+  radius_server: 10.8.0.1
+  login_server: login.gycwifi.com
+  login_address: receive_data_from_router
+  ca_cert_file: config/certificates/ca.crt
+  root_brand: GYCWiFi
+  updater_address: http://vpn.gycwifi.com
+  hal_address: https://hal.gycwifi.com
+ssl:
+  C: RU
+  ST: MSK
+  L: Moscow
+  O: GYCWifi
+  OU: GYCWifi Routing
+  DC: gycwifi.com

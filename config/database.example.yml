@@ -1,0 +1,25 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  username: gycwifi
+  password: labR3ashe
+  host: bosting
+  # For details on connection pooling, see rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: 10
+
+development:
+  <<: *default
+  database: gycwifi_api_development
+
+test:
+  <<: *default
+  database: gycwifi_api_test
+
+production:
+  <<: *default
+  database: gycwifi_api_production
+
+staging:
+  <<: *default
+  database: gycwifi_api_staging

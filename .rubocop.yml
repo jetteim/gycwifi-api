@@ -1,0 +1,20 @@
+Style/AsciiComments:
+  Description: 'Use only ascii symbols in comments.'
+  StyleGuide: '#english-comments'
+  Enabled: false
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Metrics/LineLength:
+  Max: 120
+Metrics/MethodLength:
+  CountComments: false  # count full line comments?
+  Max: 15
+Metrics/ModuleLength:
+  CountComments: false  # count full line comments?
+  Max: 150
+Metrics/ClassLength:
+  CountComments: false  # count full line comments?
+  Max: 150
+Metrics/ParameterLists:
+  Max: 3
+  CountKeywordArgs: true
