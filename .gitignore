@@ -8,3 +8,6 @@ public/images/brand_background/*
 !public/images/brand_background/.keep
 config/shards.yml
 config/database.yml
+vendor
+tmp
+.bundle
