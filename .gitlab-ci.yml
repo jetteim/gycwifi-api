@@ -1,0 +1,40 @@
+stages:
+  - test
+  - deploy
+
+.deploy_task: &deploy_task
+  stage: deploy
+  script:
+    - echo $CI_PROJECT_DIR > /home/deploy/current_project_dir
+    - sudo chef-client --local-mode --runlist 'recipe[gyc_wifi_server::app_api]' --logfile /var/log/chef-client --json-attributes /home/deploy/chef_config.json
+
+staging:
+  <<: *deploy_task
+  environment: staging
+  tags:
+    - staging
+  only:
+    - develop
+    - /^bugfix.*$/
+    - /^hotfix.*$/
+    - /^release.*$/
+
+production:
+  <<: *deploy_task
+  environment: production
+  tags:
+    - production
+  only:
+    - master
+    - tags
+  except:
+    - develop
+    - /^feature.*$/
+    - /^bugfix.*$/
+    - /^hotfix.*$/
+    - /^release.*$/
+  artifacts:
+    expire_in: 1 month
+    when: always
+    paths:
+      - 'api*.sql'
