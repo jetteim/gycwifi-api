@@ -14,10 +14,13 @@ class ApplicationController < ActionController::API
   before_action :normalize_params
   # before_action :ensure_json_request
 
-  ALLOWED_HOSTS = ['lvh.me', 'localhost', 'gycwifi.com', 'api2.gycwifi.com', 'dashboard2.gycwifi.com',
-                   'login2.gycwifi.com', 'hal2.gycwifi.com', 'auth2.gycwifi.com', 'hal.gycwifi.com',
-                   'auth.gycwifi.com', 'enter.gycwifi.com', 'login.gycwifi.com', 'api.gycwifi.com',
-                   'dashboard.gycwifi.com'].freeze
+  ALLOWED_HOSTS = %w[
+    lvh.me localhost
+    gycwifi.com enter.gycwifi.com
+    api.gycwifi.com auth.gycwifi.com dashboard.gycwifi.com hal.gycwifi.com login.gycwifi.com
+    api2.gycwifi.com auth2.gycwifi.com dashboard2.gycwifi.com hal2.gycwifi.com login2.gycwifi.com
+    api3.gycwifi.com auth3.gycwifi.com dashboard3.gycwifi.com hal3.gycwifi.com login3.gycwifi.com
+  ].freeze
 
   if Rails.env.production?
     rescue_from StandardError do |exception|
