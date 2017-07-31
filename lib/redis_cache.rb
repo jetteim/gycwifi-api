@@ -110,8 +110,7 @@ class RedisCache
     cached = JSON.parse!(REDIS.get(key), symbolize_names: true)
     Rails.logger.debug "loaded location style from cache #{cached.inspect}".cyan
     poll = cached[:poll] if cached[:last_page_content] == 'poll'
-    if poll && poll[:run_once] && Attempt.exists?(client_id: client_id,
-                                                  poll_id: poll[:id])
+    if no_poll?(client_id: client_id, poll_id: poll[:id])
       cached[:last_page_content] = 'text'
       cached[:poll] = nil
     end
@@ -120,7 +119,7 @@ class RedisCache
 
   instrument_method
   def self.style_hash(location, poll, client_id)
-    no_poll = Attempt.exists?(client_id: client_id, poll_id: poll[:id]) if poll && poll[:run_once]
+    no_poll = no_poll?(client_id, poll)
     {
       location_id: location[:id], title: location[:title],
       background: location[:background], promo_text: location[:promo_text],
@@ -130,6 +129,18 @@ class RedisCache
       last_page_content: no_poll ? 'text' : location[:last_page_content],
       poll: no_poll ? nil : poll
     }
+  end
+
+  instrument_method
+  def self.no_poll?(client_id, poll)
+    return true unless poll
+    return false unless poll[:run_once]
+    return true unless questions = poll[:questions]
+    answers = []
+    questions.each do |question|
+      question[:answers].each { |answer| answers << answer[:id] if answer } if question && question[:answers]
+    end
+    Attempt.exists?(client_id: client_id, answer_id: answers)
   end
 
   instrument_method

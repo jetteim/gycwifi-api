@@ -13,8 +13,8 @@
 
 class Attempt < ApplicationRecord
   belongs_to :client
-  belongs_to :poll
   belongs_to :question
+  belongs_to :poll
   belongs_to :answer
   include Skylight::Helpers
 
