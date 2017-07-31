@@ -40,9 +40,9 @@ module Login
           # ...и создаём Attempt
           next unless answer
           Attempt.create(
-            poll_id:        @str_prms[:poll_id],
+            # poll_id:        @str_prms[:poll_id],
             client_id:      @str_prms[:client_id],
-            question_id:    question[:id],
+            # question_id:    question[:id],
             answer_id:      answer[:id],
             interview_uuid:   interview_uuid,
             custom_answer:  answer[:custom_answer]

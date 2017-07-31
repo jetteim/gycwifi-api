@@ -110,7 +110,7 @@ class RedisCache
     cached = JSON.parse!(REDIS.get(key), symbolize_names: true)
     Rails.logger.debug "loaded location style from cache #{cached.inspect}".cyan
     poll = cached[:poll] if cached[:last_page_content] == 'poll'
-    if no_poll?(client_id: client_id, poll_id: poll[:id])
+    if no_poll?(client_id, poll)
       cached[:last_page_content] = 'text'
       cached[:poll] = nil
     end
