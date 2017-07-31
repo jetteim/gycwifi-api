@@ -37,21 +37,21 @@ RSpec.describe 'Polls activity', type: :request do
     let(:first_attempt) { answer.attempts.first }
     context 'return formatted polls activity for more then 3 month' do
       before do
-        create(:attempt, answer: answer, created_at: 4.month.ago)
+        create(:attempt, answer: answer, created_at: 120.days.ago)
         get my_uri("stats/poll_activity?id=#{poll.id}"), headers: {'Authorization' => token(user)}
       end
       include_examples 'valid_poll_statistic', 120.days.ago, Time.zone.now, 'month', '%Y-%m'
     end
     context 'return formatted polls activity for more less 3 month and more then 1 month' do
       before do
-        create(:attempt, answer: answer, created_at: (3.month.ago + 1.day))
+        create(:attempt, answer: answer, created_at: (90.days.ago))
         get my_uri("stats/poll_activity?id=#{poll.id}"), headers: {'Authorization' => token(user)}
       end
       include_examples 'valid_poll_statistic', 90.days.ago, Time.zone.now, 'week', '%F'
     end
     context 'return formatted polls activity for less then 1 month' do
       before do
-        create(:attempt, answer: answer, created_at: (1.month.ago + 1.second))
+        create(:attempt, answer: answer, created_at: (30.days.ago))
         get my_uri("stats/poll_activity?id=#{poll.id}"), headers: {'Authorization' => token(user)}
       end
       include_examples 'valid_poll_statistic', 30.days.ago, Time.zone.now, 'day', '%F'

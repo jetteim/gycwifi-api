@@ -1,7 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/sekrett/code/api_wifi/api/spec/support/json_helper.rb": [
+      "/Users/mac/development/gyc/api/spec/support/json_helper.rb": [
         1,
         1,
         44,
@@ -18,7 +18,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/support/sign_in_helper.rb": [
+      "/Users/mac/development/gyc/api/spec/support/sign_in_helper.rb": [
         1,
         1,
         24,
@@ -26,14 +26,14 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/support/uri_helper.rb": [
+      "/Users/mac/development/gyc/api/spec/support/uri_helper.rb": [
         1,
         1,
         53,
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/requests/api/clients/index_spec.rb": [
+      "/Users/mac/development/gyc/api/spec/requests/api/clients/index_spec.rb": [
         1,
         1,
         1,
@@ -106,7 +106,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/rails_helper.rb": [
+      "/Users/mac/development/gyc/api/spec/rails_helper.rb": [
         null,
         1,
         1,
@@ -195,14 +195,14 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/config/environment.rb": [
+      "/Users/mac/development/gyc/api/config/environment.rb": [
         null,
         1,
         null,
         null,
         1
       ],
-      "/Users/sekrett/code/api_wifi/api/config/application.rb": [
+      "/Users/mac/development/gyc/api/config/application.rb": [
         1,
         null,
         1,
@@ -257,12 +257,12 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/config/boot.rb": [
+      "/Users/mac/development/gyc/api/config/boot.rb": [
         1,
         null,
         1
       ],
-      "/Users/sekrett/code/api_wifi/api/config/initializers/log_before_timeout.rb": [
+      "/Users/mac/development/gyc/api/config/initializers/log_before_timeout.rb": [
         1,
         1,
         1,
@@ -289,7 +289,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/config/environments/test.rb": [
+      "/Users/mac/development/gyc/api/config/environments/test.rb": [
         1,
         null,
         null,
@@ -338,7 +338,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/config/initializers/application_controller_renderer.rb": [
+      "/Users/mac/development/gyc/api/config/initializers/application_controller_renderer.rb": [
         null,
         null,
         null,
@@ -346,7 +346,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/config/initializers/backtrace_silencers.rb": [
+      "/Users/mac/development/gyc/api/config/initializers/backtrace_silencers.rb": [
         null,
         null,
         null,
@@ -355,7 +355,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/config/initializers/delayed_job_config.rb": [
+      "/Users/mac/development/gyc/api/config/initializers/delayed_job_config.rb": [
         1,
         0,
         0,
@@ -368,13 +368,13 @@
         0,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/config/initializers/filter_parameter_logging.rb": [
+      "/Users/mac/development/gyc/api/config/initializers/filter_parameter_logging.rb": [
         null,
         null,
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/config/initializers/friendly_id.rb": [
+      "/Users/mac/development/gyc/api/config/initializers/friendly_id.rb": [
         null,
         null,
         null,
@@ -464,7 +464,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/config/initializers/inflections.rb": [
+      "/Users/mac/development/gyc/api/config/initializers/inflections.rb": [
         null,
         null,
         null,
@@ -482,14 +482,14 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/config/initializers/instagram.rb": [
+      "/Users/mac/development/gyc/api/config/initializers/instagram.rb": [
         1,
         1,
         1,
         1,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/config/initializers/kaminari_config.rb": [
+      "/Users/mac/development/gyc/api/config/initializers/kaminari_config.rb": [
         1,
         1,
         null,
@@ -501,7 +501,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/config/initializers/mime_types.rb": [
+      "/Users/mac/development/gyc/api/config/initializers/mime_types.rb": [
         null,
         null,
         null,
@@ -509,7 +509,7 @@
         1,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/config/initializers/new_framework_defaults.rb": [
+      "/Users/mac/development/gyc/api/config/initializers/new_framework_defaults.rb": [
         null,
         null,
         null,
@@ -529,18 +529,18 @@
         null,
         1
       ],
-      "/Users/sekrett/code/api_wifi/api/config/initializers/omniauth.rb": [
+      "/Users/mac/development/gyc/api/config/initializers/omniauth.rb": [
         null,
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/config/initializers/redis.rb": [
+      "/Users/mac/development/gyc/api/config/initializers/redis.rb": [
         1
       ],
-      "/Users/sekrett/code/api_wifi/api/config/initializers/session_store.rb": [
+      "/Users/mac/development/gyc/api/config/initializers/session_store.rb": [
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/config/initializers/wrap_parameters.rb": [
+      "/Users/mac/development/gyc/api/config/initializers/wrap_parameters.rb": [
         null,
         null,
         null,
@@ -556,7 +556,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/factories/answer.rb": [
+      "/Users/mac/development/gyc/api/spec/factories/answer.rb": [
         1,
         1,
         4,
@@ -569,7 +569,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/factories/attempt.rb": [
+      "/Users/mac/development/gyc/api/spec/factories/attempt.rb": [
         1,
         1,
         1,
@@ -578,7 +578,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/factories/brand.rb": [
+      "/Users/mac/development/gyc/api/spec/factories/brand.rb": [
         1,
         1,
         66,
@@ -587,7 +587,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/factories/category.rb": [
+      "/Users/mac/development/gyc/api/spec/factories/category.rb": [
         1,
         1,
         66,
@@ -595,14 +595,14 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/factories/client.rb": [
+      "/Users/mac/development/gyc/api/spec/factories/client.rb": [
         1,
         1,
         43,
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/factories/client_counter.rb": [
+      "/Users/mac/development/gyc/api/spec/factories/client_counter.rb": [
         1,
         1,
         1,
@@ -611,7 +611,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/factories/layout.rb": [
+      "/Users/mac/development/gyc/api/spec/factories/layout.rb": [
         1,
         1,
         66,
@@ -619,7 +619,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/factories/location.rb": [
+      "/Users/mac/development/gyc/api/spec/factories/location.rb": [
         1,
         1,
         66,
@@ -647,7 +647,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/factories/opinion.rb": [
+      "/Users/mac/development/gyc/api/spec/factories/opinion.rb": [
         1,
         1,
         1,
@@ -656,7 +656,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/factories/poll.rb": [
+      "/Users/mac/development/gyc/api/spec/factories/poll.rb": [
         1,
         1,
         5,
@@ -670,7 +670,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/factories/question.rb": [
+      "/Users/mac/development/gyc/api/spec/factories/question.rb": [
         1,
         1,
         5,
@@ -684,7 +684,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/factories/router.rb": [
+      "/Users/mac/development/gyc/api/spec/factories/router.rb": [
         1,
         1,
         22,
@@ -714,7 +714,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/factories/social_account.rb": [
+      "/Users/mac/development/gyc/api/spec/factories/social_account.rb": [
         1,
         1,
         22,
@@ -734,7 +734,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/factories/social_log.rb": [
+      "/Users/mac/development/gyc/api/spec/factories/social_log.rb": [
         1,
         1,
         1,
@@ -744,7 +744,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/factories/user.rb": [
+      "/Users/mac/development/gyc/api/spec/factories/user.rb": [
         1,
         1,
         108,
@@ -759,7 +759,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/config/routes.rb": [
+      "/Users/mac/development/gyc/api/config/routes.rb": [
         null,
         null,
         null,
@@ -1059,7 +1059,7 @@
         1,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/lib/api_constraints.rb": [
+      "/Users/mac/development/gyc/api/lib/api_constraints.rb": [
         null,
         1,
         1,
@@ -1072,7 +1072,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/requests/api/opinions_spec.rb": [
+      "/Users/mac/development/gyc/api/spec/requests/api/opinions_spec.rb": [
         1,
         1,
         1,
@@ -1090,7 +1090,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/requests/api/polls/export_xlsx_spec.rb": [
+      "/Users/mac/development/gyc/api/spec/requests/api/polls/export_xlsx_spec.rb": [
         1,
         1,
         1,
@@ -1105,7 +1105,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/requests/api/stats/poll_activity_spec.rb": [
+      "/Users/mac/development/gyc/api/spec/requests/api/stats/poll_activity_spec.rb": [
         1,
         null,
         1,
@@ -1168,7 +1168,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/requests/api/stats/private_stat_spec.rb": [
+      "/Users/mac/development/gyc/api/spec/requests/api/stats/private_stat_spec.rb": [
         1,
         1,
         14,
@@ -1294,7 +1294,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/spec/requests/api/stats/public_stat_spec.rb": [
+      "/Users/mac/development/gyc/api/spec/requests/api/stats/public_stat_spec.rb": [
         1,
         1,
         null,
@@ -1363,7 +1363,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/client.rb": [
+      "/Users/mac/development/gyc/api/app/models/client.rb": [
         null,
         null,
         null,
@@ -1412,7 +1412,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/application_record.rb": [
+      "/Users/mac/development/gyc/api/app/models/application_record.rb": [
         1,
         1,
         1,
@@ -1428,7 +1428,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/client_counter.rb": [
+      "/Users/mac/development/gyc/api/app/models/client_counter.rb": [
         null,
         null,
         null,
@@ -1449,7 +1449,7 @@
         2,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/location.rb": [
+      "/Users/mac/development/gyc/api/app/models/location.rb": [
         null,
         null,
         null,
@@ -1617,7 +1617,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/brand.rb": [
+      "/Users/mac/development/gyc/api/app/models/brand.rb": [
         null,
         null,
         null,
@@ -1684,7 +1684,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/layout.rb": [
+      "/Users/mac/development/gyc/api/app/models/layout.rb": [
         null,
         null,
         null,
@@ -1701,7 +1701,7 @@
         1,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/category.rb": [
+      "/Users/mac/development/gyc/api/app/models/category.rb": [
         null,
         null,
         null,
@@ -1716,7 +1716,7 @@
         1,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/lib/redis_cache.rb": [
+      "/Users/mac/development/gyc/api/lib/redis_cache.rb": [
         null,
         1,
         1,
@@ -1875,7 +1875,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/user.rb": [
+      "/Users/mac/development/gyc/api/app/models/user.rb": [
         null,
         null,
         null,
@@ -2095,7 +2095,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/controllers/auth_controller.rb": [
+      "/Users/mac/development/gyc/api/app/controllers/auth_controller.rb": [
         1,
         1,
         1,
@@ -2303,7 +2303,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/controllers/application_controller.rb": [
+      "/Users/mac/development/gyc/api/app/controllers/application_controller.rb": [
         null,
         1,
         null,
@@ -2321,6 +2321,9 @@
         null,
         null,
         1,
+        null,
+        null,
+        null,
         null,
         null,
         null,
@@ -2454,7 +2457,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/lib/token.rb": [
+      "/Users/mac/development/gyc/api/lib/token.rb": [
         1,
         1,
         1,
@@ -2475,7 +2478,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/controllers/dashboard/clients_controller.rb": [
+      "/Users/mac/development/gyc/api/app/controllers/dashboard/clients_controller.rb": [
         1,
         1,
         null,
@@ -2613,7 +2616,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/router.rb": [
+      "/Users/mac/development/gyc/api/app/models/router.rb": [
         null,
         null,
         null,
@@ -2843,7 +2846,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/lib/ssl.rb": [
+      "/Users/mac/development/gyc/api/lib/ssl.rb": [
         1,
         null,
         null,
@@ -2956,7 +2959,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/lib/zip_file_generator.rb": [
+      "/Users/mac/development/gyc/api/lib/zip_file_generator.rb": [
         1,
         1,
         null,
@@ -3001,7 +3004,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/poll.rb": [
+      "/Users/mac/development/gyc/api/app/models/poll.rb": [
         null,
         null,
         null,
@@ -3033,7 +3036,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/services/client_sort_service.rb": [
+      "/Users/mac/development/gyc/api/app/services/client_sort_service.rb": [
         null,
         1,
         1,
@@ -3095,7 +3098,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/policies/location_policy.rb": [
+      "/Users/mac/development/gyc/api/app/policies/location_policy.rb": [
         1,
         1,
         null,
@@ -3129,7 +3132,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/policies/application_policy.rb": [
+      "/Users/mac/development/gyc/api/app/policies/application_policy.rb": [
         null,
         null,
         null,
@@ -3267,7 +3270,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/social_account.rb": [
+      "/Users/mac/development/gyc/api/app/models/social_account.rb": [
         null,
         null,
         null,
@@ -3364,7 +3367,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/opinion.rb": [
+      "/Users/mac/development/gyc/api/app/models/opinion.rb": [
         null,
         null,
         null,
@@ -3385,7 +3388,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/controllers/dashboard/opinions_controller.rb": [
+      "/Users/mac/development/gyc/api/app/controllers/dashboard/opinions_controller.rb": [
         1,
         1,
         1,
@@ -3466,7 +3469,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/policies/opinion_policy.rb": [
+      "/Users/mac/development/gyc/api/app/policies/opinion_policy.rb": [
         1,
         1,
         1,
@@ -3476,7 +3479,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/question.rb": [
+      "/Users/mac/development/gyc/api/app/models/question.rb": [
         null,
         null,
         null,
@@ -3503,7 +3506,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/controllers/dashboard/surveys/polls_controller.rb": [
+      "/Users/mac/development/gyc/api/app/controllers/dashboard/surveys/polls_controller.rb": [
         1,
         1,
         null,
@@ -3643,7 +3646,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/services/poll_statistic/question_service.rb": [
+      "/Users/mac/development/gyc/api/app/services/poll_statistic/question_service.rb": [
         1,
         1,
         1,
@@ -3728,7 +3731,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/services/poll_statistic/base_service.rb": [
+      "/Users/mac/development/gyc/api/app/services/poll_statistic/base_service.rb": [
         1,
         1,
         1,
@@ -3740,7 +3743,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/answer.rb": [
+      "/Users/mac/development/gyc/api/app/models/answer.rb": [
         null,
         null,
         null,
@@ -3767,7 +3770,7 @@
         1,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/attempt.rb": [
+      "/Users/mac/development/gyc/api/app/models/attempt.rb": [
         null,
         null,
         null,
@@ -3797,7 +3800,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/social_log.rb": [
+      "/Users/mac/development/gyc/api/app/models/social_log.rb": [
         null,
         null,
         null,
@@ -3972,7 +3975,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/jobs/router_updater.rb": [
+      "/Users/mac/development/gyc/api/app/jobs/router_updater.rb": [
         1,
         1,
         null,
@@ -3981,11 +3984,11 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/jobs/application_job.rb": [
+      "/Users/mac/development/gyc/api/app/jobs/application_job.rb": [
         1,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/jobs/router_package_builder.rb": [
+      "/Users/mac/development/gyc/api/app/jobs/router_package_builder.rb": [
         1,
         1,
         1,
@@ -3993,7 +3996,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/controllers/dashboard/stats_controller.rb": [
+      "/Users/mac/development/gyc/api/app/controllers/dashboard/stats_controller.rb": [
         1,
         null,
         null,
@@ -4128,7 +4131,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/services/statistic_service.rb": [
+      "/Users/mac/development/gyc/api/app/services/statistic_service.rb": [
         1,
         1,
         1,
@@ -4361,7 +4364,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/services/poll_statistic/activity_service.rb": [
+      "/Users/mac/development/gyc/api/app/services/poll_statistic/activity_service.rb": [
         1,
         1,
         1,
@@ -4375,9 +4378,9 @@
         3,
         3,
         3,
-        50,
-        50,
-        50,
+        49,
+        49,
+        49,
         null,
         3,
         null,
@@ -4437,7 +4440,7 @@
         null,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/models/client_visit.rb": [
+      "/Users/mac/development/gyc/api/app/models/client_visit.rb": [
         null,
         null,
         null,
@@ -4454,7 +4457,7 @@
         1,
         null
       ],
-      "/Users/sekrett/code/api_wifi/api/app/controllers/dashboard/public_stats_controller.rb": [
+      "/Users/mac/development/gyc/api/app/controllers/dashboard/public_stats_controller.rb": [
         1,
         1,
         1,
@@ -4505,6 +4508,6 @@
         null
       ]
     },
-    "timestamp": 1501228566
+    "timestamp": 1501514097
   }
 }
