@@ -8,7 +8,7 @@ test:
   script:
     - sudo cp /home/api/api/config/database.yml ./config/database.yml
     - sudo chown deploy:deploy ./config/database.yml
-    - bundle install --deployment
+    - bundle install
     - bundle exec rake spec
   tags:
     - staging
