@@ -6,7 +6,10 @@ test:
   environment: staging
   stage: test
   script:
-    - sudo -u api -g api -i ./rspec.sh
+    - sudo cp /home/api/api/config/database.yml ./config/database.yml
+    - sudo chown deploy:deploy ./config/database.yml
+    - bundle install --deployment
+    - bundle exec rake spec
   tags:
     - staging
   only:
