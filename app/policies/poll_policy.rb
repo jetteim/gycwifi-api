@@ -6,7 +6,7 @@ class PollPolicy < ApplicationPolicy
     l "user #{user.inspect}, create #{resource} polls count: #{user[:polls_count]}".cyan.bold
     can = user[:power_user] || user[:exclusive]
     can ||= (user[:polls_count] < 11) if user[:pro]
-    can ||= (user[:polls_count] < 3) if user[:free]
+    can ||= (user[:polls_count] < 3) if user[:active_role] == 'free'
     log(can)
     can
   end

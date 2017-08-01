@@ -15,6 +15,7 @@
 class Voucher < ApplicationRecord
   include Skylight::Helpers
   belongs_to :location
+  belongs_to :client
   has_many :auth_logs
 
   instrument_method

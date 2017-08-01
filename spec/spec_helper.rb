@@ -1,4 +1,7 @@
 require 'simplecov'
+require 'pundit/matchers'
+require 'rspec/core'
+
 SimpleCov.start
 
 RSpec.configure do |config|
@@ -6,9 +9,9 @@ RSpec.configure do |config|
 
   # config.include Requests::JsonHelper, type: :request
   # config.iurinclude Requests::RequestHelpers, type: :request
-  config.include UriHelper #, type: request, :controller]
-  config.include JsonHelper#, type: :request
-  config.include SignInHelper#, type: :request
+  config.include UriHelper # , type: request, :controller]
+  config.include JsonHelper # , type: :request
+  config.include SignInHelper # , type: :request
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction

@@ -12,5 +12,7 @@
 #
 
 class Payment < ApplicationRecord
+  belongs_to :user
+  belongs_to :product
   as_enum :status, success: 0, auth_error: 1, denied: 100, error: 200
 end

@@ -99,6 +99,7 @@ group :test do
   gem 'database_cleaner'
   gem 'guard-rspec', require: false
   gem 'mocha'
+  gem 'pundit-matchers', git: 'git://github.com/anton-smagin/pundit-matchers.git'
   gem 'shoulda-matchers'
   gem 'simplecov', require: false
 end

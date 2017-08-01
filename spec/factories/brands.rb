@@ -3,5 +3,6 @@ FactoryGirl.define do
     title { Faker::App.name }
     layout
     category
+    user { create(:user, :pro) }
   end
 end

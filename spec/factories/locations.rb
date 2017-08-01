@@ -4,15 +4,15 @@ FactoryGirl.define do
     phone { Faker::PhoneNumber.cell_phone }
     address { Faker::Address.street_address }
     url { Faker::Internet.url }
-    ssid "WiFi"
-    staff_ssid ""
-    staff_ssid_pass ""
+    ssid 'WiFi'
+    staff_ssid ''
+    staff_ssid_pass ''
     redirect_url { Faker::Internet.url }
-    wlan "1M"
-    wan "5M"
+    wlan '1M'
+    wan '5M'
     auth_expiration_time 900
     slug { Faker::Internet.slug }
-    promo_type "text"
+    promo_type 'text'
     sms_auth false
     sms_count 0
     brand
