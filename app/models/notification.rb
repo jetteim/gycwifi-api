@@ -16,6 +16,7 @@
 #  seen          :boolean          default(FALSE)
 #  tour_last_run :datetime
 #  silence       :boolean          default(FALSE)
+#  favorite      :boolean          default(FALSE)
 #
 
 class Notification < ApplicationRecord

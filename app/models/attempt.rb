@@ -2,15 +2,13 @@
 #
 # Table name: attempts
 #
-#  id            :integer          not null, primary key
-#  interview_id  :integer
-#  poll_id       :integer
-#  client_id     :integer
-#  question_id   :integer
-#  answer_id     :integer
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  custom_answer :string
+#  id             :integer          not null, primary key
+#  client_id      :integer
+#  answer_id      :integer
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  custom_answer  :string
+#  interview_uuid :integer
 #
 
 class Attempt < ApplicationRecord
