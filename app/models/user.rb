@@ -36,7 +36,6 @@ class User < ApplicationRecord
   has_many :opinions
   has_many :orders, dependent: :delete_all
   has_many :users
-  has_many :payments
   belongs_to :user
 
   include Skylight::Helpers

@@ -24,5 +24,4 @@ class Notification < ApplicationRecord
   belongs_to :user
   belongs_to :location
   belongs_to :poll
-  belongs_to :payment
 end
