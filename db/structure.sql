@@ -1026,6 +1026,102 @@ ALTER SEQUENCE opinions_id_seq OWNED BY opinions.id;
 
 
 --
+-- Name: order_products; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE order_products (
+    id integer NOT NULL,
+    order_id integer NOT NULL,
+    product_id integer NOT NULL,
+    price numeric(8,2) NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: order_products_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE order_products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: order_products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE order_products_id_seq OWNED BY order_products.id;
+
+
+--
+-- Name: order_statuses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE order_statuses (
+    id integer NOT NULL,
+    code_cd integer NOT NULL,
+    order_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: order_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE order_statuses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: order_statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE order_statuses_id_seq OWNED BY order_statuses.id;
+
+
+--
+-- Name: orders; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE orders (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE orders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE orders_id_seq OWNED BY orders.id;
+
+
+--
 -- Name: pages; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1651,6 +1747,27 @@ ALTER TABLE ONLY opinions ALTER COLUMN id SET DEFAULT nextval('opinions_id_seq':
 
 
 --
+-- Name: order_products id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY order_products ALTER COLUMN id SET DEFAULT nextval('order_products_id_seq'::regclass);
+
+
+--
+-- Name: order_statuses id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY order_statuses ALTER COLUMN id SET DEFAULT nextval('order_statuses_id_seq'::regclass);
+
+
+--
+-- Name: orders id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY orders ALTER COLUMN id SET DEFAULT nextval('orders_id_seq'::regclass);
+
+
+--
 -- Name: pages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1890,6 +2007,30 @@ ALTER TABLE ONLY notifications
 
 ALTER TABLE ONLY opinions
     ADD CONSTRAINT opinions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_products order_products_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY order_products
+    ADD CONSTRAINT order_products_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_statuses order_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY order_statuses
+    ADD CONSTRAINT order_statuses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orders orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY orders
+    ADD CONSTRAINT orders_pkey PRIMARY KEY (id);
 
 
 --
@@ -2370,6 +2511,34 @@ CREATE INDEX index_opinions_on_user_id ON opinions USING btree (user_id);
 
 
 --
+-- Name: index_order_products_on_order_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_order_products_on_order_id ON order_products USING btree (order_id);
+
+
+--
+-- Name: index_order_products_on_product_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_order_products_on_product_id ON order_products USING btree (product_id);
+
+
+--
+-- Name: index_order_statuses_on_order_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_order_statuses_on_order_id ON order_statuses USING btree (order_id);
+
+
+--
+-- Name: index_orders_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_orders_on_user_id ON orders USING btree (user_id);
+
+
+--
 -- Name: index_payments_on_product_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2650,6 +2819,38 @@ CREATE INDEX index_vouchers_on_password ON vouchers USING btree (password);
 
 
 --
+-- Name: order_statuses fk_rails_159fd1d59f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY order_statuses
+    ADD CONSTRAINT fk_rails_159fd1d59f FOREIGN KEY (order_id) REFERENCES orders(id);
+
+
+--
+-- Name: order_products fk_rails_96c0709f78; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY order_products
+    ADD CONSTRAINT fk_rails_96c0709f78 FOREIGN KEY (product_id) REFERENCES products(id);
+
+
+--
+-- Name: order_products fk_rails_f40b8ccee4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY order_products
+    ADD CONSTRAINT fk_rails_f40b8ccee4 FOREIGN KEY (order_id) REFERENCES orders(id);
+
+
+--
+-- Name: orders fk_rails_f868b47f6a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY orders
+    ADD CONSTRAINT fk_rails_f868b47f6a FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -2738,6 +2939,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170711074255'),
 ('20170712134124'),
 ('20170724143200'),
-('20170724145605');
+('20170724145605'),
+('20170801091505'),
+('20170801091636'),
+('20170801131707');
 
 

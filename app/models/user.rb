@@ -34,6 +34,7 @@ class User < ApplicationRecord
   has_many :abilities
   has_many :social_accounts
   has_many :opinions
+  has_many :orders, dependent: :delete_all
   has_many :users
   belongs_to :user
 
