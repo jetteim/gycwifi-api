@@ -14,6 +14,10 @@ test:
     - staging
   only:
     - develop
+    - /^feature\/.*/
+    - /^bugfix\/.*/
+    - /^hotfix\/.*/
+    - /^release\/.*/
 
 .deploy_task: &deploy_task
   stage: deploy
