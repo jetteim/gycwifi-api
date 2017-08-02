@@ -10,7 +10,6 @@
 #  user_id       :integer
 #  location_id   :integer
 #  poll_id       :integer
-#  payment_id    :integer
 #  title         :string
 #  details       :string
 #  seen          :boolean          default(FALSE)

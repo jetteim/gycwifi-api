@@ -1,3 +1,26 @@
+# == Schema Information
+#
+# Table name: social_accounts
+#
+#  id          :integer          not null, primary key
+#  provider    :enum
+#  uid         :string
+#  vaucher     :string
+#  username    :string
+#  image       :string
+#  profile     :string
+#  email       :string
+#  gender      :string
+#  location    :string
+#  bdate_day   :integer
+#  bdate_month :integer
+#  bdate_year  :integer
+#  client_id   :integer
+#  user_id     :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
 FactoryGirl.define do
   factory :social_account do
     provider { %w[instagram facebook twitter instagram vk].sample }

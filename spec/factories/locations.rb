@@ -1,3 +1,43 @@
+# == Schema Information
+#
+# Table name: locations
+#
+#  id                   :integer          not null, primary key
+#  title                :string           not null
+#  phone                :string
+#  address              :string
+#  url                  :string           default("https://gycwifi.com")
+#  ssid                 :string           not null
+#  staff_ssid           :string
+#  staff_ssid_pass      :string
+#  redirect_url         :string           default("https://gycwifi.com"), not null
+#  wlan                 :string           default("1M"), not null
+#  wan                  :string           default("5M"), not null
+#  auth_expiration_time :integer          default(3600), not null
+#  promo_text           :text             default("Спасибо за то, что заглянули к нам!"), not null
+#  logo                 :string           default("/images/logo.png")
+#  bg_color             :string           default("#0e1a35")
+#  background           :string           default("/images/default_background.png")
+#  password             :boolean          default(FALSE), not null
+#  twitter              :boolean          default(FALSE), not null
+#  google               :boolean          default(FALSE), not null
+#  vk                   :boolean          default(FALSE), not null
+#  insta                :boolean          default(FALSE), not null
+#  facebook             :boolean          default(FALSE), not null
+#  slug                 :string           not null
+#  brand_id             :integer          not null
+#  category_id          :integer          default(24), not null
+#  user_id              :integer          not null
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  poll_id              :integer
+#  promo_type           :string           default("text")
+#  last_page_content    :string           default("text"), not null
+#  sms_auth             :boolean
+#  sms_count            :integer
+#  voucher              :boolean          default(TRUE)
+#
+
 FactoryGirl.define do
   factory :location do
     title { Faker::App.name }
