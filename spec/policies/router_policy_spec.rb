@@ -16,7 +16,7 @@ describe RouterPolicy do
       it { is_expected.to forbid_action(:create) }
     end
 
-    context 'pro user can`t create > 11 routers' do
+    context 'pro user can`t create > 16 routers' do
       let(:user) { create(:user, :pro) }
 
       before { create_list(:router, 16, user: user) }
