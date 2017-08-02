@@ -11,17 +11,19 @@ RSpec.configure do |config|
   config.include SignInHelper#, type: :request
 
   config.before(:suite) do
-    DatabaseCleaner.clean_with :truncation
     DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with :truncation, except:
+      [ActiveRecord::InternalMetadata.table_name]
   end
 
   config.before(:each) do
-    DatabaseCleaner.start
     REDIS.keys.each{ |key| REDIS.del(key)}
   end
 
-  config.after(:each) do
-    DatabaseCleaner.clean
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
   end
 
   config.after(:each) do
