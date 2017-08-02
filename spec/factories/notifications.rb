@@ -18,9 +18,15 @@
 #  favorite      :boolean          default(FALSE)
 #
 
-class Notification < ApplicationRecord
-  belongs_to :router
-  belongs_to :user
-  belongs_to :location
-  belongs_to :poll
+FactoryGirl.define do
+  factory :notification do
+    poll
+    user
+    location
+    router
+    seen false
+    silence false
+    favorite false
+    sent_at { 1.second.ago }
+  end
 end

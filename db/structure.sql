@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.4
+-- Dumped from database version 9.6.3
 -- Dumped by pg_dump version 9.6.3
 
 SET statement_timeout = 0;
@@ -962,7 +962,6 @@ CREATE TABLE notifications (
     user_id integer,
     location_id integer,
     poll_id integer,
-    payment_id integer,
     title character varying,
     details character varying,
     seen boolean DEFAULT false,
@@ -1152,40 +1151,6 @@ CREATE SEQUENCE pages_id_seq
 --
 
 ALTER SEQUENCE pages_id_seq OWNED BY pages.id;
-
-
---
--- Name: payments; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE payments (
-    id integer NOT NULL,
-    transaction_id integer,
-    status_cd integer DEFAULT 0,
-    user_id integer,
-    product_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: payments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE payments_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: payments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE payments_id_seq OWNED BY payments.id;
 
 
 --
@@ -1775,13 +1740,6 @@ ALTER TABLE ONLY pages ALTER COLUMN id SET DEFAULT nextval('pages_id_seq'::regcl
 
 
 --
--- Name: payments id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY payments ALTER COLUMN id SET DEFAULT nextval('payments_id_seq'::regclass);
-
-
---
 -- Name: polls id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2042,14 +2000,6 @@ ALTER TABLE ONLY pages
 
 
 --
--- Name: payments payments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY payments
-    ADD CONSTRAINT payments_pkey PRIMARY KEY (id);
-
-
---
 -- Name: polls polls_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2165,6 +2115,13 @@ CREATE UNIQUE INDEX clients_pages_id ON clients_pages USING btree (id);
 --
 
 CREATE INDEX delayed_jobs_priority ON delayed_jobs USING btree (priority, run_at);
+
+
+--
+-- Name: delayed_jobs_queue; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX delayed_jobs_queue ON delayed_jobs USING btree (queue);
 
 
 --
@@ -2469,13 +2426,6 @@ CREATE INDEX index_notifications_on_location_id ON notifications USING btree (lo
 
 
 --
--- Name: index_notifications_on_payment_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_notifications_on_payment_id ON notifications USING btree (payment_id);
-
-
---
 -- Name: index_notifications_on_poll_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2536,20 +2486,6 @@ CREATE INDEX index_order_statuses_on_order_id ON order_statuses USING btree (ord
 --
 
 CREATE INDEX index_orders_on_user_id ON orders USING btree (user_id);
-
-
---
--- Name: index_payments_on_product_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_payments_on_product_id ON payments USING btree (product_id);
-
-
---
--- Name: index_payments_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_payments_on_user_id ON payments USING btree (user_id);
 
 
 --
@@ -2942,6 +2878,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170724145605'),
 ('20170801091505'),
 ('20170801091636'),
-('20170801131707');
+('20170801131707'),
+('20170802094728');
 
 

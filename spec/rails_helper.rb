@@ -64,7 +64,7 @@ RSpec.configure do |config|
 
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
-    #Bullet raise error if N+1 queries
+  # Bullet raise error if N+1 queries
   if Bullet.enable?
     config.before(:each) do
       Bullet.start_request

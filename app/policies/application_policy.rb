@@ -34,8 +34,8 @@ class ApplicationPolicy
   def show?
     l "authorize show #{resource} for user #{user[:id]}".cyan.bold
     can = user[:super_user] || (resource.user_id == user[:id])
-    can ||= user[:can_view_owner_items] && (resource.user == user[:user_id])
-    can ||= user[:can_view_child_items] && (resource.user.user == user[:id])
+    can ||= user[:can_view_owner_items] && (resource.user.id == user[:user_id])
+    can ||= user[:can_view_child_items] && (resource.user.user.id == user[:id])
     log(can)
     can
   end
@@ -60,7 +60,7 @@ class ApplicationPolicy
   def update?
     l "authorize update #{resource} for user #{user[:id]}".cyan.bold
     can = user[:super_user] || (resource.user_id == user[:id])
-    can ||= user[:can_manage_child_items] && resource.user.user == user[:id]
+    can ||= user[:can_manage_child_items] && resource.user.user.id == user[:id]
     log(can)
     can
   end
@@ -73,7 +73,7 @@ class ApplicationPolicy
   def destroy?
     l "authorize delete #{resource.inspect} for user #{user.inspect}".cyan.bold
     can = user[:super_user] || (resource.user_id == user[:id])
-    can ||= user[:can_manage_child_items] && resource.user.user == user[:id]
+    can ||= user[:can_manage_child_items] && resource.user.user.id == user[:id]
     log(can)
     can
   end

@@ -2,12 +2,6 @@ class VoucherPolicy < ApplicationPolicy
   include Skylight::Helpers
 
   instrument_method
-  def initialize(user, resource)
-    @user = RedisCache.cached_user(user[:id])
-    @resource = resource
-  end
-
-  instrument_method
   def index?
     l "authorize index #{resource} for user #{user.inspect}".cyan.bold
     can = true

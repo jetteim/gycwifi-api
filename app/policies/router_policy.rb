@@ -6,7 +6,7 @@ class RouterPolicy < ApplicationPolicy
     l "user #{user.inspect}, create #{resource} routers count: #{user[:routers_count]}".cyan.bold
     can = user[:power_user] || user[:exclusive]
     can ||= (user[:routers_count] < 16) if user[:pro]
-    can ||= (user[:routers_count] < 5) if user[:free]
+    can ||= (user[:routers_count] < 5) if user[:active_role] == 'free'
     log(can)
     can
   end

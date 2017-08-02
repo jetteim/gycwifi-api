@@ -21,7 +21,7 @@ class User < ApplicationRecord
   # Relations
   has_many :brands
   has_many :locations
-  has_many :routers, through: :locations
+  has_many :routers
   has_many :vouchers, through: :locations
   has_many :social_logs, through: :locations
   has_many :traffic_report, through: :routers
@@ -186,7 +186,7 @@ class User < ApplicationRecord
   # end
   #
   def pro?
-    role.in?([:pro]) || (employee? && user.pro?)
+    role.in?([:pro]) || (employee? && user&.pro?)
   end
 
   def pro
@@ -194,7 +194,7 @@ class User < ApplicationRecord
   end
 
   def exclusive?
-    role.in?([:exclusive]) || (employee? && user.exclusive?)
+    role.in?([:exclusive]) || (employee? && user&.exclusive?)
   end
 
   def exclusive
