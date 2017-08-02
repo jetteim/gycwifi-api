@@ -3,7 +3,6 @@ FactoryGirl.define do
     poll
     user
     location
-    payment
     router
     seen false
     silence false
