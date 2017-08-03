@@ -113,6 +113,7 @@ group :development, :test do
   gem 'factory_girl'
   gem 'factory_girl_rails'
   gem 'byebug', platform: :mri
+  gem 'rubocop-rspec'
 end
 
 group :development do
