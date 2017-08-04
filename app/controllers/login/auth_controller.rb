@@ -88,7 +88,7 @@ module Login
         password: SecureRandom.hex(8),
         url: redirect_url || 'https://gycwifi.com',
         location_id: router[:location_id],
-        sms_auth: location[:sms_auth] && user[:sms_count]
+        sms_auth: location[:sms_auth] && (user[:sms_count] > 0)
       }
     end
 
