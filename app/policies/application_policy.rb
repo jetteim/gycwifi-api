@@ -78,6 +78,7 @@ class ApplicationPolicy
     can
   end
 
+  instrument_method
   def scope
     Pundit.policy_scope!(user, resource.class)
   end
