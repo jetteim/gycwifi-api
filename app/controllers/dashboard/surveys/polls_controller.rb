@@ -125,14 +125,6 @@ module Dashboard
       def poll_params
         params.require(:poll).permit(:title, :user_id, :run_once)
       end
-
-      instrument_method
-      def normalize_params
-        params.permit!
-        @str_prms = eval(params.as_json.to_s.gsub(/\"(\w+)\"(?==>)/, ':\1'))
-        @str_prms[:questions] = [JSON.parse!(@str_prms[:questions], symbolize_names: true)] if @str_prms[:questions].is_a?(String)
-        logger.info "normalized params #{@str_prms.inspect}".cyan
-      end
     end
   end
 end

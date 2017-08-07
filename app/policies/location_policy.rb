@@ -15,7 +15,7 @@ class LocationPolicy < ApplicationPolicy
       can ||= (user[:locations_count] < 6)
       l "user #{user.inspect} has reached locations limit".cyan unless can
     end
-    if user[:active_role] == 'free'
+    if user[:active_role] == :free
       l 'checking free user role permissions'.cyan
       can ||= (user[:locations_count] < 3)
       l "user #{user.inspect} has reached locations limit".cyan unless can

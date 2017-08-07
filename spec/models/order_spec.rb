@@ -31,4 +31,28 @@ RSpec.describe Order, type: :model do
       expect(order.statuses.count).to eq(2)
     end
   end
+
+  # describe 'agent rewards' do
+  #   let(:user) { create(:user) }
+  #   let(:user_with_agent) { create(:user, :with_agent_info) }
+  #
+  #   it 'should not create agent reward without agent referral' do
+  #     create(:order, user: user)
+  #     create(:order, user: user)
+  #     expect(user.orders.count).to be_zero
+  #   end
+  #
+  #   it 'should create agent reward for first order' do
+  #     order = create(:order, user: user)
+  #     expect(user.orders.count).to eq(1)
+  #     expect(AgentReward.first.order).to eq(order)
+  #   end
+  #
+  #   it 'should not create agent reward for second order' do
+  #     create(:order, user: user)
+  #     order = create(:order, user: user)
+  #     expect(user.orders.count).to eq(2)
+  #     expect(AgentReward.first.order).not_to eq(order)
+  #   end
+  # end
 end

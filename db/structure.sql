@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.3
+-- Dumped from database version 9.5.4
 -- Dumped by pg_dump version 9.6.3
 
 SET statement_timeout = 0;
@@ -234,6 +234,133 @@ CREATE FUNCTION refresh_statistics(userid integer) RETURNS character varying
 SET default_tablespace = '';
 
 SET default_with_oids = false;
+
+--
+-- Name: agent_infos; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE agent_infos (
+    id integer NOT NULL,
+    referral_id integer NOT NULL,
+    agent_payment_method_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: agent_infos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE agent_infos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agent_infos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE agent_infos_id_seq OWNED BY agent_infos.id;
+
+
+--
+-- Name: agent_payment_methods; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE agent_payment_methods (
+    id integer NOT NULL,
+    name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: agent_payment_methods_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE agent_payment_methods_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agent_payment_methods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE agent_payment_methods_id_seq OWNED BY agent_payment_methods.id;
+
+
+--
+-- Name: agent_reward_statuses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE agent_reward_statuses (
+    id integer NOT NULL,
+    code character varying NOT NULL,
+    agent_reward_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: agent_reward_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE agent_reward_statuses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agent_reward_statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE agent_reward_statuses_id_seq OWNED BY agent_reward_statuses.id;
+
+
+--
+-- Name: agent_rewards; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE agent_rewards (
+    id integer NOT NULL,
+    agent_info_id integer NOT NULL,
+    order_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: agent_rewards_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE agent_rewards_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agent_rewards_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE agent_rewards_id_seq OWNED BY agent_rewards.id;
+
 
 --
 -- Name: answers; Type: TABLE; Schema: public; Owner: -
@@ -728,7 +855,7 @@ CREATE TABLE users (
     email character varying NOT NULL,
     password character varying NOT NULL,
     avatar character varying DEFAULT '/images/avatars/default.jpg'::character varying,
-    role_cd integer DEFAULT 0 NOT NULL,
+    type character varying DEFAULT 'FreeUser'::character varying NOT NULL,
     tour boolean DEFAULT true NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -1593,6 +1720,34 @@ ALTER SEQUENCE vouchers_id_seq OWNED BY vouchers.id;
 
 
 --
+-- Name: agent_infos id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agent_infos ALTER COLUMN id SET DEFAULT nextval('agent_infos_id_seq'::regclass);
+
+
+--
+-- Name: agent_payment_methods id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agent_payment_methods ALTER COLUMN id SET DEFAULT nextval('agent_payment_methods_id_seq'::regclass);
+
+
+--
+-- Name: agent_reward_statuses id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agent_reward_statuses ALTER COLUMN id SET DEFAULT nextval('agent_reward_statuses_id_seq'::regclass);
+
+
+--
+-- Name: agent_rewards id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agent_rewards ALTER COLUMN id SET DEFAULT nextval('agent_rewards_id_seq'::regclass);
+
+
+--
 -- Name: answers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1821,6 +1976,38 @@ ALTER TABLE ONLY vips ALTER COLUMN id SET DEFAULT nextval('vips_id_seq'::regclas
 --
 
 ALTER TABLE ONLY vouchers ALTER COLUMN id SET DEFAULT nextval('vouchers_id_seq'::regclass);
+
+
+--
+-- Name: agent_infos agent_infos_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agent_infos
+    ADD CONSTRAINT agent_infos_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agent_payment_methods agent_payment_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agent_payment_methods
+    ADD CONSTRAINT agent_payment_methods_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agent_reward_statuses agent_reward_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agent_reward_statuses
+    ADD CONSTRAINT agent_reward_statuses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agent_rewards agent_rewards_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agent_rewards
+    ADD CONSTRAINT agent_rewards_pkey PRIMARY KEY (id);
 
 
 --
@@ -2122,6 +2309,41 @@ CREATE INDEX delayed_jobs_priority ON delayed_jobs USING btree (priority, run_at
 --
 
 CREATE INDEX delayed_jobs_queue ON delayed_jobs USING btree (queue);
+
+
+--
+-- Name: index_agent_infos_on_agent_payment_method_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agent_infos_on_agent_payment_method_id ON agent_infos USING btree (agent_payment_method_id);
+
+
+--
+-- Name: index_agent_infos_on_referral_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agent_infos_on_referral_id ON agent_infos USING btree (referral_id);
+
+
+--
+-- Name: index_agent_reward_statuses_on_agent_reward_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agent_reward_statuses_on_agent_reward_id ON agent_reward_statuses USING btree (agent_reward_id);
+
+
+--
+-- Name: index_agent_rewards_on_agent_info_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agent_rewards_on_agent_info_id ON agent_rewards USING btree (agent_info_id);
+
+
+--
+-- Name: index_agent_rewards_on_order_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agent_rewards_on_order_id ON agent_rewards USING btree (order_id);
 
 
 --
@@ -2713,10 +2935,10 @@ CREATE INDEX index_users_on_email ON users USING btree (email);
 
 
 --
--- Name: index_users_on_role_cd; Type: INDEX; Schema: public; Owner: -
+-- Name: index_users_on_type; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_users_on_role_cd ON users USING btree (role_cd);
+CREATE INDEX index_users_on_type ON users USING btree (type);
 
 
 --
@@ -2763,11 +2985,51 @@ ALTER TABLE ONLY order_statuses
 
 
 --
+-- Name: agent_reward_statuses fk_rails_792f2c86f9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agent_reward_statuses
+    ADD CONSTRAINT fk_rails_792f2c86f9 FOREIGN KEY (agent_reward_id) REFERENCES agent_rewards(id);
+
+
+--
 -- Name: order_products fk_rails_96c0709f78; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY order_products
     ADD CONSTRAINT fk_rails_96c0709f78 FOREIGN KEY (product_id) REFERENCES products(id);
+
+
+--
+-- Name: agent_infos fk_rails_9756cfd519; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agent_infos
+    ADD CONSTRAINT fk_rails_9756cfd519 FOREIGN KEY (referral_id) REFERENCES users(id);
+
+
+--
+-- Name: agent_rewards fk_rails_ab4f9ae2f9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agent_rewards
+    ADD CONSTRAINT fk_rails_ab4f9ae2f9 FOREIGN KEY (agent_info_id) REFERENCES agent_infos(id);
+
+
+--
+-- Name: agent_infos fk_rails_beb1087cc0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agent_infos
+    ADD CONSTRAINT fk_rails_beb1087cc0 FOREIGN KEY (agent_payment_method_id) REFERENCES agent_payment_methods(id);
+
+
+--
+-- Name: agent_rewards fk_rails_cb2ac89cc8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agent_rewards
+    ADD CONSTRAINT fk_rails_cb2ac89cc8 FOREIGN KEY (order_id) REFERENCES orders(id);
 
 
 --
@@ -2879,6 +3141,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170801091505'),
 ('20170801091636'),
 ('20170801131707'),
-('20170802094728');
+('20170801135133'),
+('20170801145945'),
+('20170801152325'),
+('20170802075001'),
+('20170802094728'),
+('20170804093342');
 
 

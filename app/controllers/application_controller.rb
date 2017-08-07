@@ -146,7 +146,7 @@ class ApplicationController < ActionController::API
   instrument_method
   def normalize_params
     params.permit!
-    @str_prms = eval(params.as_json.to_s.gsub(/\"(\w+)\"(?==>)/, ':\1'))
+    @str_prms = params.to_h.deep_symbolize_keys
     logger.info "normalized params #{@str_prms.inspect}".cyan
   end
 end
