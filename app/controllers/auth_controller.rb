@@ -38,7 +38,7 @@ class AuthController < ApplicationController
   instrument_method
   def authorize_client(params)
     @auth_data = auth_params(params)
-    @session = params[:params][:session]
+    @session = login_params[:session]
     logger.info "авторизовываем клиента #{@session[:client_id]} с данными авторизации #{@auth_data}".green
     logger.debug "session data: #{@session.inspect}".magenta
     authorized = authorization_required? ? verify_authorization : true
@@ -170,11 +170,11 @@ class AuthController < ApplicationController
   end
 
   instrument_method
-  def auth_params(_params)
+  def auth_params(params)
     {
-      provider: @str_prms[:provider],
-      access_code: @str_prms[:code],
-      redirect_url: @str_prms[:redirectUri]
+      provider: params[:provider],
+      access_code: params[:code],
+      redirect_url: params[:redirectUri]
     }
   end
 
@@ -186,8 +186,8 @@ class AuthController < ApplicationController
     params.permit(:username, :email, :password)
   end
 
-  def login_params
-    @str_prms[:params]
+  def login_params(params)
+    JSON.parse(params[:params]).deep_symbolize_keys
   end
 
   def checked_avatar(user)
