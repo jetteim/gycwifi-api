@@ -39,7 +39,7 @@ class AuthController < ApplicationController
   def authorize_client(params)
     @auth_data = auth_params(params)
     @session = login_params[:session]
-    logger.info "авторизовываем клиента #{@session[:client_id]} с данными авторизации #{@auth_data}".green
+    logger.info "авторизуем клиента #{@session[:client_id]} с данными авторизации #{@auth_data}".green
     logger.debug "session data: #{@session.inspect}".magenta
     authorized = authorization_required? ? verify_authorization : true
     RadiusTicket.create(@session) if authorized
@@ -186,10 +186,10 @@ class AuthController < ApplicationController
     params.permit(:username, :email, :password)
   end
 
-  def login_params(params)
+  def login_params(params = nil)
+    params ||= @str_prms
     res = JSON.parse(params[:params]).deep_symbolize_keys
-    logger.debug "parsed login params: #{res}"
-    res
+    logger.debug "parsed login params: #{res}".cyan
   end
 
   def checked_avatar(user)
