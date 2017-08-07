@@ -187,7 +187,9 @@ class AuthController < ApplicationController
   end
 
   def login_params(params)
-    JSON.parse(params[:params]).deep_symbolize_keys
+    res = JSON.parse(params[:params]).deep_symbolize_keys
+    logger.debug "parsed login params: #{res}"
+    res
   end
 
   def checked_avatar(user)
