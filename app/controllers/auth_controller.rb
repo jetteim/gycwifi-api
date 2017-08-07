@@ -118,7 +118,7 @@ class AuthController < ApplicationController
 
   instrument_method
   def verify_voucher
-    logger.info "проверяем ваучер #{auth_data[:access_code]}".yellow
+    logger.info "проверяем ваучер #{@auth_data[:access_code]}".yellow
     # загружаем локацию из кэша
     location = RedisCache.cached_location(@session[:location_id])
     # ищем среди действительных ваучеров
@@ -200,7 +200,7 @@ class AuthController < ApplicationController
     params.permit!
     @str_prms = eval(params.as_json.to_s.gsub(/\"(\w+)\"(?==>)/, ':\1'))
     # парсим параметры oauth
-    @str_prms[:params] = JSON.parse!(params[:params], symbolize_names: true) if params[:params] && params[:params].is_a?(String)
+    @str_prms[:params] = JSON.parse!(params['params'], symbolize_names: true) if params['params'] && params['params'].is_a?(String)
     logger.info "normalized params #{@str_prms.inspect}".cyan
   end
 end
