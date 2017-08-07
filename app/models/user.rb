@@ -7,7 +7,7 @@
 #  email      :string           not null
 #  password   :string           not null
 #  avatar     :string           default("/images/avatars/default.jpg")
-#  role_cd    :integer          default(0), not null
+#  type       :string           default("FreeUser"), not null
 #  tour       :boolean          default(TRUE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -17,7 +17,7 @@
 #  expiration :datetime         default(Mon, 05 Jun 2017 06:29:47 UTC +00:00)
 #
 
-class User < ApplicationRecord
+class User < ApplicationRecord #:nodoc:
   # Relations
   has_many :brands
   has_many :locations
@@ -34,8 +34,7 @@ class User < ApplicationRecord
   has_many :abilities
   has_many :social_accounts
   has_many :opinions
-  has_many :orders, dependent: :delete_all
-  has_many :users
+  has_many :orders, dependent: :destroy
   belongs_to :user
 
   include Skylight::Helpers
@@ -48,8 +47,7 @@ class User < ApplicationRecord
   # Uploaders
   # mount_uploader :avatar, AvatarUploader
 
-  # Roles
-  as_enum :role, free: 0, pro: 1, exclusive: 2, admin: 3, engineer: 4, agent: 5, employee: 6, operator: 7, manager: 8
+  include UserRoles
 
   instrument_method
   def attributes
@@ -74,11 +72,6 @@ class User < ApplicationRecord
   end
 
   # methods
-  instrument_method
-  def active_role
-    return role unless expiration
-    DateTime.current < expiration ? role : 'free'
-  end
 
   instrument_method
   def locations_count
