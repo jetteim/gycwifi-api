@@ -7,7 +7,7 @@
 #  email      :string           not null
 #  password   :string           not null
 #  avatar     :string           default("/images/avatars/default.jpg")
-#  role_cd    :integer          default(0), not null
+#  type       :string           default("FreeUser"), not null
 #  tour       :boolean          default(TRUE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -18,43 +18,31 @@
 #
 
 FactoryGirl.define do
-  factory :user do
+  factory :free_user, aliases: %i[user referral] do
     username { Faker::Internet.user_name }
     email { Faker::Internet.email }
     password { Faker::Internet.password }
     lang :en
-    role_cd 0
 
-    trait :admin do
-      role_cd 3
-    end
-
-    trait :pro do
-      role_cd 1
-    end
-
-    trait :exclusive do
-      role_cd 2
-    end
-
-    trait :employee do
-      role_cd 6
-    end
-
-    trait :operator do
-      role_cd 7
-    end
-
-    trait :manager do
-      role_cd 8
-    end
+    trait(:admin)     { type 'AdminUser' }
+    trait(:pro)       { type 'ProUser' }
+    trait(:exclusive) { type 'ExclusiveUser' }
+    trait(:agent)     { type 'AgentUser' }
+    trait(:employee)  { type 'EmployeeUser' }
+    trait(:operator)  { type 'OperatorUser' }
+    trait(:manager)   { type 'ManagerUser' }
 
     trait :power_user do
-      role_cd [3, 4, 5, 7, 8].sample
+      type %w[AdminUser EngineerUser AgentUser OperatorUser ManagerUser].sample
     end
 
     trait :super_user do
-      role_cd [3, 4].sample
+      type %w[AdminUser EngineerUser].sample
+    end
+
+    trait :with_agent_info do
+      type 'AgentUser'
+      agent_info
     end
   end
 end
