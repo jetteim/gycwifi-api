@@ -59,6 +59,6 @@ class Dashboard::LayoutsController < ApplicationController
   end
 
   def layout_params
-    paramsю.require(:layout).permit(:title, :css, :local_path)
+    params.require(:layout).permit(:title, :css, :local_path)
   end
 end

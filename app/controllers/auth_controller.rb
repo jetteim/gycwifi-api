@@ -194,13 +194,4 @@ class AuthController < ApplicationController
     # Если внутренний источник
     user.avatar
   end
-
-  instrument_method
-  def normalize_params
-    params.permit!
-    @str_prms = eval(params.as_json.to_s.gsub(/\"(\w+)\"(?==>)/, ':\1'))
-    # парсим параметры oauth
-    @str_prms[:params] = JSON.parse!(params[:params], symbolize_names: true) if params[:params] && params[:params].is_a?(String)
-    logger.info "normalized params #{@str_prms.inspect}".cyan
-  end
 end
