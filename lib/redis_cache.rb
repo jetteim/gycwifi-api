@@ -141,8 +141,7 @@ class RedisCache
     tmp = Object.const_get(name.capitalize).find_by("#{id_attribute} = ?", id)
     cached = tmp.as_json(json_params) if tmp
     res = cached.to_json if cached
-
-    REDIS.setex(key, eval("#{name.upcase}_LIFETIME"), res) if res
+    REDIS.setex(key, const_get("#{name.upcase}_LIFETIME"), res) if res
     Rails.logger.debug "cached data: #{cached.inspect}".blue
     cached.symbolize_keys if cached
   end

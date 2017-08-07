@@ -43,6 +43,5 @@ module Dashboard
     def all_locations
       @all_locations ||= Location.all.pluck(:id)
     end
-
   end
 end

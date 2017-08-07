@@ -32,14 +32,6 @@ module Dashboard
         end
         render json: REPLY_OK
       end
-
-      instrument_method
-      def normalize_params
-        binding.pry
-        super
-        @str_prms[:questions] = [JSON.parse!(@str_prms[:questions], symbolize_names: true)] if @str_prms[:questions].is_a?(String)
-        logger.info "normalized params #{@str_prms.inspect}".cyan
-      end
     end
   end
 end
