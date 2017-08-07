@@ -28,7 +28,7 @@ module Login
     def poll_results
       interview_uuid = SecureRandom.uuid
       return unless (data = JSON.parse(@str_prms[:questions]).deep_symbolize_keys)
-      questions = [data] unless data.is_a Array
+      questions = [data] unless data.is_a? Array
       questions ||= data
       logger.info "получены результаты опроса #{questions.inspect}".green
       # Перебираем все полученные ответы
