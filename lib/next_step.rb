@@ -96,7 +96,6 @@ class NextStep
 
   instrument_method
   def self.targeting_info(session)
-    return @targeting_info if @targeting_info
     targeting = {
       adDivId: "smt-130299538",
       publisherId: 1100021743,
@@ -145,12 +144,12 @@ class NextStep
         end
       end
       Rails.logger.debug "targeting info for user #{client.id} at location #{location.id}: #{targeting}"
-      @targeting_info = targeting
+      targeting
     rescue Exception => e
       Rails.logger.warn e.message
       Rails.logger.warn e.backtrace.join("\n")
       Rails.logger.debug "targeting info for user #{client.id} at location #{location.id}: #{targeting}"
-      @targeting_info = targeting
+      targeting
     end
   end
 end
