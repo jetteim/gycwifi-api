@@ -105,7 +105,8 @@ class NextStep
       dimension: "xlarge",
       width: 300,
       height: 50,
-      sync: false
+      sync: false,
+      adspacename: "GYCWiFi_#{session[:platform_os]}_320x50",
     }
     begin
       # собираем имеющиеся данные

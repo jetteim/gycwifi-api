@@ -142,7 +142,9 @@
         url: @str_prms[:url],
         location_id: @str_prms[:location_id],
         apiUrl: @str_prms[:apiUrl],
-        halUrl: @str_prms[:halUrl]
+        halUrl: @str_prms[:halUrl],
+        platform_os: @str_prms[:platform_os],
+        platform_product: @str_prms[:platform_product]
       }
     end
 
