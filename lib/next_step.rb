@@ -97,7 +97,17 @@ class NextStep
   instrument_method
   def self.targeting_info(session)
     return @targeting_info if @targeting_info
-    targeting = {}
+    targeting = {
+      adDivId: "smt-130299538",
+      publisherId: 1100021743,
+      adSpaceId: 130299538,
+      format: "all",
+      formatstrict: true,
+      dimension: "xlarge",
+      width: 300,
+      height: 50,
+      sync: false
+    }
     begin
       # собираем имеющиеся данные
       location = Location.find_by(id: session[:location_id])
@@ -135,12 +145,12 @@ class NextStep
         end
       end
       Rails.logger.debug "targeting info for user #{client.id} at location #{location.id}: #{targeting}"
-      return @targeting_info = targeting
+      @targeting_info = targeting
     rescue Exception => e
       Rails.logger.warn e.message
       Rails.logger.warn e.backtrace.join("\n")
       Rails.logger.debug "targeting info for user #{client.id} at location #{location.id}: #{targeting}"
-      return @targeting_info = targeting
+      @targeting_info = targeting
     end
   end
 end

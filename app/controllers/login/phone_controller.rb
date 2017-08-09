@@ -1,4 +1,4 @@
-module Login
+  module Login
   # Phone controller
   class PhoneController < ApplicationController
     include Skylight::Helpers
