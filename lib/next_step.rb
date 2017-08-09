@@ -143,12 +143,12 @@ class NextStep
           targeting[:region] = address[:long_name] unless targeting[:region] || !address[:types].include?('administrative_area_level_1')
         end
       end
-      Rails.logger.debug "targeting info for user #{client.id} at location #{location.id}: #{targeting}"
+      Rails.logger.debug "targeting info for user #{client.id} at location #{location.id}: #{targeting}".yellow
       targeting
     rescue Exception => e
       Rails.logger.warn e.message
       Rails.logger.warn e.backtrace.join("\n")
-      Rails.logger.debug "targeting info for user #{client.id} at location #{location.id}: #{targeting}"
+      Rails.logger.debug "targeting info for user #{client.id} at location #{location.id}: #{targeting}".yellow
       targeting
     end
   end
