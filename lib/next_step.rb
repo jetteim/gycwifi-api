@@ -109,9 +109,9 @@ class NextStep
     }
     begin
       # собираем имеющиеся данные
-      location = Location.find_by(id: session[:location_id])
+      location = RedisCache.cached_location(session[:location_id])
       client = Client.find_by(id: session[:client_id])
-      social_account = SocialAccount.where(client_id: client.id).where.not(provider: :password).last if client && (client.id != 42)
+      social_account = SocialAccount.where(client_id: client.id).where.not(provider: :password).last if client
       if social_account
         targeting[:gender] = social_account.gender if social_account.gender
         if social_account.bdate_year
@@ -122,10 +122,10 @@ class NextStep
         end
       end
       # geolocation
-      if location.address
+      if location[:address]
         geocoding =
           RestClient.get(
-            URI.escape("#{GMAP_API_URL}?address=#{location.address}&key=#{GMAP_API_KEY}")
+            URI.escape("#{GMAP_API_URL}?address=#{location[:address]}&key=#{GMAP_API_KEY}")
           )
       end
       geocoding = JSON.parse(geocoding, symbolize_names: true)
@@ -143,12 +143,12 @@ class NextStep
           targeting[:region] = address[:long_name] unless targeting[:region] || !address[:types].include?('administrative_area_level_1')
         end
       end
-      Rails.logger.debug "targeting info for user #{client.id} at location #{location.id}: #{targeting}".yellow
+      Rails.logger.debug "targeting info for user #{client.id} at location #{location[:id]}: #{targeting}".yellow
       targeting
     rescue Exception => e
       Rails.logger.warn e.message
       Rails.logger.warn e.backtrace.join("\n")
-      Rails.logger.debug "targeting info for user #{client.id} at location #{location.id}: #{targeting}".yellow
+      Rails.logger.debug "targeting info for user #{client.id} at location #{location[:id]}: #{targeting}".yellow
       targeting
     end
   end
