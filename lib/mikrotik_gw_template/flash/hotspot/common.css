@@ -1,0 +1,46 @@
+/* Olden css */
+textarea, input, select {
+	background-color: #FDFBFB;
+	border: 1px #BBBBBB solid;
+	padding: 2px;
+	margin: 1px;
+	font-size: 14px;
+	color: #808080;
+}
+.tabula {
+	border-width: 1px;
+	border-collapse: collapse;
+	border-color: #c1c1c1;
+	background-color: transparent;
+	font-family: verdana, sans-serif;
+	font-size: 11px;
+}
+
+.tabula td {
+	border: 1px solid #c1c1c1;
+}
+
+.tabula tr > td:first-child {
+	text-align: right;
+}
+
+body { color: #737373; font-size: 12px; font-family: verdana; }
+
+a, a:link, a:visited, a:active { color: #AAAAAA; text-decoration: none; font-size: 12px; }
+a:hover { border-bottom: 1px dotted #c1c1c1; color: #AAAAAA; }
+img { border: none; }
+td { font-size: 12px; padding: 4px;}
+
+/* New css */
+html, body {
+	width: 100%;
+	height: 100%;
+}
+main > * {
+	margin: 0 auto;
+}
+main > form,
+main > h3 {
+	text-align: center;
+	margin-top: 20px;
+}

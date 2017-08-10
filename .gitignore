@@ -1,0 +1,15 @@
+/public/images/location_logo/*
+/public/images/location_background/*
+/public/images/brand_logo/*
+/public/images/brand_background/*
+!/public/images/location_logo/.keep
+!/public/images/location_background/.keep
+!/public/images/brand_logo/.keep
+!/public/images/brand_background/.keep
+/config/shards.yml
+/config/database.yml
+/vendor
+/tmp
+/.bundle
+/log
+/coverage/*

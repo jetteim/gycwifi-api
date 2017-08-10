@@ -1,0 +1,14 @@
+octopus:
+  environments:
+    - development
+    - production
+  development:
+    shard_one:
+      host: localhost
+      adapter: mysql
+      database: app_development
+  production:
+    shard_one:
+      host: localhost
+      adapter: mysql
+      database: app_production

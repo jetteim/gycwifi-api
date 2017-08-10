@@ -1,0 +1,75 @@
+stages:
+  - test
+  - deploy
+
+.test_task: &test_task
+  stage: test
+  script:
+    - sudo cp /home/api/api/config/database.yml ./config/database.yml
+    - sudo chown deploy:deploy ./config/database.yml
+    - bundle install
+    - RAILS_ENV=test bin/rake db:reset spec
+
+staging_test:
+  <<: *test_task
+  environment: staging
+  tags:
+    - staging
+  only:
+    - master
+    - develop
+    - /^feature\/.*/
+    - /^bugfix\/.*/
+    - /^hotfix\/.*/
+    - /^release\/.*/
+
+demo_test:
+  <<: *test_task
+  environment: demo
+  tags:
+    - demo
+  only:
+    - demo
+
+production_test:
+  <<: *test_task
+  environment: production
+  tags:
+    - production
+  only:
+    - production
+
+.deploy_task: &deploy_task
+  stage: deploy
+  script:
+    - echo $CI_PROJECT_DIR > /home/deploy/current_project_dir
+    - sudo chef-client --local-mode --runlist 'recipe[gyc_wifi_server::app_api]' --logfile /var/log/chef-client --json-attributes /home/deploy/chef_config.json
+
+staging_deploy:
+  <<: *deploy_task
+  environment: staging
+  tags:
+    - staging
+  only:
+    - develop
+
+demo_deploy:
+  <<: *deploy_task
+  environment: demo
+  tags:
+    - demo
+  only:
+    - demo
+
+production_deploy:
+  <<: *deploy_task
+  environment: production
+  tags:
+    - production
+  only:
+    - production
+  artifacts:
+    expire_in: 1 month
+    when: always
+    paths:
+      - 'api*.sql'
