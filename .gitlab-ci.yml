@@ -31,14 +31,6 @@ demo_test:
   only:
     - demo
 
-vagrant_test:
-  <<: *test_task
-  environment: vagrant
-  tags:
-    - production
-  only:
-    - production
-
 production_test:
   <<: *test_task
   environment: production
@@ -68,19 +60,6 @@ demo_deploy:
     - demo
   only:
     - demo
-
-vagrant_deploy:
-  <<: *deploy_task
-  environment: vagrant
-  tags:
-    - production
-  only:
-    - production
-  artifacts:
-    expire_in: 1 month
-    when: always
-    paths:
-      - 'api*.sql'
 
 production_deploy:
   <<: *deploy_task
