@@ -6,7 +6,7 @@ stages:
   stage: test
   script:
     - sudo cp /home/api/api/config/database.yml ./config/database.yml
-    - sudo chown deploy:deploy ./config/database.yml
+    - sudo chown gitlab-runner:gitlab-runner ./config/database.yml
     - bundle install
     - RAILS_ENV=test bin/rake db:reset spec
 
@@ -31,6 +31,14 @@ demo_test:
   only:
     - demo
 
+vagrant_test:
+  <<: *test_task
+  environment: vagrant
+  tags:
+    - vagrant
+  only:
+    - vagrant
+
 production_test:
   <<: *test_task
   environment: production
@@ -42,8 +50,8 @@ production_test:
 .deploy_task: &deploy_task
   stage: deploy
   script:
-    - echo $CI_PROJECT_DIR > /home/deploy/current_project_dir
-    - sudo chef-client --local-mode --runlist 'recipe[gyc_wifi_server::app_api]' --logfile /var/log/chef-client --json-attributes /home/deploy/chef_config.json
+    - echo $CI_PROJECT_DIR > /home/gitlab-runner/current_project_dir
+    - sudo chef-client --runlist 'recipe[gyc_wifi_server::app_api]' --config /home/deploy/client.rb
 
 staging_deploy:
   <<: *deploy_task
@@ -60,6 +68,19 @@ demo_deploy:
     - demo
   only:
     - demo
+
+vagrant_deploy:
+  <<: *deploy_task
+  environment: vagrant
+  tags:
+    - vagrant
+  only:
+    - vagrant
+  artifacts:
+    expire_in: 1 month
+    when: always
+    paths:
+      - 'api*.sql'
 
 production_deploy:
   <<: *deploy_task

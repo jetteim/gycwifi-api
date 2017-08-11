@@ -188,7 +188,8 @@ class AuthController < ApplicationController
 
   def login_params(params = nil)
     params ||= @str_prms
-    res = JSON.parse(params[:params]).deep_symbolize_keys
+    res = JSON.parse(params[:params]).deep_symbolize_keys if params[:params].is_a? String
+    res ||= params[:params]
     logger.debug "parsed login params: #{res}".cyan
     res
   end
