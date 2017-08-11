@@ -51,7 +51,7 @@ production_test:
   stage: deploy
   script:
     - echo $CI_PROJECT_DIR > /home/gitlab-runner/current_project_dir
-    - sudo chef-client --local-mode --runlist 'recipe[gyc_wifi_server::app_api]' --logfile /var/log/chef-client --json-attributes /home/deploy/chef_config.json
+    - sudo chef-client --runlist 'recipe[gyc_wifi_server::app_api]' --config /home/deploy/client.rb
 
 staging_deploy:
   <<: *deploy_task
