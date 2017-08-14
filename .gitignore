@@ -1,4 +1,5 @@
 /public/images/location_logo/*
+/public/images/user_avatars/*
 /public/images/location_background/*
 /public/images/brand_logo/*
 /public/images/brand_background/*
@@ -6,6 +7,7 @@
 !/public/images/location_background/.keep
 !/public/images/brand_logo/.keep
 !/public/images/brand_background/.keep
+!/public/images/user_avatars/.keep
 /config/shards.yml
 /config/database.yml
 /vendor
