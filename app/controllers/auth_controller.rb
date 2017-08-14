@@ -67,7 +67,6 @@ class AuthController < ApplicationController
     if user
       logger.debug "found user #{user.inspect}".yellow
       user_token = token(user.id)
-
       render json: {
         id: user.id,
         auth: true,
@@ -75,7 +74,8 @@ class AuthController < ApplicationController
         email: user.email,
         avatar: checked_avatar(user),
         token: user_token,
-        role: user.role
+        role: user.role,
+        user_info: user.front_model
       }, status: 201
     else
       render json: { auth: false, error: 'Cant find user' }
@@ -92,7 +92,7 @@ class AuthController < ApplicationController
       user.update_attribute(avatar, '/images/avatars/default.jpg') unless user.avatar
       render json: auth_json(user), status: 201
     else
-      user = User.new(sign_up_params)
+      user = User.new(sign_up_params.merge(promo_code: PromoCode.find_by(promo_code_params)))
       if user.save
         logger.debug "new user created #{user.inspect}".yellow
         render json: auth_json(user)
@@ -159,7 +159,7 @@ class AuthController < ApplicationController
       email: user.email,
       avatar: user.avatar,
       token: token(user.id)
-    }
+    }.merge(user_info: user.front_model)
   end
 
   instrument_method
@@ -180,6 +180,10 @@ class AuthController < ApplicationController
 
   def sign_in_params
     params.permit(:email, :password)
+  end
+
+  def promo_code_params
+    params.permit(:code)
   end
 
   def sign_up_params

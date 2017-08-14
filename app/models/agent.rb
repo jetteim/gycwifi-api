@@ -1,16 +1,24 @@
 # == Schema Information
 #
-# Table name: agent_infos
+# Table name: agents
 #
 #  id                      :integer          not null, primary key
-#  referral_id             :integer          not null
+#  user_id                 :integer          not null
 #  agent_payment_method_id :integer
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #
 
-class AgentInfo < ApplicationRecord #:nodoc:
-  belongs_to :referral, class_name: 'AgentUser'
-  belongs_to :agent_payment_method
+class Agent < ApplicationRecord #:nodoc:
   has_one :agent_reward, dependent: :destroy
+
+  has_many :promo_codes
+  has_many :referrals, through: :promo_codes
+
+  belongs_to :agent_payment_method
+  belongs_to :user
+
+  after_create do
+    user.touch!
+  end
 end

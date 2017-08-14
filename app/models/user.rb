@@ -2,19 +2,20 @@
 #
 # Table name: users
 #
-#  id         :integer          not null, primary key
-#  username   :string           not null
-#  email      :string           not null
-#  password   :string           not null
-#  avatar     :string           default("/images/avatars/default.jpg")
-#  type       :string           default("FreeUser"), not null
-#  tour       :boolean          default(TRUE), not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  lang       :string           default("ru")
-#  sms_count  :integer
-#  user_id    :integer          default(274)
-#  expiration :datetime         default(Mon, 05 Jun 2017 06:29:47 UTC +00:00)
+#  id            :integer          not null, primary key
+#  username      :string           not null
+#  email         :string           not null
+#  password      :string           not null
+#  avatar        :string           default("/images/avatars/default.jpg")
+#  type          :string           default("FreeUser"), not null
+#  tour          :boolean          default(TRUE), not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  lang          :string           default("ru")
+#  sms_count     :integer
+#  user_id       :integer          default(274)
+#  expiration    :datetime         default(Mon, 05 Jun 2017 06:29:47 UTC +00:00)
+#  promo_code_id :integer
 #
 
 class User < ApplicationRecord #:nodoc:
@@ -35,7 +36,9 @@ class User < ApplicationRecord #:nodoc:
   has_many :social_accounts
   has_many :opinions
   has_many :orders, dependent: :destroy
+  has_one :agent, dependent: :destroy
   belongs_to :user
+  belongs_to :promo_code
 
   include Skylight::Helpers
   # Validations
@@ -48,7 +51,6 @@ class User < ApplicationRecord #:nodoc:
   # mount_uploader :avatar, AvatarUploader
 
   include UserRoles
-
   # methods
 
   def owner
@@ -57,5 +59,31 @@ class User < ApplicationRecord #:nodoc:
 
   def peers
     owner.users
+  end
+
+  def agent_id
+    agent&.id
+  end
+
+  def front_model
+    {
+      id: id,
+      role: role,
+      permissions: {
+        statistic: true,
+        clients: true,
+        authorizations: true,
+        congratulations: true,
+        sales: true,
+        polls: true,
+        brands: true,
+        locations: true,
+        routers: true,
+        market: true,
+      },
+      customizations:{
+
+      }
+    }
   end
 end

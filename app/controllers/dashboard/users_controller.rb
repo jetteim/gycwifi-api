@@ -59,9 +59,9 @@ module Dashboard
 
     def update
       authorize(@object_user)
-      @object_user.update(avatar_params)
-      if @object_user.save
-        render json: object_user
+      if @object_user.update(user_params)
+        PromoCode.generate_for_agent(@object_user.id)
+        render json: @object_user.front_model
       else
         render json: { error: user.errors.full_messages }
       end
@@ -176,7 +176,7 @@ module Dashboard
 
     def parse_params
       @page = @str_prms[:page].to_i || 1
-      @object_user = @str_prms[:id] ? User.friendly.find(@str_prms[:id]) : nil
+      @object_user = @str_prms[:id] ? User.find(@str_prms[:id]) : nil
     end
 
     def avatar_params
@@ -184,7 +184,7 @@ module Dashboard
     end
 
     def user_params
-      params.require(:user).permit(:password, :avatar, :role_cd, :tour, :email, :user)
+      params.require(:user).permit(:password, :avatar, :type, :tour, :email, :user)
     end
   end
 end

@@ -1,0 +1,1 @@
+class AdminUserPolicy < UserPolicy; end

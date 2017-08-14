@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.4
+-- Dumped from database version 9.6.3
 -- Dumped by pg_dump version 9.6.3
 
 SET statement_timeout = 0;
@@ -52,7 +52,7 @@ CREATE TYPE social_provider AS ENUM (
 CREATE FUNCTION amocrmexport(userid integer) RETURNS character varying
     LANGUAGE plpgsql
     AS $$declare
-        amocrm varchar := e'﻿Email, Name, Phone 
+        amocrm varchar := e'﻿Email, Name, Phone
 ';
         line varchar;
         users cursor for select role_cd = 3 as isadmin from users where id = userid;
@@ -102,7 +102,7 @@ CREATE FUNCTION clients_page(userid integer) RETURNS character varying
         social_accounts_profile cursor for select profile from social_accounts where client_id = clientid and not profile is null order by updated_at desc LIMIT 1; clientprofile varchar;
         social_accounts_visits cursor for select count(id) as visits from social_logs where social_account_id in (select id from social_accounts where client_id = clientid); clientvisits integer; visits integer;
         social_accounts_visits_30 cursor for select count(id) as visits30 from social_logs where social_account_id in (select id from social_accounts where client_id = clientid) and created_at > current_date - interval '30 days'; clientvisits30 integer; visits30 integer;
-        
+
       begin
 	    open users; fetch users into isadmin;close users;
 	    clients_page = '';
@@ -126,7 +126,7 @@ CREATE FUNCTION clients_page(userid integer) RETURNS character varying
               clientusername,
               to_char(visits, '00000'),
               to_char(visits30, '00000'),
-              updatedat::date, 
+              updatedat::date,
               clientgender,
               clientprovider,
               clientprofile
@@ -155,7 +155,7 @@ CREATE FUNCTION clients_page(userid integer) RETURNS character varying
               clientusername,
               to_char(visits, '00000'),
               to_char(visits30, '00000'),
-              updatedat::date, 
+              updatedat::date,
               clientgender,
               clientprovider,
               clientprofile
@@ -236,38 +236,6 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: agent_infos; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE agent_infos (
-    id integer NOT NULL,
-    referral_id integer NOT NULL,
-    agent_payment_method_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: agent_infos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE agent_infos_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: agent_infos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE agent_infos_id_seq OWNED BY agent_infos.id;
-
-
---
 -- Name: agent_payment_methods; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -336,7 +304,7 @@ ALTER SEQUENCE agent_reward_statuses_id_seq OWNED BY agent_reward_statuses.id;
 
 CREATE TABLE agent_rewards (
     id integer NOT NULL,
-    agent_info_id integer NOT NULL,
+    agent_id integer NOT NULL,
     order_id integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -360,6 +328,38 @@ CREATE SEQUENCE agent_rewards_id_seq
 --
 
 ALTER SEQUENCE agent_rewards_id_seq OWNED BY agent_rewards.id;
+
+
+--
+-- Name: agents; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE agents (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    agent_payment_method_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: agents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE agents_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE agents_id_seq OWNED BY agents.id;
 
 
 --
@@ -862,7 +862,8 @@ CREATE TABLE users (
     lang character varying DEFAULT 'ru'::character varying,
     sms_count integer,
     user_id integer DEFAULT 274,
-    expiration timestamp without time zone DEFAULT '2017-06-05 06:29:47.639813'::timestamp without time zone
+    expiration timestamp without time zone DEFAULT '2017-06-05 06:29:47.639813'::timestamp without time zone,
+    promo_code_id integer
 );
 
 
@@ -1417,6 +1418,38 @@ ALTER SEQUENCE products_id_seq OWNED BY products.id;
 
 
 --
+-- Name: promo_codes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE promo_codes (
+    id integer NOT NULL,
+    code character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    agent_id integer
+);
+
+
+--
+-- Name: promo_codes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE promo_codes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: promo_codes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE promo_codes_id_seq OWNED BY promo_codes.id;
+
+
+--
 -- Name: questions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1754,13 +1787,6 @@ ALTER SEQUENCE vouchers_id_seq OWNED BY vouchers.id;
 
 
 --
--- Name: agent_infos id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY agent_infos ALTER COLUMN id SET DEFAULT nextval('agent_infos_id_seq'::regclass);
-
-
---
 -- Name: agent_payment_methods id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1779,6 +1805,13 @@ ALTER TABLE ONLY agent_reward_statuses ALTER COLUMN id SET DEFAULT nextval('agen
 --
 
 ALTER TABLE ONLY agent_rewards ALTER COLUMN id SET DEFAULT nextval('agent_rewards_id_seq'::regclass);
+
+
+--
+-- Name: agents id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agents ALTER COLUMN id SET DEFAULT nextval('agents_id_seq'::regclass);
 
 
 --
@@ -1957,6 +1990,13 @@ ALTER TABLE ONLY products ALTER COLUMN id SET DEFAULT nextval('products_id_seq':
 
 
 --
+-- Name: promo_codes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY promo_codes ALTER COLUMN id SET DEFAULT nextval('promo_codes_id_seq'::regclass);
+
+
+--
 -- Name: questions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2020,14 +2060,6 @@ ALTER TABLE ONLY vouchers ALTER COLUMN id SET DEFAULT nextval('vouchers_id_seq':
 
 
 --
--- Name: agent_infos agent_infos_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY agent_infos
-    ADD CONSTRAINT agent_infos_pkey PRIMARY KEY (id);
-
-
---
 -- Name: agent_payment_methods agent_payment_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2049,6 +2081,14 @@ ALTER TABLE ONLY agent_reward_statuses
 
 ALTER TABLE ONLY agent_rewards
     ADD CONSTRAINT agent_rewards_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agents agents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY agents
+    ADD CONSTRAINT agents_pkey PRIMARY KEY (id);
 
 
 --
@@ -2260,6 +2300,14 @@ ALTER TABLE ONLY products
 
 
 --
+-- Name: promo_codes promo_codes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY promo_codes
+    ADD CONSTRAINT promo_codes_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: questions questions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2361,20 +2409,6 @@ CREATE INDEX delayed_jobs_queue ON delayed_jobs USING btree (queue);
 
 
 --
--- Name: index_agent_infos_on_agent_payment_method_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_agent_infos_on_agent_payment_method_id ON agent_infos USING btree (agent_payment_method_id);
-
-
---
--- Name: index_agent_infos_on_referral_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_agent_infos_on_referral_id ON agent_infos USING btree (referral_id);
-
-
---
 -- Name: index_agent_reward_statuses_on_agent_reward_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2382,10 +2416,10 @@ CREATE INDEX index_agent_reward_statuses_on_agent_reward_id ON agent_reward_stat
 
 
 --
--- Name: index_agent_rewards_on_agent_info_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_agent_rewards_on_agent_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_agent_rewards_on_agent_info_id ON agent_rewards USING btree (agent_info_id);
+CREATE INDEX index_agent_rewards_on_agent_id ON agent_rewards USING btree (agent_id);
 
 
 --
@@ -2393,6 +2427,20 @@ CREATE INDEX index_agent_rewards_on_agent_info_id ON agent_rewards USING btree (
 --
 
 CREATE INDEX index_agent_rewards_on_order_id ON agent_rewards USING btree (order_id);
+
+
+--
+-- Name: index_agents_on_agent_payment_method_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agents_on_agent_payment_method_id ON agents USING btree (agent_payment_method_id);
+
+
+--
+-- Name: index_agents_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agents_on_user_id ON agents USING btree (user_id);
 
 
 --
@@ -3057,11 +3105,11 @@ ALTER TABLE ONLY order_products
 
 
 --
--- Name: agent_infos fk_rails_9756cfd519; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: agents fk_rails_9756cfd519; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY agent_infos
-    ADD CONSTRAINT fk_rails_9756cfd519 FOREIGN KEY (referral_id) REFERENCES users(id);
+ALTER TABLE ONLY agents
+    ADD CONSTRAINT fk_rails_9756cfd519 FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
@@ -3069,14 +3117,14 @@ ALTER TABLE ONLY agent_infos
 --
 
 ALTER TABLE ONLY agent_rewards
-    ADD CONSTRAINT fk_rails_ab4f9ae2f9 FOREIGN KEY (agent_info_id) REFERENCES agent_infos(id);
+    ADD CONSTRAINT fk_rails_ab4f9ae2f9 FOREIGN KEY (agent_id) REFERENCES agents(id);
 
 
 --
--- Name: agent_infos fk_rails_beb1087cc0; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: agents fk_rails_beb1087cc0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY agent_infos
+ALTER TABLE ONLY agents
     ADD CONSTRAINT fk_rails_beb1087cc0 FOREIGN KEY (agent_payment_method_id) REFERENCES agent_payment_methods(id);
 
 
@@ -3204,5 +3252,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170802094728'),
 ('20170804093342'),
 ('20170816204056');
+
 
 
