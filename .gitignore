@@ -10,6 +10,7 @@
 /config/database.yml
 /vendor
 /tmp
+!/tmp/.keep
 /.bundle
 /log
 /coverage/*
