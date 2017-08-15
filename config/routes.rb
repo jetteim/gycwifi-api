@@ -148,6 +148,8 @@ Rails.application.routes.draw do
     resources :notifications
     resources :opinions
     resources :promo_codes, only: %i[index create]
+    resources :rewards, only: %i[index]
+    resources :referrals, only: %i[index]
     resources :routers
     resources :social_logs
     namespace :surveys, path: '/' do

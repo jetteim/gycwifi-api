@@ -51,8 +51,6 @@ class User < ApplicationRecord #:nodoc:
   # mount_uploader :avatar, AvatarUploader
 
   include UserRoles
-  # methods
-
   def owner
     user
   end
@@ -79,7 +77,11 @@ class User < ApplicationRecord #:nodoc:
         brands: true,
         locations: true,
         routers: true,
+        integrations: true,
         market: true,
+        vips: true,
+        help: true,
+        opinions: true
       },
       customizations:{
 

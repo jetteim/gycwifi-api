@@ -1,0 +1,1 @@
+class ExclusiveUserPolicy < UserPolicy; end

@@ -1,0 +1,1 @@
+class OperatorUserPolicy < UserPolicy; end

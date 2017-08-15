@@ -29,22 +29,18 @@ FactoryGirl.define do
     trait(:admin)     { type 'AdminUser' }
     trait(:pro)       { type 'ProUser' }
     trait(:exclusive) { type 'ExclusiveUser' }
-    trait(:agent)     { type 'AgentUser' }
     trait(:employee)  { type 'EmployeeUser' }
+
+    trait(:engineer)  { type 'EngineerUser' }
     trait(:operator)  { type 'OperatorUser' }
     trait(:manager)   { type 'ManagerUser' }
 
     trait :power_user do
-      type %w[AdminUser EngineerUser AgentUser OperatorUser ManagerUser].sample
+      type %w[AdminUser EngineerUser OperatorUser ManagerUser].sample
     end
 
     trait :super_user do
       type %w[AdminUser EngineerUser].sample
-    end
-
-    trait :with_agent_info do
-      type 'AgentUser'
-      agent_info
     end
   end
 end

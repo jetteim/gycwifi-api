@@ -19,6 +19,6 @@ class Agent < ApplicationRecord #:nodoc:
   belongs_to :user
 
   after_create do
-    user.touch!
+    user.touch
   end
 end

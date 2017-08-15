@@ -7,6 +7,8 @@
 #  order_id   :integer          not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  status_cd  :integer
+#  amount     :decimal(9, 2)
 #
 
 require 'rails_helper'

@@ -267,38 +267,6 @@ ALTER SEQUENCE agent_payment_methods_id_seq OWNED BY agent_payment_methods.id;
 
 
 --
--- Name: agent_reward_statuses; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE agent_reward_statuses (
-    id integer NOT NULL,
-    code character varying NOT NULL,
-    agent_reward_id integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: agent_reward_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE agent_reward_statuses_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: agent_reward_statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE agent_reward_statuses_id_seq OWNED BY agent_reward_statuses.id;
-
-
---
 -- Name: agent_rewards; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -307,7 +275,9 @@ CREATE TABLE agent_rewards (
     agent_id integer NOT NULL,
     order_id integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    status_cd integer,
+    amount numeric(9,2)
 );
 
 
@@ -1391,7 +1361,7 @@ CREATE TABLE products (
     id integer NOT NULL,
     name character varying,
     description text,
-    price integer,
+    price numeric(9,2),
     type character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -1794,13 +1764,6 @@ ALTER TABLE ONLY agent_payment_methods ALTER COLUMN id SET DEFAULT nextval('agen
 
 
 --
--- Name: agent_reward_statuses id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY agent_reward_statuses ALTER COLUMN id SET DEFAULT nextval('agent_reward_statuses_id_seq'::regclass);
-
-
---
 -- Name: agent_rewards id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2065,14 +2028,6 @@ ALTER TABLE ONLY vouchers ALTER COLUMN id SET DEFAULT nextval('vouchers_id_seq':
 
 ALTER TABLE ONLY agent_payment_methods
     ADD CONSTRAINT agent_payment_methods_pkey PRIMARY KEY (id);
-
-
---
--- Name: agent_reward_statuses agent_reward_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY agent_reward_statuses
-    ADD CONSTRAINT agent_reward_statuses_pkey PRIMARY KEY (id);
 
 
 --
@@ -2406,13 +2361,6 @@ CREATE INDEX delayed_jobs_priority ON delayed_jobs USING btree (priority, run_at
 --
 
 CREATE INDEX delayed_jobs_queue ON delayed_jobs USING btree (queue);
-
-
---
--- Name: index_agent_reward_statuses_on_agent_reward_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_agent_reward_statuses_on_agent_reward_id ON agent_reward_statuses USING btree (agent_reward_id);
 
 
 --
@@ -3086,14 +3034,6 @@ CREATE INDEX index_vouchers_on_password ON vouchers USING btree (password);
 
 ALTER TABLE ONLY order_statuses
     ADD CONSTRAINT fk_rails_159fd1d59f FOREIGN KEY (order_id) REFERENCES orders(id);
-
-
---
--- Name: agent_reward_statuses fk_rails_792f2c86f9; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY agent_reward_statuses
-    ADD CONSTRAINT fk_rails_792f2c86f9 FOREIGN KEY (agent_reward_id) REFERENCES agent_rewards(id);
 
 
 --

@@ -5,7 +5,7 @@
 #  id          :integer          not null, primary key
 #  name        :string
 #  description :text
-#  price       :integer
+#  price       :decimal(9, 2)
 #  type        :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null

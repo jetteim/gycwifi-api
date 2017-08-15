@@ -27,7 +27,7 @@ class Order < ApplicationRecord
   private
 
   def create_reward
-    return if user.orders.count > 1 || !user.agent?
+    return if user.orders.count > 1 || user.promo_code.nil?
     agent_reward.create!(agent_info: user.agent_info)
   end
 end
