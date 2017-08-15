@@ -38,6 +38,7 @@ class ZipFileGenerator
   def self.zipdir(dirpath, filepath)
     zf = ZipFileGenerator.new(dirpath, filepath)
     zf.write
+    `chmod 666 #{filepath}`
     filepath
   end
 end
