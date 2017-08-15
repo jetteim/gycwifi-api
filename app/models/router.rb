@@ -223,6 +223,6 @@ class Router < ApplicationRecord
 
   def rebuild
     RouterUpdater.perform_later(self)
-    RouterPackageBuilder.perform_later(self)
+    package
   end
 end
