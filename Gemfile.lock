@@ -54,7 +54,7 @@ GEM
     axlsx (2.1.0.pre)
       htmlentities (~> 4.3.1)
       nokogiri (>= 1.4.1)
-      rubyzip (~> 1.0.0)
+      rubyzip (~> 1.1.7)
     axlsx_rails (0.5.1)
       actionpack (>= 3.1)
       axlsx (>= 2.1.0.pre)
