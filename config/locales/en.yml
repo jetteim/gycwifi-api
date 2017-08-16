@@ -57,7 +57,7 @@ en:
       day: 'Day 12:00 - 17:59'
       evening: 'Evening 18:00 - 23:59'
       night: 'Night 00:00 - 05:59'
-      password: 'Via sms: '
+      password: 'Sms: '
       man: 'Men: '
       woman: 'Women: '
       less_than_18: 'Less than 18 years: '
