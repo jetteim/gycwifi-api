@@ -36,7 +36,7 @@ RSpec.describe 'Private stat', type: :request do
   context '/stats/social_pie' do
     it 'returns social pie' do
       get my_uri('/stats/social_pie'), headers: headers
-      expect(parsed_response).to include(labels: ['Via sms: ', 'Google', 'Facebook', 'Twitter', 'Instagram', 'VKontakte'],
+      expect(parsed_response).to include(labels: ['Sms: ', 'Google', 'Facebook', 'Twitter', 'Instagram', 'VKontakte'],
                                          data: [0, 0, 0, 0, 1, 0])
     end
   end
