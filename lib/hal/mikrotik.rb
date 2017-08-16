@@ -332,7 +332,8 @@ module Hal
       command_set << '/import flash/service/environment.rsc'
       command_set << '/import flash/service/router-settings.rsc'
       command_set << '/ip hotspot profile remove [find name=gyc-hotspot]; /ip hotspot profile add copy-from=default name=gyc-hotspot;'
-      command_set << '/ip hotspot profile set gyc-hotspot use-radius="yes" login-by="http-pap" html-directory=$GYChotspotRoot hotspot-address={$hotspot_address}  dns-name=$GYChotspotRouterLocalName trial-uptime-limit=20s trial-uptime-reset=4s'
+      command_set << '/ip hotspot profile set gyc-hotspot use-radius="yes" login-by="http-pap,https" html-directory=$GYChotspotRoot hotspot-address={$hotspot_address}  dns-name=$GYChotspotRouterLocalName trial-uptime-limit=20s trial-uptime-reset=4s ssl-certificate=gyc-ssl-cert'
+      command_set << '/ip service set www-ssl certificate=gyc-ssl-cert disabled=no'
       command_set << '/ip hotspot remove [find name=gyc-login-server];'
       command_set << '/ip hotspot add name=gyc-login-server interface={$hotspot_interface} profile=gyc-hotspot disabled="yes"'
       command_set << "/ip hotspot user profile set default rate-limit=#{router[:wlan]} idle-timeout=1d keepalive-timeout=1d;"
