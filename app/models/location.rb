@@ -121,6 +121,7 @@ class Location < ApplicationRecord
   belongs_to :category
   belongs_to :user
   belongs_to :poll
+  has_many   :login_menu_items, dependent: :destroy
   has_many   :vouchers, dependent: :destroy
   has_many   :routers, dependent: :destroy
   has_many   :social_logs

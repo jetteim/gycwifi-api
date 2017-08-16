@@ -19,7 +19,8 @@ class RedisCache
                  methods: %i[extended_address template address_completed
                              phone_completed logo_uploaded url_completed
                              auth_count routers_count providers
-                             available_vouchers])
+                             available_vouchers],
+                 include: [:login_menu_items])
   end
 
   instrument_method
