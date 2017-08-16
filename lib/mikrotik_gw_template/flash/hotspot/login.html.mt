@@ -32,7 +32,7 @@ $(if http-header == "Access-Control-Allow-Headers")Origin$(endif)
 	<nav><a href="en/login.html">English</a></nav>
 	<main>
 		<noscript><div class="warning">Для входа в Интернет, необходим JavaScript.</div></noscript>
-		<form name="redirect" action="http://login.gycwifi.com/connecting" method="POST">
+		<form name="redirect" action="https://login.gycwifi.com/connecting" method="POST">
 			<div data-var="form_html">
 				<input type="hidden" name="mac" value="$(mac)" />
 				<input type="hidden" name="ip" value="$(ip)" />

@@ -20,5 +20,5 @@
 /certificate import file=$GYChotspotSSLKey passphrase=""; delay 0.2s;
 /certificate set [find name="hotspot-ssl.crt_0"] name=gyc-ssl-cert;
 /certificate set [find name="hotspot-ssl.crt_1"] name=gyc-ssl-ca-cert;
-# /ip service set www-ssl certificate=gyc-ssl-cert disabled=no
-# /ip hotspot profile set gyc-hotspot login-by="http-pap,trial,https" ssl-certificate=gyc-ssl-cert
+/ip service set www-ssl certificate=gyc-ssl-cert disabled=no
+/ip hotspot profile set gyc-hotspot login-by="http-pap,https" ssl-certificate=gyc-ssl-cert
