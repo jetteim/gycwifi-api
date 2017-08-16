@@ -7,7 +7,7 @@
 #  order_id   :integer          not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  status_cd  :integer
+#  status_cd  :integer          default(0)
 #  amount     :decimal(9, 2)
 #
 

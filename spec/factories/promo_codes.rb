@@ -12,6 +12,5 @@
 FactoryGirl.define do
   factory :promo_code do
     sequence(:code) { |n| (['0']*(8 - n.to_s.size) << n.to_s).join }
-    agent { create(:agent) }
   end
 end

@@ -57,8 +57,7 @@ class AuthController < ApplicationController
   instrument_method
   def sign_in
     logger.debug "password sign-in with params #{sign_in_params.inspect}".yellow
-    user = case Rails.env
-           when 'production'
+    user = if %w[production test].include? Rails.env
              User.find_by(sign_in_params)
            else
              User.find_by(email: sign_in_params[:email])

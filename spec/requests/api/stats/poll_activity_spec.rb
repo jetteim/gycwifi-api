@@ -15,8 +15,8 @@ RSpec.shared_examples 'valid_poll_statistic' do |ago, now, range, format|
                                                     title: question.title,
                                                     name: 'question_pie')
     expect(parsed_response[:data][0][0][:attempts].size).to eq(answer.attempts.count)
-    expect(parsed_response[:data][0][0][:attempts][0]).to include(phone_number: first_attempt.client.phone_number,
-                                                                  answer: first_attempt.answer.title,
+    expect(parsed_response[:data][0][0][:attempts][0]).to include(phone_number: later_attempt.client.phone_number,
+                                                                  answer: later_attempt.answer.title,
                                                                   avatar: nil)
     expect(parsed_response[:data][0][1]).to eq(labels: labels,
                                                data: [[1] + [0] * (labels.size - 2) + [1]],
@@ -34,7 +34,7 @@ RSpec.describe 'Polls activity', type: :request do
     let(:question) { poll.questions.first }
     let(:answer) { question.answers.first }
     let!(:location) { create(:location, :with_social_log, poll: poll) }
-    let(:first_attempt) { answer.attempts.first }
+    let(:later_attempt) { answer.attempts.last }
 
     context 'return formatted polls activity for more then 3 month' do
       before do

@@ -13,5 +13,10 @@ FactoryGirl.define do
   factory :agent do
     user
     agent_payment_method
+    trait :with_promo_code do
+      after(:create) do |agent|
+        create(:promo_code, agent: agent)
+      end
+    end
   end
 end

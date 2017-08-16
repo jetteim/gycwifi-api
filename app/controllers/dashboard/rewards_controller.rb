@@ -6,9 +6,9 @@ module Dashboard
       render json: {
         items_count: policy_scope(AgentReward).count,
         itemsOnPage: PAGESIZE,
-        rewards: agent_rewards.as_json(include: { user: {
-                                                  include: { promo_code: { only: :code } },
-                                        only: [:username, :email] }}, only: [:amount, :status_cd])
+        rewards: agent_rewards.as_json(include: { user: { include: { promo_code: { only: :code } },
+                                                  only: [:username, :email] }},
+                                       only: [:amount, :status_cd])
       }
     end
 
