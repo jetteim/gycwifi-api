@@ -144,6 +144,7 @@ Rails.application.routes.draw do
     resources :opinions
     resources :locations
     resources :routers
+    resources :login_menu_items
     resources :vouchers
     resources :clients
     resources :social_logs

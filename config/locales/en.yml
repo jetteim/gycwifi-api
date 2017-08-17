@@ -20,6 +20,11 @@ en:
       ssid: 'Tell us the SSID'
       redirect_url: 'We need an URL to redirect'
       slug: 'Slug not unique'
+    login_menu_items:
+      created: 'Menu item created'
+      updated: 'Menu item updated'
+      deleted: 'Menu item deleted'
+      show: ''
     routers:
       created: 'Router created'
       updated: 'Router updated'
