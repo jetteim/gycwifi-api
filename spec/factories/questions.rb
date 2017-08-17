@@ -15,6 +15,11 @@ FactoryGirl.define do
     title { Faker::FamilyGuy.quote }
     trait :with_answer do
       after(:create) do |question|
+        create(:answer, question: question)
+      end
+    end
+    trait :with_answer_and_attempt do
+      after(:create) do |question|
         create(:answer, :with_attempt, question: question)
       end
     end
