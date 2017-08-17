@@ -21,6 +21,5 @@ FactoryGirl.define do
     trait :unpayed do
       status_cd 0
     end
-
   end
 end

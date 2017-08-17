@@ -18,11 +18,11 @@ RSpec.describe OrderProduct, type: :model do
   describe 'price' do
     let(:order_product) { create(:order_product, product: product) }
 
-    it 'should set price for new record' do
+    it 'sets price for new record' do
       expect(order_product.price).to eq(100)
     end
 
-    it 'should not change price for existent record' do
+    it 'does not change price for existent record' do
       new_product = create(:product, price: 110)
       order_product.update(product: new_product)
       expect(order_product.price).to eq(100)

@@ -60,7 +60,7 @@ describe PollPolicy do
 
   context 'employee can view owner polls' do
     let(:user) { create(:user, :employee, user: owner) }
-    let(:poll) { create(:poll, user: owner)}
+    let(:poll) { create(:poll, user: owner) }
     let(:owner) { create(:user, :admin) }
 
     it { is_expected.to permit_action(:show) }
@@ -69,7 +69,7 @@ describe PollPolicy do
   context 'manager can view child items' do
     let(:user) { create(:user, :manager) }
     let(:child) { create(:user, :admin, user: user) }
-    let(:poll) { create(:poll, user: child)}
+    let(:poll) { create(:poll, user: child) }
 
     it { is_expected.to permit_action(:show) }
   end

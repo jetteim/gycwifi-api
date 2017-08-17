@@ -1,4 +1,5 @@
 module Dashboard
+  # Referrals Controller
   class ReferralsController < ApplicationController
     PAGESIZE = 20
     def index
@@ -6,7 +7,7 @@ module Dashboard
       render json: {
         items_count: referrals.count,
         itemsOnPage: PAGESIZE,
-        referrals: referrals.as_json(include: { promo_code: {only: :code} }, only: [:username, :email, :avatar])
+        referrals: referrals.as_json(include: { promo_code: { only: :code } }, only: %i[username email avatar])
       }
     end
 

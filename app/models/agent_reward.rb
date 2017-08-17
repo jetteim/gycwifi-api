@@ -18,7 +18,7 @@ class AgentReward < ApplicationRecord #:nodoc:
 
   validate :reward_status_change
 
-  as_enum :status, unpayed: 0 , payed: 1
+  as_enum :status, unpayed: 0, payed: 1
 
   def payment_total
     order.order_products.map(&:price).sum
@@ -28,6 +28,6 @@ class AgentReward < ApplicationRecord #:nodoc:
 
   def reward_status_change
     return unless status_cd_change && status_cd_change[0] == 1
-    errors.add(:status, "Change status of payed reward are not allowed!")
+    errors.add(:status, 'Change status of payed reward are not allowed!')
   end
 end

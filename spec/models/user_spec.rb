@@ -22,14 +22,14 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe 'roles' do
-    it 'should be free role' do
+    it 'is free role' do
       user = build(:user, expiration: nil)
       expect(user.role).to eq(:free)
       expect(user.free?).to be_truthy
       expect(user.pro?).to be_falsey
     end
 
-    it 'should be pro role' do
+    it 'is pro role' do
       user = build(:user, :pro, expiration: nil)
       expect(user.role).to eq(:pro)
       expect(user.pro?).to be_truthy
@@ -37,13 +37,13 @@ RSpec.describe User, type: :model do
     end
 
     context 'with expiration' do
-      it 'should be pro role if not expired' do
+      it 'is pro role if not expired' do
         user = build(:user, :pro, expiration: 1.day.from_now)
         expect(user.role).to eq(:pro)
         expect(user.pro?).to be_truthy
       end
 
-      it 'should be free role if expired' do
+      it 'is free role if expired' do
         user = build(:user, :pro, expiration: 1.day.ago)
         expect(user.role).to eq(:free)
         expect(user.pro?).to be_falsey

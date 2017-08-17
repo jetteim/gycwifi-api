@@ -60,33 +60,31 @@ class User < ApplicationRecord #:nodoc:
     owner.users
   end
 
-  def agent_id
-    agent&.id
-  end
-
   def front_model
     {
       id: id,
       role: role,
-      permissions: {
-        statistic: true,
-        clients: true,
-        authorizations: true,
-        congratulations: true,
-        sales: true,
-        polls: true,
-        brands: true,
-        locations: true,
-        routers: true,
-        integrations: true,
-        market: true,
-        vips: true,
-        help: true,
-        opinions: true
-      },
-      customizations:{
+      permissions: front_permssions,
+      customizations: {
 
       }
     }
+  end
+
+  def front_permssions
+    { statistic: true,
+      clients: true,
+      authorizations: true,
+      congratulations: true,
+      sales: true,
+      polls: true,
+      brands: true,
+      locations: true,
+      routers: true,
+      integrations: true,
+      market: true,
+      vips: true,
+      help: true,
+      opinions: true }
   end
 end
