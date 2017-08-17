@@ -10,128 +10,72 @@
 # - кто кого может редактировать
 
 class ApplicationPolicy
-  include Skylight::Helpers
-  attr_reader :user, :resource
+  attr_reader :user, :record
 
-  def initialize(user, resource)
-    @user = RedisCache.cached_user(user[:id])
-    @resource = resource
+  def initialize(user, record)
+    # TODO: Убрать костыль, сюда не должны приходить хеши
+    @user = user.is_a?(Hash) ? User.find(user[:id]) : user
+    # @user = user
+    @record = record
   end
 
-  instrument_method
   def index?
-    l "authorize index #{resource} for user #{user[:id]}".cyan.bold
-
-    can = user[:super_user]
-    can ||= resource.where(user: user[:id]).count
-    can ||= user[:can_view_owner_items] && resource.where(user: user[:user_id]).count
-    can ||= user[:can_view_child_items] && resource.where(user: User.where(user_id: user[:id]).pluck(:id)).count
-    log(can)
-    can
+    user.super_user? ||
+      record.exists?(user: user)||
+      (user.can_view_owner_items? && record.exists?(user: user.user)) ||
+      (user.can_view_child_items? && record.exists?(user: User.where(user: user).pluck(:id)))
   end
 
-  instrument_method
   def show?
-    l "authorize show #{resource} for user #{user[:id]}".cyan.bold
-    can = user[:super_user] || (resource.user_id == user[:id])
-    can ||= user[:can_view_owner_items] && (resource.user.id == user[:user_id])
-    can ||= user[:can_view_child_items] && (resource.user.user.id == user[:id])
-    log(can)
-    can
+    user.super_user? || record.user == user ||
+      (user.can_view_owner_items? && record.user == user.user) ||
+      (user.can_view_child_items? && record.user.user == user)
   end
 
-  instrument_method
   def create?
     # пауэр_юзеры могут создавать по умолчанию всё
-    # в наследуемых политиках надо переопределять этот метод
-    l "authorize create #{resource} for user #{user[:id]}".cyan.bold
-    w "Attention! application policy method called for create #{resource}".red.bold
-    w 'you should use object policy instead'.red.bold
-    can = user[:power_user]
-    log(can)
-    can
+    # в наследуемых политиках надо вызывать super
+    user.power_user?
   end
 
   def new?
     create?
   end
 
-  instrument_method
   def update?
-    l "authorize update #{resource} for user #{user[:id]}".cyan.bold
-    can = user[:super_user] || (resource.user_id == user[:id])
-    can ||= user[:can_manage_child_items] && resource.user.user.id == user[:id]
-    log(can)
-    can
+    user.super_user? || record.user == user ||
+      (user.can_manage_child_items? && record.user.user == user)
   end
 
   def edit?
     update?
   end
 
-  instrument_method
   def destroy?
-    l "authorize delete #{resource.inspect} for user #{user.inspect}".cyan.bold
-    can = user[:super_user] || (resource.user_id == user[:id])
-    can ||= user[:can_manage_child_items] && resource.user.user.id == user[:id]
-    log(can)
-    can
+    update?
   end
 
-  instrument_method
   def scope
-    Pundit.policy_scope!(user, resource.class)
-  end
-
-  protected
-
-  def l(s)
-    Rails.logger.debug(s)
-  end
-
-  def i(s)
-    Rails.logger.info(s)
-  end
-
-  def w(s)
-    Rails.logger.warn(s)
-  end
-
-  def log(can)
-    s = 'can' if can
-    s = 'cannot' unless can
-    l "user #{user.inspect} #{s} access resource #{resource.inspect}".cyan.bold
+    Pundit.policy_scope!(user, record.class)
   end
 
   class Scope
-    include Skylight::Helpers
     attr_reader :user, :scope
 
     def initialize(user, scope)
-      @user = RedisCache.cached_user(user[:id])
+      # TODO: Убрать костыль, сюда не должны приходить хеши
+      @user = user.is_a?(Hash) ? User.find(user[:id]) : user
+      # @user = user
       @scope = scope
     end
 
     def resolve
-      l "resolving scope #{scope} for user #{user.inspect}".cyan.bold
-      return scope.all if user[:super_user]
-      result = scope.where(user: user[:id])
-      result = result.or(scope.where(user: user[:user_id])) if user[:can_view_owner_items]
-      result = result.or(scope.where(user: User.find_by(user: user[:user_id]))) if user[:can_view_peer_items]
-      result = result.or(scope.where(user: User.where(user: user[:id]).pluck(:id))) if user[:can_view_child_items]
+      return scope if user.super_user?
+      result = scope.where(user: user)
+      result = result.or(scope.where(user: user.user)) if user.can_view_owner_items?
+      result = result.or(scope.where(user: User.find_by(user: user.user))) if user.can_view_peer_items?
+      result = result.or(scope.where(user: User.where(user: user).pluck(:id))) if user.can_view_child_items?
       result
-    end
-
-    def l(s)
-      Rails.logger.debug(s)
-    end
-
-    def i(s)
-      Rails.logger.info(s)
-    end
-
-    def w(s)
-      Rails.logger.warn(s)
     end
   end
 end

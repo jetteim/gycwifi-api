@@ -6,7 +6,4 @@ class NotificationPolicy < ApplicationPolicy
   def unread_count?
     index?
   end
-
-  class Scope < Scope
-  end
 end

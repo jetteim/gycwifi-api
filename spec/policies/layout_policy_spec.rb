@@ -10,10 +10,14 @@ describe LayoutPolicy do
   context 'admin can everything' do
     let(:user) { create(:user, :super_user) }
 
-    it { is_expected.to permit_actions(%i[show create update destroy]) }
+    it { is_expected.to permit_action(:show) }
+    it { is_expected.to permit_new_and_create_actions }
+    it { is_expected.to permit_edit_and_update_actions }
+    it { is_expected.to permit_action(:destroy) }
   end
   context 'user can`t create or show layout' do
-    it { is_expected.to forbid_actions(%i[create show]) }
+    it { is_expected.to forbid_new_and_create_actions }
+    it { is_expected.to forbid_action(:show) }
   end
   context 'user can see layout' do
     it { expect(resolved_scope).to include(layout) }
