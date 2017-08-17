@@ -22,4 +22,17 @@ RSpec.describe AgentReward, type: :model do
   #   ]
   #   expect(agent_reward.payment_total).to be_positive
   # end
+  let(:payed_reward) { create(:agent_reward, :payed) }
+  let(:unpayed_reward) { create(:agent_reward, :unpayed) }
+  context 'validates status change' do
+    it 'restricts change from payed to unpayed' do
+      payed_reward.unpayed!
+      payed_reward.save
+      expect(payed_reward.errors.messages[:status][0]).to eq("Change status of payed reward are not allowed!")
+    end
+    it 'permits change from unpayed to payed' do
+      unpayed_reward.payed!
+      expect(unpayed_reward.save).to eq(true)
+    end
+  end
 end

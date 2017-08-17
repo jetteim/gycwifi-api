@@ -36,7 +36,7 @@ class Dashboard::LocationsController < ApplicationController
   def create
     return raise_not_authorized(Location) unless RedisCache.cached_policy(@current_user, Location, 'create')
     location = Location.new(location_params)
-    location.user_id ||= @current_user[:id]
+    location.user_id ||= @current_user.id
     location.slug = nil
     location.errors.each { |k, _v| return render json: { status: 'error', message: I18n.t("errors.locations.#{k}") } } unless location.save
     render json: success(location, 'created')

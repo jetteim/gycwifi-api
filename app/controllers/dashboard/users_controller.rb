@@ -24,7 +24,7 @@ module Dashboard
     def create
       return raise_not_authorized(User) unless RedisCache.cached_policy(@current_user, User, 'create')
       user = User.new(user_params)
-      user.user_id = current_user[:id]
+      user.user_id = current_user.id
       if user.save
         render json: {
           data: { user: user },
@@ -102,7 +102,7 @@ module Dashboard
     end
 
     def lang
-      user = User.find_by(id: @current_user[:id])
+      user = User.find_by(id: @current_user.id)
       user.update(lang: @str_prms[:lang])
       if user.save
         render json:

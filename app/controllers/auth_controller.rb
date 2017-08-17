@@ -65,17 +65,7 @@ class AuthController < ApplicationController
 
     if user
       logger.debug "found user #{user.inspect}".yellow
-      user_token = token(user.id)
-      render json: {
-        id: user.id,
-        auth: true,
-        username: user.username,
-        email: user.email,
-        avatar: checked_avatar(user),
-        token: user_token,
-        role: user.role,
-        user_info: user.front_model
-      }, status: 201
+      render json: auth_json(user), status: 201
     else
       render json: { auth: false, error: 'Cant find user' }
     end
@@ -157,14 +147,17 @@ class AuthController < ApplicationController
       username: user.username,
       email: user.email,
       avatar: user.avatar,
-      token: token(user.id)
-    }.merge(user_info: user.front_model)
+      token: token(user.id),
+      role: user.role,
+      user_info: user.front_model
+    }
   end
 
   instrument_method
   def token(user_id)
     logger.debug "building token for user #{user_id}".cyan
-    RedisCache.store_token(user_id, token = Token.encode(user_id))
+    token = Token.encode(user_id)
+    REDIS.sadd(redis_token_key(user_id), token)
     token
   end
 
@@ -195,10 +188,5 @@ class AuthController < ApplicationController
     res ||= params[:params]
     logger.debug "parsed login params: #{res}".cyan
     res
-  end
-
-  def checked_avatar(user)
-    # Если внутренний источник
-    user.avatar
   end
 end

@@ -2,8 +2,7 @@ module Dashboard
   class ReferralsController < ApplicationController
     PAGESIZE = 20
     def index
-      agent = Agent.find(@current_user[:agent_id])
-      referrals = agent.referrals.includes(:promo_code).page(referral_params[:page]).per(PAGESIZE)
+      referrals = @current_user.agent.referrals.includes(:promo_code).page(referral_params[:page]).per(PAGESIZE)
       render json: {
         items_count: referrals.count,
         itemsOnPage: PAGESIZE,

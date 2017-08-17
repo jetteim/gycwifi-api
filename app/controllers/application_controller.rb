@@ -104,32 +104,19 @@ class ApplicationController < ActionController::API
 
   instrument_method
   def current_user
-    # Получаем токен от пользователя в заголовке
-    return @current_user = nil unless (header_token = request.headers['Authorization'].to_s.split.last)
-    # Зашифрованный id пользователя и токен в оперативке
-    user = RedisCache.cached_user(user_id = Token.new(header_token).user_id)
-    user_token = RedisCache.user_token(user_id)
-    unless Rails.env.production?
-      # пускаем под admin@example.com всегда на любой не-production среде
-      return @current_user = user if user[:email] == 'admin@example.com' || user[:username] == 'admin@example.com'
-    end
-    return @current_user = user if user_token == header_token
-    logger.warn "User not authorized #{user.inspect}".red.bold
-    logger.warn "token stored in REDIS: #{user_token.inspect}".red.bold
-    logger.warn "token received in headers: #{header_token.inspect}".red.bold
-    @current_user = nil
+    @current_user ||= token_user
   end
   helper_method :current_user
 
   instrument_method
   def authenticated_user?
-    @current_user ? !@current_user.nil? : !current_user.nil?
+    current_user.present?
   end
   helper_method :authenticated_user?
 
   instrument_method
   def unauthenticated_user?
-    @current_user ? @current_user.nil? : !current_user.nil?
+    current_user.nil?
   end
   helper_method :unauthenticated_user?
 
@@ -148,5 +135,29 @@ class ApplicationController < ActionController::API
     params.permit!
     @str_prms = params.to_h.deep_symbolize_keys
     logger.info "normalized params #{@str_prms.inspect}".cyan
+  end
+
+  def token_user
+    token = Token.new(header_token)
+    return unless token.valid?
+    user = User.find(token.user_id)
+    # пускаем под admin@example.com всегда на любой не-production среде
+    return user if Rails.env.production? && user.pluck(:username, :email).includes?('admin@example.com')
+    user if REDIS.smembers(redis_token_key(user.id)).include? header_token
+  end
+
+  def header_token
+    request.headers['Authorization'].to_s.split.last
+  end
+
+  def redis_token_key(user_id)
+    "token_#{user_id}"
+  end
+
+  def skip_bullet
+    Bullet.enable = false
+    yield
+  ensure
+    Bullet.enable = true
   end
 end

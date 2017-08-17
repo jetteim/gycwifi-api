@@ -1,5 +1,6 @@
 module Dashboard
   class RewardsController < ApplicationController
+    around_action :skip_bullet, only: :index #gem bullet выдает unused eager loading но это неправда(баг)
     PAGESIZE = 20
     def index
       agent_rewards = policy_scope(AgentReward).includes(user: :promo_code).page(rewards_params[:page]).per(PAGESIZE)

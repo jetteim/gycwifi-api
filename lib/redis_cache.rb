@@ -24,19 +24,6 @@ class RedisCache
   end
 
   instrument_method
-  def self.user_token(user_id)
-    key = "user_token_#{user_id}"
-    REDIS.get(key)
-  end
-
-  instrument_method
-  def self.store_token(user_id, token = nil)
-    key = "user_token_#{user_id}"
-    token ||= Token.encode(user_id)
-    REDIS.set(key, token)
-  end
-
-  instrument_method
   def self.cached_poll(poll_id)
     cache_object('poll', poll_id, 'id', include: [questions: { include: [answers: { methods: [:attempts_count] }] }])
   end
@@ -54,11 +41,6 @@ class RedisCache
   instrument_method
   def self.cached_layout(layout_id)
     cache_object('layout', layout_id)
-  end
-
-  instrument_method
-  def self.cached_user(user_id)
-    cache_object('user', user_id)
   end
 
   instrument_method

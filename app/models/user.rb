@@ -51,6 +51,7 @@ class User < ApplicationRecord #:nodoc:
   # mount_uploader :avatar, AvatarUploader
 
   include UserRoles
+
   def owner
     user
   end

@@ -43,5 +43,8 @@ Rails.application.configure do
     Bullet.enable = true
     Bullet.bullet_logger = true
     Bullet.raise = true # raise an error if n+1 query occurs
+    # Bullet.add_whitelist :type => :unused_eager_loading, :class_name => "AgentReward", :association => :order
+    # Bullet.add_whitelist :type => :unused_eager_loading, :class_name => "Order", :association => :user
+    # Bullet.add_whitelist :type => :unused_eager_loading, :class_name => "FreeUser", :association => :promo_code
   end
 end

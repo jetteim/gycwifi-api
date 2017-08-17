@@ -10,7 +10,7 @@
 #
 
 class Agent < ApplicationRecord #:nodoc:
-  has_one :agent_reward, dependent: :destroy
+  has_many :agent_rewards
 
   has_many :promo_codes
   has_many :referrals, through: :promo_codes
