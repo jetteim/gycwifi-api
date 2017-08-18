@@ -14,10 +14,10 @@ class RouterStatusNotifier < ApplicationJob
       r.touch
       NotificationMailer.notification_email(r).deliver_later if notification
       sent_at = DateTime.current
-      title = r.status ? "Router #{r.serial} online" : "Router #{r.serial} offline"
+      title = r.status ? "INFO: Router online #{r.serial} - #{r.comment}" : "WARN: Router online #{r.serial} - #{r.comment}"
       Notification.create(
         title: title,
-        details: "#{title} timestamp: #{sent_at}",
+        details: "Location status: #{r.location.routers.each {|router| \" router #{router} status #{router.status ? 'online' : 'offline'}\"}}",
         sent_at: sent_at,
         router_id: r.id,
         location_id: r.location&.id,
