@@ -7,6 +7,6 @@ describe OpinionPolicy do
   let(:opinion) { create(:opinion) }
 
   context 'user can create notification' do
-    it { is_expected.to permit_action(:create) }
+    it { is_expected.to permit_new_and_create_actions }
   end
 end
