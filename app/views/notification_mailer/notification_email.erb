@@ -1,4 +1,6 @@
 <b>
   <h3> <%= @header %> </h3>
-  <%= @details %>
+  <ul> <%= @details.each do |line| %>
+    <li><%= line.text %></li>
+  </ul
 </b>
