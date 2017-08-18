@@ -27,7 +27,7 @@ class AgentReward < ApplicationRecord #:nodoc:
   private
 
   def reward_status_change
-    return unless status_cd_change && status_cd_change[0] == 1
-    errors.add(:status, 'Change status of payed reward are not allowed!')
+    return unless status_cd_change && status_cd_was == 1
+    errors.add(:status, I18n.t('errors.reward.payed.payed_reward_change'))
   end
 end

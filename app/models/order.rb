@@ -7,8 +7,8 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-# nodoc
-class Order < ApplicationRecord
+
+class Order < ApplicationRecord #:nodoc:
   include PaymentStatuses
 
   belongs_to :user

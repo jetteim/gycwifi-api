@@ -142,8 +142,7 @@ class ApplicationController < ActionController::API
     return unless token.valid?
     user = User.find(token.user_id)
     # пускаем под admin@example.com всегда на любой не-production среде
-    return user if Rails.env.production? && user.pluck(:username, :email).includes?('admin@example.com')
-    user if REDIS.smembers(redis_token_key(user.id)).include? header_token
+    user if acknowledge_token?(user.id, header_token) || !Rails.env.production? && user.email == 'admin@example.com'
   end
 
   def header_token
@@ -152,6 +151,10 @@ class ApplicationController < ActionController::API
 
   def redis_token_key(user_id)
     "token_#{user_id}"
+  end
+
+  def acknowledge_token?(user_id, header_token)
+    REDIS.smembers(redis_token_key(user_id)).include? header_token
   end
 
   def skip_bullet

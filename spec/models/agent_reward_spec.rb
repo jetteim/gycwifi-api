@@ -29,7 +29,7 @@ RSpec.describe AgentReward, type: :model do
     it 'restricts change from payed to unpayed' do
       payed_reward.unpayed!
       payed_reward.save
-      expect(payed_reward.errors.messages[:status][0]).to eq('Change status of payed reward are not allowed!')
+      expect(payed_reward.errors.messages[:status][0]).to eq I18n.t('errors.reward.payed.payed_reward_change')
     end
     it 'permits change from unpayed to payed' do
       unpayed_reward.payed!

@@ -2798,6 +2798,13 @@ CREATE INDEX index_post_auth_logs_on_username ON post_auth_logs USING btree (use
 
 
 --
+-- Name: index_promo_codes_on_agent_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_promo_codes_on_agent_id ON promo_codes USING btree (agent_id);
+
+
+--
 -- Name: index_questions_on_poll_id; Type: INDEX; Schema: public; Owner: -
 --
 

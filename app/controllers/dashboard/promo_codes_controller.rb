@@ -2,7 +2,6 @@ module Dashboard
   # PromoCodes controller
   class PromoCodesController < ApplicationController
     def index
-      authorize PromoCode
       promo_codes = policy_scope(PromoCode).pluck(:code)
       render json: {
         data: {

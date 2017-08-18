@@ -10,7 +10,7 @@ RSpec.describe 'Registration', type: :request do
     end
     it 'doesn`t auth user if password incorrect' do
       get my_uri('auth/password'), params: { email: @user.email,
-                                             password: "#{@user.password}123",
+                                             password: 'bad_password',
                                              redirectUri: 'dashboard.dev.app' }
       expect(parsed_response).to include(auth: false)
     end

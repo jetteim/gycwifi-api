@@ -1,5 +1,4 @@
-# auth
-class AuthController < ApplicationController
+class AuthController < ApplicationController #:nodoc:
   include Skylight::Helpers
   skip_before_action :authenticate_user
 
@@ -23,7 +22,7 @@ class AuthController < ApplicationController
     user_data = SocialAccount.pull_user_data(auth_data)
     social_account = SocialAccount.find_social_account(user_data)
     user = social_account.linked_user
-    render json: auth_json(user), status: 200
+    render json: auth_json(user), status: :ok
   end
 
   # авторизация в login - мы уже идентифицировали нашего Client, а для его авторизации достаточно того,
@@ -40,12 +39,8 @@ class AuthController < ApplicationController
     authorized = authorization_required? ? verify_authorization : true
     RadiusTicket.create(@session) if authorized
     SocialNetworkProfileReader.perform_later(@auth_data, @session) if authorized
-    response = if authorized
-                 NextStep.render_json_output('internet', @session)
-               else
-                 NextStep.render_json_output('providers', @session)
-               end
-    render json: response
+    response = NextStep.render_json_output(authorized ? 'internet' : 'providers', @session)
+    render json: response, status: :ok
   end
 
   # Via password
@@ -66,9 +61,9 @@ class AuthController < ApplicationController
     user = sign_in_user
     if user
       logger.debug "found user #{user.inspect}".yellow
-      render json: auth_json(user), status: 201
+      render json: auth_json(user), status: :created
     else
-      render json: { auth: false, error: 'Cant find user' }
+      render json: { auth: false, error: 'Cant find user' }, status: :unprocessable_entity
     end
   end
 
@@ -191,6 +186,7 @@ class AuthController < ApplicationController
   end
 
   def build_user
-    User.new(sign_up_params.merge(promo_code: PromoCode.find_by(code: sign_up_params[:promo_code])))
+    promo_code = PromoCode.find_by(code: sign_up_params[:promo_code])
+    User.new(sign_up_params.merge(promo_code: promo_code))
   end
 end
