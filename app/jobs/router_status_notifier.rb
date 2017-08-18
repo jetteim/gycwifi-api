@@ -2,7 +2,7 @@ class RouterStatusNotifier < ApplicationJob
   queue_as :routers
 
   def perform(router = nil)
-    return unless Rails.env.production?||Rails.env.staging?
+    return unless Rails.env.production? || Rails.env.staging?
     logger.debug 'starting router status notification check'.red.bold
     (router.blank? ? Router.all.includes(:notifications).includes(:location).includes(:user) : [router]).each do |r|
       # если у роутера status == nil - он ещё не настроен, пропускаем его
@@ -14,10 +14,12 @@ class RouterStatusNotifier < ApplicationJob
       r.touch
       sent_at = DateTime.current
       title = "#{r.status ? 'INFO: Router online' : 'WARN: Router offline'} at #{r.location.title}: #{r.serial} - #{r.comment}"
+      details = ""
+      r.location.routers.each {|rtr| details = "#{details}\n#{rtr.serial} status: #{rtr.status ? 'online' : 'offline'}" }
       # : "WARN: Router online #{r.serial} - #{r.comment}"
       n = Notification.create(
         title: title,
-        details: "#{r.location.routers.each {|rtr| 'router '+rtr.serial + ' status: ' + rtr.status ? 'online' : 'offline\n'}}",
+        details: details,
         sent_at: sent_at,
         router_id: r.id,
         location_id: r.location&.id,
