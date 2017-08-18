@@ -7,12 +7,12 @@
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
---SET idle_in_transaction_session_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
---SET row_security = off;
+SET row_security = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
@@ -25,7 +25,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
 --
 
--- COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 SET search_path = public, pg_catalog;
@@ -52,7 +52,7 @@ CREATE TYPE social_provider AS ENUM (
 CREATE FUNCTION amocrmexport(userid integer) RETURNS character varying
     LANGUAGE plpgsql
     AS $$declare
-        amocrm varchar := e'﻿Email, Name, Phone
+        amocrm varchar := e'﻿Email, Name, Phone 
 ';
         line varchar;
         users cursor for select role_cd = 3 as isadmin from users where id = userid;
@@ -102,7 +102,7 @@ CREATE FUNCTION clients_page(userid integer) RETURNS character varying
         social_accounts_profile cursor for select profile from social_accounts where client_id = clientid and not profile is null order by updated_at desc LIMIT 1; clientprofile varchar;
         social_accounts_visits cursor for select count(id) as visits from social_logs where social_account_id in (select id from social_accounts where client_id = clientid); clientvisits integer; visits integer;
         social_accounts_visits_30 cursor for select count(id) as visits30 from social_logs where social_account_id in (select id from social_accounts where client_id = clientid) and created_at > current_date - interval '30 days'; clientvisits30 integer; visits30 integer;
-
+        
       begin
 	    open users; fetch users into isadmin;close users;
 	    clients_page = '';
@@ -126,7 +126,7 @@ CREATE FUNCTION clients_page(userid integer) RETURNS character varying
               clientusername,
               to_char(visits, '00000'),
               to_char(visits30, '00000'),
-              updatedat::date,
+              updatedat::date, 
               clientgender,
               clientprovider,
               clientprofile
@@ -155,7 +155,7 @@ CREATE FUNCTION clients_page(userid integer) RETURNS character varying
               clientusername,
               to_char(visits, '00000'),
               to_char(visits30, '00000'),
-              updatedat::date,
+              updatedat::date, 
               clientgender,
               clientprovider,
               clientprofile
@@ -1077,6 +1077,40 @@ ALTER SEQUENCE locations_id_seq OWNED BY locations.id;
 
 
 --
+-- Name: login_menu_items; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE login_menu_items (
+    id integer NOT NULL,
+    url character varying,
+    title_ru character varying,
+    title_en character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    location_id integer
+);
+
+
+--
+-- Name: login_menu_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE login_menu_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: login_menu_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE login_menu_items_id_seq OWNED BY login_menu_items.id;
+
+
+--
 -- Name: notifications; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1853,6 +1887,13 @@ ALTER TABLE ONLY locations ALTER COLUMN id SET DEFAULT nextval('locations_id_seq
 
 
 --
+-- Name: login_menu_items id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY login_menu_items ALTER COLUMN id SET DEFAULT nextval('login_menu_items_id_seq'::regclass);
+
+
+--
 -- Name: notifications id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2136,6 +2177,14 @@ ALTER TABLE ONLY layouts
 
 ALTER TABLE ONLY locations
     ADD CONSTRAINT locations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: login_menu_items login_menu_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY login_menu_items
+    ADD CONSTRAINT login_menu_items_pkey PRIMARY KEY (id);
 
 
 --
@@ -2638,6 +2687,13 @@ CREATE INDEX index_locations_on_updated_at ON locations USING btree (updated_at)
 --
 
 CREATE INDEX index_locations_on_user_id ON locations USING btree (user_id);
+
+
+--
+-- Name: index_login_menu_items_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_login_menu_items_on_location_id ON login_menu_items USING btree (location_id);
 
 
 --
@@ -3146,4 +3202,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170801152325'),
 ('20170802075001'),
 ('20170802094728'),
-('20170804093342');
+('20170804093342'),
+('20170816204056');
+
+
