@@ -127,6 +127,7 @@ class RedisCache
       social_networks: location[:providers], logo: location[:logo],
       sms_auth: location[:sms_auth],
       vouchers: location[:available_vouchers], template: location[:template],
+      login_menu_items: location[:login_menu_items],
       last_page_content: no_poll ? 'text' : location[:last_page_content],
       poll: no_poll ? nil : poll
     }
