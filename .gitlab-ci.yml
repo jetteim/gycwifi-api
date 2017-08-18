@@ -8,7 +8,7 @@ stages:
     - sudo cp /home/api/api/config/database.yml ./config/database.yml
     - sudo chown gitlab-runner:gitlab-runner ./config/database.yml
     - bundle install
-    - RAILS_ENV=test bin/rake db:migrate spec
+    - RAILS_ENV=test bin/rake db:migrate
     - RAILS_ENV=test bin/rake db:reset spec
 
 staging_test:
