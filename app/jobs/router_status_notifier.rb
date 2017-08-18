@@ -9,20 +9,21 @@ class RouterStatusNotifier < ApplicationJob
       next if r.status.nil?
       notification = r.notifications&.last
       # если последняя нотификация была после даты обновления роутера, отсылать не надо
-      next if notification && notification.sent_at > r.updated_at
+      next if notification && notification.sent_at > r.updated_at + 1.minute
       # обновляем роутер, создаём нотификацию и отправляем письмо
       r.touch
-      NotificationMailer.notification_email(r).deliver_later if notification
       sent_at = DateTime.current
-      title = r.status ? "INFO: Router online #{r.serial} - #{r.comment}" : "WARN: Router online #{r.serial} - #{r.comment}"
-      Notification.create(
+      title = "#{r.status ? 'INFO: Router online' : 'WARN: Router offline'} at #{r.location.title}: #{r.serial} - #{r.comment}"
+      # : "WARN: Router online #{r.serial} - #{r.comment}"
+      n = Notification.create(
         title: title,
-        details: "Location status: #{r.location.routers.each {|router| 'router '+router.serial + ' status: ' + router.status ? 'online' : 'offline'}}",
+        details: "#{r.location.routers.each {|router| 'router '+router.serial + ' status: ' + router.status ? 'online' : 'offline\n'}}",
         sent_at: sent_at,
         router_id: r.id,
         location_id: r.location&.id,
         user_id: r.user&.id
       )
+      NotificationMailer.notification_email(n).deliver_later
     end
     RouterStatusNotifier.set(wait: 7.minutes + rand(300)).perform_later
   end
