@@ -19,7 +19,7 @@ class RouterStatusNotifier < ApplicationJob
       # : "WARN: Router online #{r.serial} - #{r.comment}"
       n = Notification.create(
         title: title,
-        details: "#{}",
+        details: details,
         sent_at: sent_at,
         router_id: r.id,
         location_id: r.location&.id,
