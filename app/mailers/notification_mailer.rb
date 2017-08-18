@@ -6,7 +6,7 @@ class NotificationMailer < ApplicationMailer
 
   def notification_email(n)
     location = Location.find_by(id: n.location_id)
-    @header = "#{location.title} - #{location.address}"
+    @header = "#{location.title} - #{location.address} - #{n.sent_at}"
     @lines = []
     location.routers.each do |router|
       @lines << "Router #{router.serial} status: #{router.status ? 'online' : 'offline'}"
