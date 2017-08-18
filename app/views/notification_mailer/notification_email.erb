@@ -1,16 +1,6 @@
 <b>
-  Router
-  <%= "#{@router.serial} #{@router.comment}" %>
-</b>
-<br>
-<b>
-  Location:
-  <%= "#{@location&.title} #{@location&.address}"%>
-</b>
-
-<br>
-
-<b>
-  Status:
-  <%= @status %>
+  <h3> <%= @header %> </h3>
+  <% @lines.each do |line|  %>
+    <%= line %><br>
+  <% end %>
 </b>
