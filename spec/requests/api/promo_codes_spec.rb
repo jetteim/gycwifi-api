@@ -11,7 +11,7 @@ RSpec.describe 'PromoCode Api', type: :request do
   end
 
   context 'Create' do
-    let(:user) { create(:free_user) }
+    let(:user) { create(:user) }
 
     before do
       post my_uri('promo_codes'),

@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.4
--- Dumped by pg_dump version 9.6.4
+-- Dumped from database version 9.6.3
+-- Dumped by pg_dump version 9.6.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -52,7 +52,7 @@ CREATE TYPE social_provider AS ENUM (
 CREATE FUNCTION amocrmexport(userid integer) RETURNS character varying
     LANGUAGE plpgsql
     AS $$declare
-        amocrm varchar := e'﻿Email, Name, Phone
+        amocrm varchar := e'﻿Email, Name, Phone 
 ';
         line varchar;
         users cursor for select role_cd = 3 as isadmin from users where id = userid;
@@ -102,7 +102,7 @@ CREATE FUNCTION clients_page(userid integer) RETURNS character varying
         social_accounts_profile cursor for select profile from social_accounts where client_id = clientid and not profile is null order by updated_at desc LIMIT 1; clientprofile varchar;
         social_accounts_visits cursor for select count(id) as visits from social_logs where social_account_id in (select id from social_accounts where client_id = clientid); clientvisits integer; visits integer;
         social_accounts_visits_30 cursor for select count(id) as visits30 from social_logs where social_account_id in (select id from social_accounts where client_id = clientid) and created_at > current_date - interval '30 days'; clientvisits30 integer; visits30 integer;
-
+        
       begin
 	    open users; fetch users into isadmin;close users;
 	    clients_page = '';
@@ -126,7 +126,7 @@ CREATE FUNCTION clients_page(userid integer) RETURNS character varying
               clientusername,
               to_char(visits, '00000'),
               to_char(visits30, '00000'),
-              updatedat::date,
+              updatedat::date, 
               clientgender,
               clientprovider,
               clientprofile
@@ -155,7 +155,7 @@ CREATE FUNCTION clients_page(userid integer) RETURNS character varying
               clientusername,
               to_char(visits, '00000'),
               to_char(visits30, '00000'),
-              updatedat::date,
+              updatedat::date, 
               clientgender,
               clientprovider,
               clientprofile
@@ -3198,7 +3198,20 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170802075001'),
 ('20170802094728'),
 ('20170804093342'),
-('20170816204056');
-
+('20170810085229'),
+('20170810090852'),
+('20170810144144'),
+('20170810145207'),
+('20170810150515'),
+('20170810151449'),
+('20170810160608'),
+('20170811082737'),
+('20170815084000'),
+('20170815092725'),
+('20170815092905'),
+('20170815102903'),
+('20170816144703'),
+('20170816204056'),
+('20170818121739');
 
 

@@ -13,7 +13,6 @@ module Dashboard
     end
 
     def create
-      authorize PromoCode
       agent = Agent.find_or_create_by(user_id: @current_user.id)
       promo_code = PromoCode.generate_for_agent(agent)
       render json: {

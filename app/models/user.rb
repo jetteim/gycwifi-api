@@ -60,6 +60,10 @@ class User < ApplicationRecord #:nodoc:
     owner.users
   end
 
+  def agent_id
+    agent&.id
+  end
+
   def front_model
     {
       id: id,
