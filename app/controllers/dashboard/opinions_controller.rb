@@ -23,7 +23,7 @@ class Dashboard::OpinionsController < ApplicationController
 
   def create
     opinion = Opinion.new(params[:opinion])
-    opinion.user_id = @current_user[:id]
+    opinion.user_id = @current_user.id
     authorize(Opinion)
     if opinion.save
       render json: {

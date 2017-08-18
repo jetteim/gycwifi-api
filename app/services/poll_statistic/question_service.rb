@@ -12,7 +12,7 @@ module PollStatistic
         end
         result[:labels] << 'Свой ответ'
         result[:data] <<  q.attempts.select { |attempt| attempt.custom_answer.present? }.size
-        result[:attempts] = q.attempts.map do |attempt|
+        result[:attempts] = q.attempts.sort_by(&:created_at).map do |attempt|
           avatar = attempt.client&.social_accounts&.find{ |account| account.image.present? }&.image
           {
             attempt_date: attempt.created_at,

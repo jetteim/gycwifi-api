@@ -8,14 +8,14 @@
 #  updated_at :datetime         not null
 #
 
-class Order < ApplicationRecord
+class Order < ApplicationRecord #:nodoc:
   include PaymentStatuses
 
   belongs_to :user
   has_many :order_products, dependent: :delete_all
   has_many :products, through: :order_products
   has_many :statuses, -> { order(:created_at) }, dependent: :delete_all,
-           class_name: 'OrderStatus'
+                                                 class_name: 'OrderStatus'
   # Лучше `dependent: :nullify`. Но что если удалят заказ, за который было
   # выплачено вознаграждение?
   has_one :agent_reward, dependent: :restrict_with_exception
@@ -27,7 +27,8 @@ class Order < ApplicationRecord
   private
 
   def create_reward
-    return if user.orders.count > 1 || !user.agent?
-    agent_reward.create!(agent_info: user.agent_info)
+    # not implemented yet
+    # return if user.orders.count > 1 || user.promo_code.nil?
+    # AgentReward.create(order: self, agent: user.promocode.agent)
   end
 end

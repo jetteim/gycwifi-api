@@ -94,12 +94,12 @@ module Dashboard
     end
 
     def amocrm_csv_collection
-      result = ActiveRecord::Base.connection.execute("select * from amocrmexport(#{@current_user[:id]})")
+      result = ActiveRecord::Base.connection.execute("select * from amocrmexport(#{@current_user.id})")
       BOM + result[0]['amocrmexport']
     end
 
     def mailchimp_csv_collection
-      result = ActiveRecord::Base.connection.execute("select * from mailchimpexport(#{@current_user[:id]})")
+      result = ActiveRecord::Base.connection.execute("select * from mailchimpexport(#{@current_user.id})")
       BOM + result[0]['mailchimpexport']
     end
 

@@ -32,7 +32,7 @@ class Dashboard::BrandsController < ApplicationController
   def create
     return raise_not_authorized(Brand) unless RedisCache.cached_policy(@current_user, Brand, 'create')
     brand = Brand.new(brand_params)
-    brand.user_id ||= @current_user[:id]
+    brand.user_id ||= @current_user.id
     brand.errors.each { |k, _v| return render json: { status: 'error', message: I18n.t("errors.brands.#{k}") } } unless brand.save
     render json: success(brand, 'created')
   end

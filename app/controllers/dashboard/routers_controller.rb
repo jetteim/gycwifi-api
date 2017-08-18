@@ -34,7 +34,7 @@ class Dashboard::RoutersController < ApplicationController
   def create
     return raise_not_authorized(Router) unless RedisCache.cached_policy(@current_user, Router, 'create')
     router = Router.new(router_params)
-    router.user_id = @current_user[:id]
+    router.user_id = @current_user.id
     if router.save
       render json: {
         data: { router: router },

@@ -20,7 +20,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    REDIS.keys.each{ |key| REDIS.del(key)}
+    REDIS.keys.each { |key| REDIS.del(key) }
   end
 
   config.around(:each) do |example|

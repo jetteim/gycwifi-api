@@ -24,19 +24,6 @@ class RedisCache
   end
 
   instrument_method
-  def self.user_token(user_id)
-    key = "user_token_#{user_id}"
-    REDIS.get(key)
-  end
-
-  instrument_method
-  def self.store_token(user_id, token = nil)
-    key = "user_token_#{user_id}"
-    token ||= Token.encode(user_id)
-    REDIS.set(key, token)
-  end
-
-  instrument_method
   def self.cached_poll(poll_id)
     cache_object('poll', poll_id, 'id', include: [questions: { include: [answers: { methods: [:attempts_count] }] }])
   end
@@ -54,11 +41,6 @@ class RedisCache
   instrument_method
   def self.cached_layout(layout_id)
     cache_object('layout', layout_id)
-  end
-
-  instrument_method
-  def self.cached_user(user_id)
-    cache_object('user', user_id)
   end
 
   instrument_method
@@ -148,11 +130,11 @@ class RedisCache
   instrument_method
   def self.cache_object(name, id, id_attribute = 'id', json_params = nil)
     Rails.logger.debug "cache object #{name}, #{id_attribute}, #{id}".blue
-    key = "cached_#{name}_#{id}"
+    cache_candidate = Object.const_get(name.capitalize).find_by("#{id_attribute} = ?", id)
+    key = "cached_#{name}_#{id}_#{cache_candidate.updated_at}"
     Rails.logger.debug "Redis key: #{key}".blue
     return cached = JSON.parse(REDIS.get(key), symbolize_names: true) if REDIS.exists(key)
-    tmp = Object.const_get(name.capitalize).find_by("#{id_attribute} = ?", id)
-    cached = tmp.as_json(json_params) if tmp
+    cached = cache_candidate.as_json(json_params) if cache_candidate
     res = cached.to_json if cached
     REDIS.setex(key, const_get("#{name.upcase}_LIFETIME"), res) if res
     Rails.logger.debug "cached data: #{cached.inspect}".blue

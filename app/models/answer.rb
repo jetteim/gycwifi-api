@@ -15,6 +15,7 @@ class Answer < ApplicationRecord
   include Skylight::Helpers
   belongs_to  :question
   has_many    :attempts, dependent: :destroy
+  has_many    :clients, through: :attempts
 
   instrument_method
   def attributes

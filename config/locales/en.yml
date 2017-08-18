@@ -3,6 +3,8 @@ en:
     permission_denied: 'Permission denied'
     no_access: 'No access'
     wrong_phone_format: 'Wrong phone format'
+    reward:
+      payed_reward_change: 'Change status of payed reward are not allowed!'
     brands:
       created: 'Brand created'
       updated: 'Brand updated'

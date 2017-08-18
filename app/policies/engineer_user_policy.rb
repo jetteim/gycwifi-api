@@ -1,0 +1,1 @@
+class EngineerUserPolicy < UserPolicy; end

@@ -141,17 +141,17 @@ Rails.application.routes.draw do
   namespace :dashboard, defaults: { format: :json },
                         constraints: { subdomain: /api.*/ }, path: '/' do
     resources :brands
-    resources :opinions
-    resources :locations
-    resources :routers
     resources :login_menu_items
-    resources :vouchers
     resources :clients
-    resources :social_logs
+    resources :locations
     resources :layouts
     resources :notifications
-    resources :users
-    resources :vips
+    resources :opinions
+    resources :promo_codes, only: %i[index create]
+    resources :rewards, only: %i[index]
+    resources :referrals, only: %i[index]
+    resources :routers
+    resources :social_logs
     namespace :surveys, path: '/' do
       resources :polls do
         # member do
@@ -162,6 +162,9 @@ Rails.application.routes.draw do
       end
       resources :attempts
     end
+    resources :users
+    resources :vips
+    resources :vouchers
 
     get '/opinion_rating',          to: 'opinions#opinion_rating'
     # Exports

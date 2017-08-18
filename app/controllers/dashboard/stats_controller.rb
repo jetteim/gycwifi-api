@@ -8,7 +8,7 @@ module Dashboard
     # Authorized  methods
     instrument_method
     def locations_list
-      list = RedisCache.use(key: "locations_list_#{@current_user[:id]}", lifetime: TOTALS_CACHE_TIMEOUT) do
+      list = RedisCache.use(key: "locations_list_#{@current_user.id}", lifetime: TOTALS_CACHE_TIMEOUT) do
         {
           data: { locations: @locations.as_json(only: %i[id title address]) },
           status: 'ok',
@@ -20,7 +20,7 @@ module Dashboard
 
     instrument_method
     def all_connects
-      connections = RedisCache.use key: "all_connects#{@current_user[:id]}", lifetime: TOTALS_CACHE_TIMEOUT do
+      connections = RedisCache.use key: "all_connects#{@current_user.id}", lifetime: TOTALS_CACHE_TIMEOUT do
         { all_time_connections: @statistic_service.all_time_connections,
           from_month: @statistic_service.last_month_connections,
           from_week: @statistic_service.last_week_connections }

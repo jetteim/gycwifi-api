@@ -1,0 +1,1 @@
+class ProUserPolicy < UserPolicy; end

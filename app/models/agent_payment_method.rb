@@ -10,4 +10,5 @@
 
 class AgentPaymentMethod < ApplicationRecord #:nodoc:
   validates :name, presence: true
+  has_many :agents
 end

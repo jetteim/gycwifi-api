@@ -10,5 +10,4 @@
 #  updated_at :datetime         not null
 #
 
-class Page < ApplicationRecord
-end
+class Page < ApplicationRecord; end

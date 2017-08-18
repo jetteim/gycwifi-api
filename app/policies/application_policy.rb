@@ -13,9 +13,7 @@ class ApplicationPolicy
   attr_reader :user, :record
 
   def initialize(user, record)
-    # TODO: Убрать костыль, сюда не должны приходить хеши
-    @user = user.is_a?(Hash) ? User.find(user[:id]) : user
-    # @user = user
+    @user = user
     @record = record
   end
 
@@ -63,9 +61,7 @@ class ApplicationPolicy
     attr_reader :user, :scope
 
     def initialize(user, scope)
-      # TODO: Убрать костыль, сюда не должны приходить хеши
-      @user = user.is_a?(Hash) ? User.find(user[:id]) : user
-      # @user = user
+      @user = user
       @scope = scope
     end
 

@@ -9,6 +9,7 @@
 !/public/images/brand_logo/.keep
 !/public/images/brand_background/.keep
 !/public/images/user_avatars/.keep
+/public/router_files/*
 /config/shards.yml
 /config/database.yml
 /vendor
