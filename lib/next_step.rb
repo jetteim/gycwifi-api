@@ -48,6 +48,7 @@ class NextStep
   def self.render_json_output(destination = nil, session)
     session[:url] ||= 'https://gycwifi.com'
     session[:next_step] = destination || first_step(session)
+    session[:phone_number] = DeviceAuthPending.find_by(mac: session[:mac]).phone if session[:next_step] == 'authpending'
     @session = session
   end
 
