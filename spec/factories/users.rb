@@ -18,11 +18,12 @@
 #
 
 FactoryGirl.define do
-  factory :free_user, aliases: %i[user referral] do
+  factory :user, aliases: %i[referral] do
     username { Faker::Internet.user_name }
     email { Faker::Internet.email }
     password { Faker::Internet.password }
     lang :en
+    expiration nil
 
     trait(:admin)     { type 'AdminUser' }
     trait(:pro)       { type 'ProUser' }

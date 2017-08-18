@@ -11,7 +11,7 @@ RSpec.describe 'Opinions Api', type: :request do
     it 'CREATE opininon' do
       opinion = attributes_for(:opinion)
       post my_uri('/opinions'), params: opinion.as_json, headers: { 'Authorization' => token(user) }
-      expect(Opinion.all.count).to eq(1)
+      expect(Opinion.count).to eq(1)
     end
   end
 end

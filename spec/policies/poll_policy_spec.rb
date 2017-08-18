@@ -6,10 +6,14 @@ describe PollPolicy do
   let(:resolved_scope) { described_class::Scope.new(user, Poll.all).resolve }
   let(:poll) { create(:poll) }
 
-  context 'admin can everuthing' do
+  context 'admin can everything' do
     let(:user) { create(:user, :admin) }
 
-    it { is_expected.to permit_actions(%i[index show update create destroy]) }
+    it { is_expected.to permit_action(:index) }
+    it { is_expected.to permit_action(:show) }
+    it { is_expected.to permit_new_and_create_actions }
+    it { is_expected.to permit_edit_and_update_actions }
+    it { is_expected.to permit_action(:destroy) }
   end
 
   context 'user can`t see another`s poll' do
@@ -27,11 +31,14 @@ describe PollPolicy do
       it { is_expected.to permit_action(:index) }
       it { expect(resolved_scope).to include(user_poll) }
     end
+
     context 'create destroy show' do
       let(:user) { poll.user }
 
-      it { is_expected.to permit_actions(%i[destroy show update], poll) }
-      it { is_expected.to permit_action(:create) }
+      it { is_expected.to permit_action(:show) }
+      it { is_expected.to permit_new_and_create_actions }
+      it { is_expected.to permit_edit_and_update_actions }
+      it { is_expected.to permit_action(:destroy) }
     end
   end
 
@@ -40,7 +47,7 @@ describe PollPolicy do
 
     before { create_list(:poll, 3, user: user) }
 
-    it { is_expected.to forbid_action(:create) }
+    it { is_expected.to forbid_new_and_create_actions }
   end
 
   context 'pro user can`t create > 11 polls' do
@@ -48,7 +55,7 @@ describe PollPolicy do
 
     before { create_list(:poll, 11, user: user) }
 
-    it { is_expected.to forbid_action(:create) }
+    it { is_expected.to forbid_new_and_create_actions }
   end
 
   context 'employee can view owner polls' do
