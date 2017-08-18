@@ -8,7 +8,7 @@ RSpec.describe 'Rewards', type: :request do
 
   context 'Index' do
     before do
-      @agent_reward = create(:agent_reward, amount: 1, agent: agent, order: order)
+      @agent_reward = create(:agent_reward, amount: 1.0, agent: agent, order: order, status: :unpayed)
     end
     it 'index agent`s rewards' do
       get my_uri('rewards?page=1'), headers: { 'Authorization' => token(agent.user) }
@@ -18,12 +18,17 @@ RSpec.describe 'Rewards', type: :request do
                                                               email: @agent_reward.user.email,
                                                               promo_code: { code: user.promo_code.code } })
     end
+    it 'index total rewards sum' do
+      get my_uri('rewards?page=1'), headers: { 'Authorization' => token(agent.user) }
+      expect(parsed_response[:rewards_total]).to eq(@agent_reward.amount.to_s)
+      expect(parsed_response[:rewards_payed]).to eq(0)
+    end
     it 'doesn`t index another agent rewards' do
       get my_uri('rewards?page=1'), headers: { 'Authorization' => token(user_without_rewards) }
       expect(parsed_response[:rewards]).to be_empty
     end
     context 'paginate 20 per page' do
-      before { create_list(:agent_reward, 20, agent: agent) }
+      before { create_list(:agent_reward, 20, agent: agent, amount: 1.0) }
       it 'index 1st page' do
         get my_uri('rewards?page=1'), headers: { 'Authorization' => token(agent.user) }
         expect(parsed_response[:rewards].size).to eq 20
