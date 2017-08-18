@@ -7,8 +7,13 @@ class NotificationMailer < ApplicationMailer
   def notification_email(n)
     location = Location.find_by(id: n.location_id)
     @header = "#{location.title} - #{location.address}"
-    @details = ""
-    location.routers.each { |router| @details = "#{@details}<br>#{router.serial} status: #{router.status ? 'online' : 'offline'}<br>" }
+    @details = []
+    location.routers.each do |router|
+      @details << {
+        text: "Router #{router.serial} status: #{router.status ? 'online' : 'offline'}",
+        status: router.status ? 'online' : 'offline'
+      }
+    end
     mail(to: !Rails.env.production? ? 'mlee@key-g.com' : location.user.email, subject: n.title)
   end
 end
