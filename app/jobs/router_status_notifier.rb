@@ -2,7 +2,7 @@ class RouterStatusNotifier < ApplicationJob
   queue_as :routers
 
   def perform(router = nil)
-    return unless Rails.env.production?||Rails.env.staging?
+    return unless Rails.env.production? || Rails.env.staging?
     logger.debug 'starting router status notification check'.red.bold
     (router.blank? ? Router.all.includes(:notifications).includes(:location).includes(:user) : [router]).each do |r|
       # если у роутера status == nil - он ещё не настроен, пропускаем его
