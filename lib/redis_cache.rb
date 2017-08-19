@@ -54,8 +54,10 @@ class RedisCache
     key = "cached_location_style_#{session[:location_id]}"
     return cached_style(key, session[:client_id]) if REDIS.exists(key)
     location = cached_location(session[:location_id])
-    user = cached_user(location[:user_id])
-    location[:sms_auth] = (user[:sms_count] > 0) if location[:sms_auth]
+    if location[:sms_auth]
+      user = User.find_by(id: location[:user_id])
+      location[:sms_auth] = (user.sms_count > 0)
+    end
     poll = RedisCache.cached_poll(location[:poll_id]) if location[:poll_id]
     cache = style_hash(location, poll, session[:client_id])
     REDIS.setex(key, 10.minutes, cache.to_json)

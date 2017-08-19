@@ -78,7 +78,10 @@ module Login
         client_device = create_client_device_by(router_data, client.id)
       end
       location = RedisCache.cached_location(router[:location_id])
-      user = RedisCache.cached_user(location[:user_id])
+      if location[:sms_auth]
+        user = User.find_by(id: location[:user_id])
+        location[:sms_auth] = (user.sms_count > 0)
+      end
       redirect_url = location[:redirect_url] if location
       {
         client_id: client.id,
@@ -92,7 +95,7 @@ module Login
         password: SecureRandom.hex(8),
         url: redirect_url || 'https://gycwifi.com',
         location_id: router[:location_id],
-        sms_auth: location[:sms_auth] && (user[:sms_count] > 0),
+        sms_auth: location[:sms_auth],
         platform_os: platform_os(router_data[:platform_os]),
         platform_product: platform_product(router_data[:platform_product])
       }
