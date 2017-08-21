@@ -50,5 +50,14 @@ describe LocationPolicy do
 
       it { is_expected.to forbid_new_and_create_actions }
     end
+
+    context 'free user without Location can Index location' do
+      let(:user) { create(:user, :free) }
+      let(:location) { Location }
+      let(:resolved_scope) { described_class::Scope.new(user, Location.all).resolve }
+
+      it { is_expected.to permit_action(:index) }
+      it { expect(resolved_scope.count).to eq 0 }
+    end
   end
 end

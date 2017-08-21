@@ -10,6 +10,7 @@
 #  ssid                 :string           not null
 #  staff_ssid           :string
 #  staff_ssid_pass      :string
+#  sms_auth             :boolean          default(TRUE), not null
 #  redirect_url         :string           default("https://gycwifi.com"), not null
 #  wlan                 :string           default("1M"), not null
 #  wan                  :string           default("5M"), not null
@@ -18,6 +19,7 @@
 #  logo                 :string           default("/images/logo.png")
 #  bg_color             :string           default("#0e1a35")
 #  background           :string           default("/images/default_background.png")
+#  sms_count            :integer          default(0), not null
 #  password             :boolean          default(FALSE), not null
 #  twitter              :boolean          default(FALSE), not null
 #  google               :boolean          default(FALSE), not null
@@ -30,11 +32,8 @@
 #  user_id              :integer          not null
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  poll_id              :integer
-#  promo_type           :string           default("text")
 #  last_page_content    :string           default("text"), not null
-#  sms_auth             :boolean
-#  sms_count            :integer
+#  poll_id              :integer
 #  voucher              :boolean          default(TRUE)
 #
 

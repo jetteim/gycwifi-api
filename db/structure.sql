@@ -55,7 +55,7 @@ CREATE FUNCTION amocrmexport(userid integer) RETURNS character varying
         amocrm varchar := e'﻿Email, Name, Phone 
 ';
         line varchar;
-        users cursor for select role_cd = 3 as isadmin from users where id = userid;
+        users cursor for select type='AdminUser' as isadmin from users where id = userid;
         isadmin boolean;
         clients cursor for select distinct coalesce(email,'') as email,coalesce(username,'') as name,coalesce(phone_number,'') as phone from clients join social_accounts on clients.id = social_accounts.client_id where not (clients.phone_number is null and social_accounts.email is null);
         clients_filtered cursor for select distinct coalesce(email,'') as email,coalesce(username,'') as name,coalesce(phone_number,'') as phone from clients join social_accounts on clients.id = social_accounts.client_id where not (clients.phone_number is null and social_accounts.email is null) and social_accounts.id in (select social_account_id from social_logs where location_id in (select id from locations where user_id = userid));
@@ -63,109 +63,20 @@ CREATE FUNCTION amocrmexport(userid integer) RETURNS character varying
         open users; fetch users into isadmin;
         if isadmin then
           for client in clients loop
-      	    line = format('%s, %s, %s',client.email,client.name,client.phone);
+            line = format('%s, %s, %s',client.email,client.name,client.phone);
             --raise notice 'result=%', line;
-      	    amocrm = amocrm || line || e'
+            amocrm = amocrm || line || e'
 ';
-      	  end loop;
+          end loop;
         else
           for client in clients_filtered loop
-      	    line = format('%s, %s, %s',client.email,client.name,client.phone);
+            line = format('%s, %s, %s',client.email,client.name,client.phone);
             --raise notice 'result=%', line;
-      	    amocrm = amocrm || line || e'
+            amocrm = amocrm || line || e'
 ';
-      	  end loop;
+          end loop;
         end if;
         return amocrm;
-      end;$$;
-
-
---
--- Name: clients_page(integer); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION clients_page(userid integer) RETURNS character varying
-    LANGUAGE plpgsql
-    AS $$declare
-        clients_page varchar;
-        line varchar;
-        users cursor for select role_cd = 3 as isadmin from users where id = userid; isadmin boolean;
-        clients cursor for select distinct id, phone_number from clients where not phone_number is null;
-        clients_filtered cursor for select distinct clients.id, clients.phone_number from clients join social_accounts on clients.id = social_accounts.client_id where not (clients.phone_number is null) and social_accounts.id in (select social_account_id from social_logs where location_id in (select id from locations where user_id = userid));
-        clientid integer;
-        client_updated cursor for select max(updated_at) from social_accounts where client_id = clientid; updatedat timestamp;
-        social_accounts_image cursor for select image from social_accounts where client_id = clientid and not image is null order by updated_at desc LIMIT 1; clientimage varchar;
-        social_accounts_username cursor for select username from social_accounts where client_id = clientid and not username is null order by updated_at desc LIMIT 1; clientusername varchar;
-        social_accounts_email cursor for select email from social_accounts where client_id = clientid and not email is null order by updated_at desc LIMIT 1; clientemail varchar;
-        social_accounts_gender cursor for select gender from social_accounts where client_id = clientid and not gender is null order by updated_at desc LIMIT 1; clientgender varchar;
-        social_accounts_provider cursor for select provider from social_accounts where client_id = clientid and not provider is null order by updated_at desc LIMIT 1; clientprovider varchar;
-        social_accounts_profile cursor for select profile from social_accounts where client_id = clientid and not profile is null order by updated_at desc LIMIT 1; clientprofile varchar;
-        social_accounts_visits cursor for select count(id) as visits from social_logs where social_account_id in (select id from social_accounts where client_id = clientid); clientvisits integer; visits integer;
-        social_accounts_visits_30 cursor for select count(id) as visits30 from social_logs where social_account_id in (select id from social_accounts where client_id = clientid) and created_at > current_date - interval '30 days'; clientvisits30 integer; visits30 integer;
-        
-      begin
-	    open users; fetch users into isadmin;close users;
-	    clients_page = '';
-        if isadmin then
-          for client in clients loop
-      	    execute pg_sleep(0.01);
-      	    clientid = client.id;
-      	    select image into clientimage from social_accounts where client_id = clientid and not image is null order by updated_at desc LIMIT 1;
-      	    select max(updated_at) into updatedat from social_accounts where client_id = clientid;
-      	    select username into clientusername from social_accounts where client_id = clientid and not username is null order by updated_at desc LIMIT 1;
-            select email into clientemail from social_accounts where client_id = clientid and not email is null order by updated_at desc LIMIT 1;
-            select gender into clientgender from social_accounts where client_id = clientid and not gender is null order by updated_at desc LIMIT 1;
-            select provider into clientprovider from social_accounts where client_id = clientid and not provider is null order by updated_at desc LIMIT 1;
-            select profile into clientprofile from social_accounts where client_id = clientid and not profile is null order by updated_at desc LIMIT 1;
-            select count(id) into visits from social_logs where social_account_id in (select id from social_accounts where client_id = clientid);
-            select count(id) into visits30 from social_logs where social_account_id in (select id from social_accounts where client_id = clientid) and created_at > current_date - interval '30 days';
-            line = format('{"image": "%s", "phone_number": "%s", "email": "%s", "username": "%s", "visits": "%s", "visits30": "%s", "updated_at": "%s", "gender": "%s", "provider": "%s", "profile": "%s"}',
-              clientimage,
-              client.phone_number,
-              clientemail,
-              clientusername,
-              to_char(visits, '00000'),
-              to_char(visits30, '00000'),
-              updatedat::date, 
-              clientgender,
-              clientprovider,
-              clientprofile
-            );
-            --raise notice 'line=%', line;
-            clients_page = clients_page || line || ', ';
-            --raise notice 'result=%', clients_page;
-      	  end loop;
-        else
-          for client in clients_filtered loop
-      	    execute pg_sleep(0.01);
-            clientid = client.id;
-      	    select image into clientimage from social_accounts where client_id = clientid and not image is null order by updated_at desc LIMIT 1;
-      	    select max(updated_at) into updatedat from social_accounts where client_id = clientid;
-      	    select username into clientusername from social_accounts where client_id = clientid and not username is null order by updated_at desc LIMIT 1;
-            select email into clientemail from social_accounts where client_id = clientid and not email is null order by updated_at desc LIMIT 1;
-            select gender into clientgender from social_accounts where client_id = clientid and not gender is null order by updated_at desc LIMIT 1;
-            select provider into clientprovider from social_accounts where client_id = clientid and not provider is null order by updated_at desc LIMIT 1;
-            select profile into clientprofile from social_accounts where client_id = clientid and not profile is null order by updated_at desc LIMIT 1;
-            select count(id) into visits from social_logs where social_account_id in (select id from social_accounts where client_id = clientid);
-            select count(id) into visits30 from social_logs where social_account_id in (select id from social_accounts where client_id = clientid) and created_at > current_date - interval '30 days';
-            line = format('{"image": "%s", "phone_number": "%s", "email": "%s", "username": "%s", "visits": "%s", "visits30": "%s", "updated_at": "%s", "gender": "%s", "provider": "%s", "profile": "%s"}',
-              clientimage,
-              client.phone_number,
-              clientemail,
-              clientusername,
-              to_char(visits, '00000'),
-              to_char(visits30, '00000'),
-              updatedat::date, 
-              clientgender,
-              clientprovider,
-              clientprofile
-            );
-            --raise notice 'line=%', line;
-            clients_page = clients_page || line || ', ';
-            --raise notice 'result=%', clients_page;
-      	  end loop;
-        end if;
-        return clients_page;
       end;$$;
 
 
@@ -191,7 +102,7 @@ CREATE FUNCTION mailchimpexport(userid integer) RETURNS character varying
         mailchimp varchar := e'﻿Email, Name
 ';
         line varchar;
-        users cursor for select role_cd = 3 as isadmin from users where id = userid;
+        users cursor for select type='AdminUser' as isadmin from users where id = userid;
         isadmin boolean;
         social_accounts cursor for select distinct coalesce(email,'') as email,coalesce(username,'') as name from social_accounts where not (social_accounts.email is null);
         social_accounts_filtered cursor for select distinct coalesce(email,'') as email,coalesce(username,'') as name from social_accounts where not (social_accounts.email is null) and social_accounts.id in (select social_account_id from social_logs where location_id in (select id from locations where user_id = userid));
@@ -199,36 +110,21 @@ CREATE FUNCTION mailchimpexport(userid integer) RETURNS character varying
         open users; fetch users into isadmin;
         if isadmin then
           for client in social_accounts loop
-      	    line = format('%s, %s',client.email,client.name);
+            line = format('%s, %s',client.email,client.name);
             --raise notice 'result=%', line;
-      	    mailchimp = mailchimp || line || e'
+            mailchimp = mailchimp || line || e'
 ';
-      	  end loop;
+          end loop;
         else
           for client in social_accounts_filtered loop
-      	    line = format('%s, %s',client.email,client.name);
+            line = format('%s, %s',client.email,client.name);
             --raise notice 'result=%', line;
-      	    mailchimp = mailchimp || line || e'
+            mailchimp = mailchimp || line || e'
 ';
-      	  end loop;
+          end loop;
         end if;
         return mailchimp;
       end;$$;
-
-
---
--- Name: refresh_statistics(integer); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION refresh_statistics(userid integer) RETURNS character varying
-    LANGUAGE plpgsql
-    AS $$declare
-      fusers cursor for select id from users;
-      viewname varchar;
-    begin
-    	execute 'refresh materialized view CONCURRENTLY clients_pages';
-    	return '';
-    end;$$;
 
 
 SET default_tablespace = '';
@@ -489,6 +385,7 @@ CREATE TABLE brands (
     logo character varying DEFAULT '/images/logo.png'::character varying,
     bg_color character varying DEFAULT '#0e1a35'::character varying,
     background character varying DEFAULT '/images/default_background.png'::character varying,
+    sms_auth boolean DEFAULT true NOT NULL,
     redirect_url character varying DEFAULT 'https://gycwifi.com'::character varying,
     auth_expiration_time integer DEFAULT 3600 NOT NULL,
     category_id integer NOT NULL,
@@ -497,7 +394,6 @@ CREATE TABLE brands (
     user_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    sms_auth boolean,
     template character varying DEFAULT 'default'::character varying,
     public boolean DEFAULT false,
     layout_id integer DEFAULT 1
@@ -737,8 +633,8 @@ CREATE VIEW client_visits AS
  SELECT social_logs.location_id,
     clients.id AS client_id,
     clients.phone_number,
-    count(social_accounts.client_id) AS visits,
-    max(social_logs.updated_at) AS updated_at
+    max(social_logs.updated_at) AS updated_at,
+    count(social_accounts.client_id) AS visits
    FROM ((social_logs
      JOIN social_accounts ON ((social_logs.social_account_id = social_accounts.id)))
      JOIN clients ON ((social_accounts.client_id = clients.id)))
@@ -813,40 +709,6 @@ CREATE SEQUENCE clients_id_seq
 --
 
 ALTER SEQUENCE clients_id_seq OWNED BY clients.id;
-
-
---
--- Name: users; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE users (
-    id integer NOT NULL,
-    username character varying NOT NULL,
-    email character varying NOT NULL,
-    password character varying NOT NULL,
-    avatar character varying DEFAULT '/images/avatars/default.jpg'::character varying,
-    type character varying DEFAULT 'FreeUser'::character varying NOT NULL,
-    tour boolean DEFAULT true NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    lang character varying DEFAULT 'ru'::character varying,
-    sms_count integer,
-    user_id integer DEFAULT 274,
-    expiration timestamp without time zone DEFAULT '2017-06-05 06:29:47.639813'::timestamp without time zone,
-    promo_code_id integer
-);
-
-
---
--- Name: clients_pages; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW clients_pages AS
- SELECT users.id,
-    users.id AS user_id,
-    clients_page(users.id) AS clients_page
-   FROM users
-  WITH NO DATA;
 
 
 --
@@ -999,6 +861,7 @@ CREATE TABLE locations (
     ssid character varying NOT NULL,
     staff_ssid character varying,
     staff_ssid_pass character varying,
+    sms_auth boolean DEFAULT true NOT NULL,
     redirect_url character varying DEFAULT 'https://gycwifi.com'::character varying NOT NULL,
     wlan character varying DEFAULT '1M'::character varying NOT NULL,
     wan character varying DEFAULT '5M'::character varying NOT NULL,
@@ -1007,6 +870,7 @@ CREATE TABLE locations (
     logo character varying DEFAULT '/images/logo.png'::character varying,
     bg_color character varying DEFAULT '#0e1a35'::character varying,
     background character varying DEFAULT '/images/default_background.png'::character varying,
+    sms_count integer DEFAULT 0 NOT NULL,
     password boolean DEFAULT false NOT NULL,
     twitter boolean DEFAULT false NOT NULL,
     google boolean DEFAULT false NOT NULL,
@@ -1019,11 +883,8 @@ CREATE TABLE locations (
     user_id integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    poll_id integer,
-    promo_type character varying DEFAULT 'text'::character varying,
     last_page_content character varying DEFAULT 'text'::character varying NOT NULL,
-    sms_auth boolean,
-    sms_count integer,
+    poll_id integer,
     voucher boolean DEFAULT true
 );
 
@@ -1394,9 +1255,9 @@ ALTER SEQUENCE products_id_seq OWNED BY products.id;
 CREATE TABLE promo_codes (
     id integer NOT NULL,
     code character varying NOT NULL,
+    agent_id integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    agent_id integer
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -1639,6 +1500,24 @@ CREATE VIEW traffic_data AS
 
 
 --
+-- Name: traffic_datas; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW traffic_datas AS
+ SELECT client_accounting_logs.callingstationid AS mac,
+    client_accounting_logs.username,
+    client_accounting_logs.nasipaddress AS ip_name,
+    client_accounting_logs.created_at,
+    client_accounting_logs.acctstoptime AS last_seen,
+    sum(client_accounting_logs.acctsessiontime) AS total_time,
+    sum(client_accounting_logs.acctinputoctets) AS outgoing_bytes,
+    sum(client_accounting_logs.acctoutputoctets) AS incoming_bytes
+   FROM client_accounting_logs
+  WHERE (NOT (client_accounting_logs.connectinfo_stop IS NULL))
+  GROUP BY client_accounting_logs.callingstationid, client_accounting_logs.username, client_accounting_logs.nasipaddress, client_accounting_logs.created_at, client_accounting_logs.acctstoptime;
+
+
+--
 -- Name: traffic_report; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -1659,15 +1538,37 @@ CREATE VIEW traffic_report AS
 --
 
 CREATE VIEW traffic_reports AS
- SELECT traffic_data.mac,
-    traffic_data.ip_name,
-    max(traffic_data.created_at) AS last_login,
-    max(traffic_data.last_seen) AS last_logout,
-    sum(traffic_data.total_time) AS total_time,
-    sum(traffic_data.outgoing_bytes) AS outgoing_bytes,
-    sum(traffic_data.incoming_bytes) AS incoming_bytes
-   FROM traffic_data
-  GROUP BY traffic_data.mac, traffic_data.ip_name;
+ SELECT traffic_datas.mac,
+    traffic_datas.ip_name,
+    max(traffic_datas.created_at) AS last_login,
+    max(traffic_datas.last_seen) AS last_logout,
+    sum(traffic_datas.total_time) AS total_time,
+    sum(traffic_datas.outgoing_bytes) AS outgoing_bytes,
+    sum(traffic_datas.incoming_bytes) AS incoming_bytes
+   FROM traffic_datas
+  GROUP BY traffic_datas.mac, traffic_datas.ip_name;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    username character varying NOT NULL,
+    email character varying NOT NULL,
+    password character varying NOT NULL,
+    avatar character varying DEFAULT '/images/avatars/default.jpg'::character varying,
+    type character varying DEFAULT 'FreeUser'::character varying NOT NULL,
+    tour boolean DEFAULT true NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    lang character varying DEFAULT 'ru'::character varying,
+    sms_count integer DEFAULT 50,
+    user_id integer DEFAULT 274,
+    expiration timestamp without time zone DEFAULT '2017-06-13 19:24:21.120475'::timestamp without time zone,
+    promo_code_id integer
+);
 
 
 --
@@ -2103,14 +2004,6 @@ ALTER TABLE ONLY categories
 
 
 --
--- Name: client_accounting_logs client_accounting_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY client_accounting_logs
-    ADD CONSTRAINT client_accounting_logs_pkey PRIMARY KEY (id);
-
-
---
 -- Name: client_counters client_counters_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2343,24 +2236,10 @@ ALTER TABLE ONLY vouchers
 
 
 --
--- Name: clients_pages_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX clients_pages_id ON clients_pages USING btree (id);
-
-
---
 -- Name: delayed_jobs_priority; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX delayed_jobs_priority ON delayed_jobs USING btree (priority, run_at);
-
-
---
--- Name: delayed_jobs_queue; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX delayed_jobs_queue ON delayed_jobs USING btree (queue);
 
 
 --
@@ -2455,6 +2334,13 @@ CREATE INDEX index_bans_on_location_id ON bans USING btree (location_id);
 
 
 --
+-- Name: index_bans_on_until_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_bans_on_until_date ON bans USING btree (until_date);
+
+
+--
 -- Name: index_brands_on_layout_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2476,6 +2362,13 @@ CREATE INDEX index_brands_on_user_id ON brands USING btree (user_id);
 
 
 --
+-- Name: index_client_accounting_logs_on_acctsessionid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_client_accounting_logs_on_acctsessionid ON client_accounting_logs USING btree (acctsessionid);
+
+
+--
 -- Name: index_client_accounting_logs_on_acctstarttime; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2490,10 +2383,24 @@ CREATE INDEX index_client_accounting_logs_on_acctstoptime ON client_accounting_l
 
 
 --
+-- Name: index_client_accounting_logs_on_acctuniqueid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_client_accounting_logs_on_acctuniqueid ON client_accounting_logs USING btree (acctuniqueid);
+
+
+--
 -- Name: index_client_accounting_logs_on_calledstationid; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_client_accounting_logs_on_calledstationid ON client_accounting_logs USING btree (calledstationid);
+
+
+--
+-- Name: index_client_accounting_logs_on_callingstationid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_client_accounting_logs_on_callingstationid ON client_accounting_logs USING btree (callingstationid);
 
 
 --
@@ -2669,6 +2576,13 @@ CREATE INDEX index_locations_on_category_id ON locations USING btree (category_i
 --
 
 CREATE INDEX index_locations_on_created_at ON locations USING btree (created_at);
+
+
+--
+-- Name: index_locations_on_poll_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_poll_id ON locations USING btree (poll_id);
 
 
 --
@@ -2882,6 +2796,13 @@ CREATE INDEX index_sms_logs_on_client_device_id ON sms_logs USING btree (client_
 
 
 --
+-- Name: index_sms_logs_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sms_logs_on_location_id ON sms_logs USING btree (location_id);
+
+
+--
 -- Name: index_sms_logs_on_sent_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2938,6 +2859,13 @@ CREATE INDEX index_social_accounts_on_provider ON social_accounts USING btree (p
 
 
 --
+-- Name: index_social_accounts_on_uid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_social_accounts_on_uid ON social_accounts USING btree (uid);
+
+
+--
 -- Name: index_social_accounts_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2977,6 +2905,13 @@ CREATE INDEX index_social_logs_on_provider ON social_logs USING btree (provider)
 --
 
 CREATE INDEX index_social_logs_on_router_id ON social_logs USING btree (router_id);
+
+
+--
+-- Name: index_social_logs_on_social_account_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_social_logs_on_social_account_id ON social_logs USING btree (social_account_id);
 
 
 --
@@ -3205,13 +3140,15 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170810150515'),
 ('20170810151449'),
 ('20170810160608'),
-('20170811082737'),
 ('20170815084000'),
 ('20170815092725'),
 ('20170815092905'),
 ('20170815102903'),
 ('20170816144703'),
 ('20170816204056'),
-('20170818121739');
+('20170818121739'),
+('20170821093606'),
+('20170821093712'),
+('20170821124005');
 
 

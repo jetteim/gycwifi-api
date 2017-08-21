@@ -2,7 +2,7 @@
 #
 # Table name: client_accounting_logs
 #
-#  id                   :integer          not null, primary key
+#  id                   :integer          not null
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  acctsessionid        :string

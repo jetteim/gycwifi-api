@@ -12,9 +12,9 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  lang          :string           default("ru")
-#  sms_count     :integer
+#  sms_count     :integer          default(50)
 #  user_id       :integer          default(274)
-#  expiration    :datetime         default(Mon, 05 Jun 2017 06:29:47 UTC +00:00)
+#  expiration    :datetime         default(Tue, 13 Jun 2017 19:24:21 UTC +00:00)
 #  promo_code_id :integer
 #
 

@@ -1,5 +1,13 @@
-class CreateStatsProcs < ActiveRecord::Migration[5.0]
-  def change
+class DropClientsPageFun < ActiveRecord::Migration[5.0]
+  def up
+    # ClientsAccountingData model
+    connection.execute("
+    DROP FUNCTION public.clients_page(userid integer) CASCADE;
+
+    DROP FUNCTION public.refresh_statistics(userid integer) CASCADE; ")
+  end
+
+  def down
     # ClientsAccountingData model
     connection.execute("
     CREATE OR REPLACE FUNCTION public.clients_page(userid integer)
@@ -8,7 +16,7 @@ class CreateStatsProcs < ActiveRecord::Migration[5.0]
     AS $function$declare
             clients_page varchar;
             line varchar;
-            users cursor for select type='AdminUser' as isadmin from users where id = userid; isadmin boolean;
+            users cursor for select role_cd = 3 as isadmin from users where id = userid; isadmin boolean;
             clients cursor for select distinct id, phone_number from clients where not phone_number is null;
             clients_filtered cursor for select distinct clients.id, clients.phone_number from clients join social_accounts on clients.id = social_accounts.client_id where not (clients.phone_number is null) and social_accounts.id in (select social_account_id from social_logs where location_id in (select id from locations where user_id = userid));
             clientid integer;
@@ -103,7 +111,6 @@ class CreateStatsProcs < ActiveRecord::Migration[5.0]
       execute 'refresh materialized view CONCURRENTLY clients_pages';
       return '';
     end;$function$
-;")
+    ;")
   end
 end
-
