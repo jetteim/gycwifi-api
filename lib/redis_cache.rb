@@ -68,13 +68,13 @@ class RedisCache
   def self.cached_policy(current_user, resource, action = nil)
     s = resource.is_a?(Class) ? resource.to_s : resource.class.to_s
     id = resource.is_a?(Class) ? resource.to_s : resource.id
-    key = "cached_policy_#{current_user[:id]}_#{s}_#{id}"
+    key = "cached_policy_#{current_user.id}_#{s}_#{id}"
     if REDIS.exists(key)
       cached = JSON.parse(REDIS.get(key), symbolize_names: true)
     else
       # policy_name = resource.is_a?(Class) ? resource.to_s : resource.class.to_s
       # policy_class = Object.const_get("#{policy_name.capitalize}Policy")
-      user = User.find_by(id: current_user[:id])
+      user = User.find_by(id: current_user.id)
       policy = PolicyFinder.new(resource).policy
       permissions = policy.new(user, resource)
       cached = {}
