@@ -18,6 +18,13 @@ describe UserPolicy do
     it { expect(described_class.new(child_user, user)).to forbid_action(:destroy) }
   end
 
+  context 'user can`t manage peers' do
+    let(:manager) {create(:user, :admin)}
+    let(:user) { create(:user, user: manager) }
+    let(:peer) { create(:user, user: manager) }
+    it { expect(described_class.new(user, peer)).to forbid_edit_and_update_actions }
+  end
+
   context 'power user can create user' do
     let(:user) { create(:user, :power_user) }
 

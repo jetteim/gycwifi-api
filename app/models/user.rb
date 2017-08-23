@@ -36,11 +36,16 @@ class User < ApplicationRecord #:nodoc:
   has_many :social_accounts
   has_many :opinions
   has_many :orders, dependent: :destroy
+  has_many :email_templates, dependent: :destroy
+  has_many :sms_templates, dependent: :destroy
+  has_many :users
   has_one :agent, dependent: :destroy
   belongs_to :user
+
   belongs_to :promo_code
 
-  # include Skylight::Helpers
+
+
   # Validations
   # validates :username, :email, :password, :role_cd, :tour, presence: true
   validates :username, length: { maximum: 100 }
@@ -57,7 +62,7 @@ class User < ApplicationRecord #:nodoc:
   end
 
   def peers
-    owner.users
+    owner&.users || []
   end
 
   def agent_id

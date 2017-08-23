@@ -6,7 +6,7 @@ class UserPolicy < ApplicationPolicy
   def update?
     # потомок не может менять родителя или пиров
     return true if record.id == user.id
-    return false if record == user.user || (user.user.users.pluck(:id).include? record.id)
+    return false if record == user.user || (user.peers.include? record)
     super
   end
 
