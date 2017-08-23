@@ -340,6 +340,7 @@ module Hal
       command_set << "/ip hotspot profile set gyc-hotspot rate-limit=#{router[:wan]};"
       command_set << '/ip hotspot walled-garden add action=allow dst-host="*gycwifi.com" server=gyc-login-server;'
       command_set << '/ip hotspot walled-garden add action=allow dst-host="gycwifi.com" server=gyc-login-server;'
+      command_set << '/ip hotspot walled-garden add action=allow dst-host="gycwifi.com" server=gyc-login-server;'
       command_set << '/ip hotspot walled-garden add action=allow dst-host="*letsencrypt.org" server=gyc-login-server;'
       command_set << '/ip hotspot walled-garden add action=allow dst-host="*identrust.com" server=gyc-login-server;'
       command_set << '/ip hotspot walled-garden add action=allow dst-host="*gettwifi.com" server=gyc-login-server;'
