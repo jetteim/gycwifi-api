@@ -2,7 +2,7 @@ require 'csv'
 module Dashboard
   # Client Controller for indexing clients in dashboard
   class ClientsController < ApplicationController
-    include Skylight::Helpers
+    # include Skylight::Helpers
     before_action :current_client, only: %i[show update destroy]
 
     BOM = "\xEF\xBB\xBF".freeze

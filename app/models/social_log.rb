@@ -13,7 +13,7 @@
 
 class SocialLog < ApplicationRecord
   # totals_interval = { hour: 'hour', day: 'day', week: 'week', month: 'month' }
-  include Skylight::Helpers
+  # include Skylight::Helpers
   belongs_to :location
   belongs_to :router
   belongs_to :social_account
@@ -47,7 +47,7 @@ class SocialLog < ApplicationRecord
       created_at: DateTime.current.weeks_ago(1).beginning_of_day..DateTime.current.end_of_day
     )
   }
-  instrument_method
+  # instrument_method
   def self.visitors_pie(user_locations = nil, start_date = (DateTime.current - 29.days).beginning_of_day, end_date = DateTime.current.end_of_day, _interval = 'day')
     return nil if user_locations.blank?
     visits = ClientVisit.where(location: user_locations, updated_at: start_date..end_date).group(:client_id).sum(:visits)
@@ -57,7 +57,7 @@ class SocialLog < ApplicationRecord
     { 'newcomers' => newcomers.count, 'loyal' => loyal.count, 'resident' => resident.count }
   end
 
-  instrument_method
+  # instrument_method
   def self.age_pie(user_locations = nil, start_date = (DateTime.current - 29.days).beginning_of_day, end_date = DateTime.current.end_of_day, _interval = 'day')
     return nil if user_locations.blank?
     sql = "
@@ -80,13 +80,13 @@ class SocialLog < ApplicationRecord
     result[0].to_hash
   end
 
-  instrument_method
+  # instrument_method
   def self.gender_pie(user_locations = nil, start_date = (DateTime.current - 29.days).beginning_of_day, end_date = DateTime.current.end_of_day)
     return nil if user_locations.blank?
     select('social_accounts.id').distinct.joins(:social_account).where(location: user_locations, updated_at: start_date..end_date).group(:gender).count
   end
 
-  instrument_method
+  # instrument_method
   def self.new_old_users_pie(user_locations = nil, start_date = (DateTime.current - 29.days).beginning_of_day, end_date = DateTime.current.end_of_day)
     return nil if user_locations.blank?
     visits = ClientVisit.where(location: user_locations, updated_at: start_date..end_date).group(:client_id).sum(:visits)
@@ -95,7 +95,7 @@ class SocialLog < ApplicationRecord
     { 'new_clients' => new_clients.count, 'returning_clients' => returning_clients.count }
   end
 
-  instrument_method
+  # instrument_method
   def self.time_pie(user_locations = nil, start_date = (DateTime.current - 29.days).beginning_of_day, end_date = DateTime.current.end_of_day)
     return nil if user_locations.blank?
     sql = "
@@ -116,7 +116,7 @@ class SocialLog < ApplicationRecord
     result[0].to_hash
   end
 
-  instrument_method
+  # instrument_method
   def self.social_pie(user_locations = nil, start_date = (DateTime.current - 29.days).beginning_of_day, end_date = DateTime.current.end_of_day)
     return nil if user_locations.blank?
     joins(:social_account).where(location: user_locations, social_accounts: { created_at: start_date..end_date }).group(:provider).count

@@ -1,8 +1,8 @@
 class AuthController < ApplicationController #:nodoc:
-  include Skylight::Helpers
+  # # include Skylight::Helpers
   skip_before_action :authenticate_user
 
-  instrument_method
+  # instrument_method
   def authenticate
     subdomain = @str_prms[:redirectUri].split('.').first if @str_prms[:redirectUri]
     target = subdomain =~ /dashboard.*/ ? 'user' : 'client'
@@ -15,7 +15,7 @@ class AuthController < ApplicationController #:nodoc:
   # для того, чтобы всё это сделать, нам нужно получить от соцсети uid пользователя
   # чтобы по нему найти или создать SocialAccount, а по нему уже - связанного пользователя
   # поэтому здесь мы должны дождаться ответа от соцсетки и только потом отдать управление
-  instrument_method
+  # instrument_method
   def authorize_user(params)
     auth_data = auth_params(params)
     return password(params) if auth_data[:provider] == 'password'
@@ -30,7 +30,7 @@ class AuthController < ApplicationController #:nodoc:
   # а также авторизовать его на Radius и отправить в интернет
   # эти задачи в принципе не зависят друг от друга, поэтому мы вынесем в delayed_job
   # запрос к соцсети, парсинг, создание/обновление социального аккаунта и запись в лог
-  instrument_method
+  # instrument_method
   def authorize_client(params)
     @auth_data = auth_params(params)
     @session = login_params[:session]
@@ -44,7 +44,7 @@ class AuthController < ApplicationController #:nodoc:
   end
 
   # Via password
-  instrument_method
+  # instrument_method
   def password(params)
     if params[:username] && User.find_by(sign_in_params).nil?
       sign_up
@@ -55,7 +55,7 @@ class AuthController < ApplicationController #:nodoc:
   end
 
   # Sign in part
-  instrument_method
+  # instrument_method
   def sign_in
     logger.debug "password sign-in with params #{sign_in_params.inspect}".yellow
     user = sign_in_user
@@ -68,7 +68,7 @@ class AuthController < ApplicationController #:nodoc:
   end
 
   # Sign Up part
-  instrument_method
+  # instrument_method
   def sign_up
     user = build_user
     if user.save
@@ -92,7 +92,7 @@ class AuthController < ApplicationController #:nodoc:
     return verify_voucher if @auth_data[:provider] == 'voucher'
   end
 
-  instrument_method
+  # instrument_method
   def verify_voucher
     logger.info "проверяем ваучер #{@auth_data[:access_code]}".yellow
     # загружаем локацию из кэша
@@ -142,7 +142,7 @@ class AuthController < ApplicationController #:nodoc:
     }
   end
 
-  instrument_method
+  # instrument_method
   def token(user_id)
     logger.debug "building token for user #{user_id}".cyan
     token = Token.encode(user_id)
@@ -150,7 +150,7 @@ class AuthController < ApplicationController #:nodoc:
     token
   end
 
-  instrument_method
+  # instrument_method
   def auth_params(params)
     {
       provider: params[:provider],

@@ -1,7 +1,7 @@
 module Login
   # Phone controller
   class PhoneController < ApplicationController
-    include Skylight::Helpers
+    # include Skylight::Helpers
     before_action :parse_params
     skip_before_action :authenticate_user
 
@@ -9,7 +9,7 @@ module Login
       render json: { method: 'post' }
     end
 
-    instrument_method
+    # instrument_method
     def client_call_confirmation
       logger.info "callback от http://smsc.ru: #{@pending_message} с телефона #{@pending_phone}, попробуем сопоставить его с клиентом".yellow
       return head :ok unless @pending_message == '[CALL]'
@@ -21,13 +21,13 @@ module Login
       head :ok
     end
 
-    instrument_method
+    # instrument_method
     def check_client_number
       render json: NextStep.render_json_output(@session)
     end
 
     # Запускаем процесс ожидания звонка от пользователя
-    instrument_method
+    # instrument_method
     def pending_call_auth
       logger.info "новый телефонный номер #{@session[:phone_number]}, ожидает подтверждения".yellow
       # проверяем sms_count и отправляем смс, если можно
@@ -40,7 +40,7 @@ module Login
       render json: NextStep.render_json_output('authpending', @session)
     end
 
-    instrument_method
+    # instrument_method
     def verify_code
       logger.info "клиент ввёл код из смс #{@session.inspect}, проверяем".yellow
       # если пришёл параметр smsCode, то как будто мы его проверили и он как будто правильный
@@ -56,39 +56,39 @@ module Login
       render json: NextStep.render_json_output('internet', @session)
     end
 
-    instrument_method
+    # instrument_method
     def login_session_targeting
       render json: NextStep.login_session_targeting(@session)
     end
 
-    instrument_method
+    # instrument_method
     def login_session_style
       render json: NextStep.login_session_style(@session)
     end
 
-    instrument_method
+    # instrument_method
     def login_session_css
       render json: NextStep.login_session_css(@session)
     end
 
-    instrument_method
+    # instrument_method
     def login_session_poll
       render json: NextStep.login_session_poll(@session)
     end
 
-    instrument_method
+    # instrument_method
     def login_session_client
       render json: NextStep.login_session_client(@session)
     end
 
-    instrument_method
+    # instrument_method
     def login_session_router
       render json: NextStep.login_session_router(@session)
     end
 
     private
 
-    instrument_method
+    # instrument_method
     def long_phone_number(phone_number)
       result = phone_number.gsub(/[^\d,\.]/, '')
       case result.length
@@ -101,13 +101,13 @@ module Login
       result
     end
 
-    instrument_method
+    # instrument_method
     def short_phone_number(phone_number)
       raw_phone = phone_number.gsub(/[^\d,\.]/, '')
       raw_phone[1..-1] if raw_phone.length == 11
     end
 
-    instrument_method
+    # instrument_method
     def renew_client_phone(phone_number, client_device)
       logger.info "у нас новое устройство #{client_device.id} с телефоном #{phone_number}, ищем дубликаты".yellow
       existing_client = Client.find_by(phone_number: long_phone_number(phone_number.to_s))
@@ -148,7 +148,7 @@ module Login
       }
     end
 
-    instrument_method
+    # instrument_method
     def send_sms(location, phone)
       code = rand.to_s[2..5]
       if location && location.user && location.user.sms_count

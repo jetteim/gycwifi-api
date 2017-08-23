@@ -1,5 +1,5 @@
 class Dashboard::LayoutsController < ApplicationController
-  include Skylight::Helpers
+  # include Skylight::Helpers
   before_action :get_layout, only: %i[show update destroy]
 
   def index

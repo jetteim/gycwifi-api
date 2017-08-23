@@ -2,9 +2,9 @@ module Dashboard
   module Surveys
     # Создание и обработка опросов
     class PollsController < ApplicationController
-      include Skylight::Helpers
+      # include Skylight::Helpers
 
-      instrument_method
+      # instrument_method
       def index
         return raise_not_authorized(Poll) unless RedisCache.cached_policy(current_user, Poll, 'index')
         polls = Location.find_by(id: @str_prms[:location_id]) ? policy_scope(Poll).where(location: location) : policy_scope(Poll).reverse
@@ -19,7 +19,7 @@ module Dashboard
         }
       end
 
-      instrument_method
+      # instrument_method
       def show
         poll = Poll.includes(questions: { answers: { attempts: :client } }).find(@str_prms[:id])
         return raise_not_authorized(poll) unless RedisCache.cached_policy(@current_user, poll, 'show')
@@ -40,7 +40,7 @@ module Dashboard
         }
       end
 
-      instrument_method
+      # instrument_method
       def create
         return raise_not_authorized(Poll) unless RedisCache.cached_policy(@current_user, Poll, 'create')
         poll = Poll.create(title: poll_params[:title], user_id: @current_user[:id])
@@ -63,7 +63,7 @@ module Dashboard
         }
       end
 
-      instrument_method
+      # instrument_method
       def update
         poll = Poll.find(@str_prms[:id])
         return raise_not_authorized(poll) unless RedisCache.cached_policy(@current_user, poll, 'update')
@@ -90,7 +90,7 @@ module Dashboard
         }
       end
 
-      instrument_method
+      # instrument_method
       def destroy
         poll = Poll.find(@str_prms[:id])
         return raise_not_authorized(poll) unless RedisCache.cached_policy(@current_user, poll, 'destroy')
@@ -109,7 +109,7 @@ module Dashboard
         end
       end
 
-      instrument_method
+      # instrument_method
       def export_to_xlsx
         @statistic = PollStatistic::QuestionService.new(Poll.find(@str_prms[:poll_id])).call.to_xlsx
         send_data(

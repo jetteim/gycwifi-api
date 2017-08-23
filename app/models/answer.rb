@@ -12,15 +12,15 @@
 
 class Answer < ApplicationRecord
   # Relations
-  include Skylight::Helpers
+  # include Skylight::Helpers
   belongs_to  :question
   has_many    :attempts, dependent: :destroy
   has_many    :clients, through: :attempts
 
-  instrument_method
+  # instrument_method
   def attributes
     super
   end
-  instrument_method
+  # instrument_method
   delegate :count, to: :attempts, prefix: true
 end

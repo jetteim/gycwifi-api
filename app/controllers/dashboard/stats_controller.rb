@@ -6,7 +6,7 @@ module Dashboard
 
     before_action :check_params, :set_statistic_service
     # Authorized  methods
-    instrument_method
+    # instrument_method
     def locations_list
       list = RedisCache.use(key: "locations_list_#{@current_user.id}", lifetime: TOTALS_CACHE_TIMEOUT) do
         {
@@ -18,7 +18,7 @@ module Dashboard
       render json: list
     end
 
-    instrument_method
+    # instrument_method
     def all_connects
       connections = RedisCache.use key: "all_connects#{@current_user.id}", lifetime: TOTALS_CACHE_TIMEOUT do
         { all_time_connections: @statistic_service.all_time_connections,
@@ -28,7 +28,7 @@ module Dashboard
       render json: connections
     end
 
-    instrument_method
+    # instrument_method
     def authorizations
       render json:
       {
@@ -41,42 +41,42 @@ module Dashboard
       }
     end
 
-    instrument_method
+    # instrument_method
     def new_old_users_pie
       render json: @statistic_service.raw_new_old_users_pie(@display_locations)
     end
 
-    instrument_method
+    # instrument_method
     def time_pie
       render json: @statistic_service.raw_time_pie(@display_locations)
     end
 
-    instrument_method
+    # instrument_method
     def social_pie
       render json: @statistic_service.raw_social_pie(@display_locations)
     end
 
-    instrument_method
+    # instrument_method
     def gender_pie
       render json: @statistic_service.raw_gender_pie(@display_locations)
     end
 
-    instrument_method
+    # instrument_method
     def age_pie
       render json: @statistic_service.raw_age_pie(@display_locations)
     end
 
-    instrument_method
+    # instrument_method
     def visitors_pie
       render json: @statistic_service.raw_visitors_pie(@display_locations)
     end
 
-    instrument_method
+    # instrument_method
     def new_old_users
       render json: @statistic_service.raw_new_old_users(@display_locations)
     end
 
-    instrument_method
+    # instrument_method
     def clients_count
       render json: {
         data: {
@@ -89,7 +89,7 @@ module Dashboard
       }
     end
 
-    instrument_method
+    # instrument_method
     def poll_activity
       render json: {
         data: poll_activity_json,
@@ -100,7 +100,7 @@ module Dashboard
 
     private
 
-    instrument_method
+    # instrument_method
     def poll_activity_json
       poll = Poll.find(@str_prms[:id])
       activity = PollStatistic::ActivityService.new(poll).call.to_line
@@ -112,7 +112,7 @@ module Dashboard
       result
     end
 
-    instrument_method
+    # instrument_method
     def check_params
       @locations = @current_user.nil? ? nil : policy_scope(Location)
       location_ids = @locations ? @locations.pluck(:id) : nil
@@ -124,7 +124,7 @@ module Dashboard
       @statistic_service = StatisticService.new(range: @range, display_locations: @display_locations)
     end
 
-    instrument_method
+    # instrument_method
     def user_locations
       @locations ||= policy_scope(Location)
       @locations.pluck(:id)

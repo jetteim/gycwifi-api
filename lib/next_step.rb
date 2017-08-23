@@ -1,12 +1,12 @@
 # Next step library
 class NextStep
-  include Skylight::Helpers
+  # include Skylight::Helpers
   GMAP_API_KEY = 'AIzaSyDjGQWbZqBJYHUd-W3MyLIiHrFV_lYU-1k'.freeze
   GMAP_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json'.freeze
 
   # если у клиента есть номер телефона - проверяем, нужно ли обновить авторизацию через соцсеть
   # если номера нет - отправляем на страницу ввода телефона или на страницу подтверждения
-  instrument_method
+  # instrument_method
   def self.first_step(session)
     client = Client.find_or_create_by(id: session[:client_id])
     return refresh_social_account(session) if client.phone_number
@@ -16,7 +16,7 @@ class NextStep
 
   # если клиент авторизовался через соцсеть не больше месяца назад - авторизуем его
   # если нет - то отправляем авторизоваться
-  instrument_method
+  # instrument_method
   def self.refresh_social_account(session)
     location = RedisCache.cached_location(session[:location_id])
     providers = location[:providers]
@@ -28,7 +28,7 @@ class NextStep
 
   # создаём или обновляем запись в client_tracker
   # создаём запись в social_log
-  instrument_method
+  # instrument_method
   def self.authorize(social_account, session)
     Rails.logger.info "авторизуем сессию #{session.inspect}".magenta
     # создаём новый трекер не чаще, чем раз в шесть часов, и не меньше, чем
@@ -44,7 +44,7 @@ class NextStep
     RadiusTicket.create(session)
   end
 
-  instrument_method
+  # instrument_method
   def self.render_json_output(destination = nil, session)
     session[:url] ||= 'https://gycwifi.com'
     session[:next_step] = destination || first_step(session)
@@ -52,17 +52,17 @@ class NextStep
     @session = session
   end
 
-  instrument_method
+  # instrument_method
   def self.login_session_client(session)
     session
   end
 
-  instrument_method
+  # instrument_method
   def self.login_session_style(session)
     RedisCache.cached_location_style(session)
   end
 
-  instrument_method
+  # instrument_method
   def self.login_session_targeting(session)
     targeting_info(session)
   end
@@ -71,17 +71,17 @@ class NextStep
     {}
   end
 
-  instrument_method
+  # instrument_method
   def self.login_session_router(session)
     session
   end
 
-  instrument_method
+  # instrument_method
   def self.login_session_poll(session)
     login_session_style(session)[:poll]
   end
 
-  instrument_method
+  # instrument_method
   def self.client_tracker(client_id, location_id)
     ClientCounter.find_or_create_by(
       client_id: client_id,
@@ -95,7 +95,7 @@ class NextStep
     end
   end
 
-  instrument_method
+  # instrument_method
   def self.targeting_info(session)
     targeting = {
       adDivId: "smt-130299538",

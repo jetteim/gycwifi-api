@@ -16,10 +16,10 @@ class Attempt < ApplicationRecord
   belongs_to :question
   belongs_to :poll
   belongs_to :answer
-  include Skylight::Helpers
+  # include Skylight::Helpers
 
   scope :group_by_period, ->(period) { group("date_trunc('#{period}', created_at) ") }
-  instrument_method
+  # instrument_method
   def attributes
     super
   end

@@ -1,6 +1,6 @@
 require 'csv'
 class Dashboard::SocialLogsController < ApplicationController
-  include Skylight::Helpers
+  # include Skylight::Helpers
   before_action :parse_params
 
   BOM = "\xEF\xBB\xBF".freeze

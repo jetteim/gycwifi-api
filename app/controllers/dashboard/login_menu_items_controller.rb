@@ -1,10 +1,10 @@
 class Dashboard::LoginMenuItemsController < ApplicationController
-  include Skylight::Helpers
+  # include Skylight::Helpers
   before_action :current_login_menu_item, only: %i[show update destroy]
   before_action :parse_params
   PAGESIZE = 20
 
-  instrument_method
+  # instrument_method
   def index
     return raise_not_authorized(LoginMenuItem) unless RedisCache.cached_policy(@current_user, LoginMenuItem, 'index')
     login_menu_items = @str_prms[:location_id] ? policy_scope(LoginMenuItem).where(location: @str_prms[:location_id].to_i) : policy_scope(LoginMenuItem)
@@ -22,13 +22,13 @@ class Dashboard::LoginMenuItemsController < ApplicationController
     }
   end
 
-  instrument_method
+  # instrument_method
   def show
     return raise_not_authorized(@login_menu_item) unless RedisCache.cached_policy(@current_user, @login_menu_item, 'show')
     render json: success(@login_menu_item, 'show')
   end
 
-  instrument_method
+  # instrument_method
   def create
     return raise_not_authorized(LoginMenuItem) unless RedisCache.cached_policy(@current_user, LoginMenuItem, 'create')
     login_menu_item = LoginMenuItem.new(login_menu_item_params)
@@ -41,7 +41,7 @@ class Dashboard::LoginMenuItemsController < ApplicationController
     render json: success(login_menu_item, 'created')
   end
 
-  instrument_method
+  # instrument_method
   def update
     return raise_not_authorized(@login_menu_item) unless RedisCache.cached_policy(@current_user, @login_menu_item, 'update')
     @login_menu_item.url = login_menu_item_params[:url]
@@ -52,7 +52,7 @@ class Dashboard::LoginMenuItemsController < ApplicationController
     render json: success(@login_menu_item, 'updated')
   end
 
-  instrument_method
+  # instrument_method
   def destroy
     return raise_not_authorized(@login_menu_item) unless RedisCache.cached_policy(@current_user, @login_menu_item, 'destroy')
     RedisCache.flush('location', @login_menu_item.location_id)

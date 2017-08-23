@@ -1,5 +1,5 @@
 class LoginMenuItemPolicy < ApplicationPolicy
-  instrument_method
+  # instrument_method
   def index?
     true
   end

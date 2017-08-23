@@ -21,9 +21,9 @@ class Poll < ApplicationRecord
 
   # Scopes
   scope :user_polls, ->(user_id) { where(user_id: user_id) }
-  include Skylight::Helpers
+  # include Skylight::Helpers
 
-  instrument_method
+  # instrument_method
   def attributes
     super
   end

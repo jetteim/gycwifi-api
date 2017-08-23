@@ -1,11 +1,11 @@
 class Dashboard::RoutersController < ApplicationController
   before_action :current_router, only: %i[show update destroy config]
   before_action :parse_params
-  include Skylight::Helpers
+  # include Skylight::Helpers
   # before_action :check_access_rights
   PAGESIZE = 20
 
-  instrument_method
+  # instrument_method
   def index
     return raise_not_authorized(Router) unless RedisCache.cached_policy(@current_user, Router, 'index')
     routers = policy_scope(Router).order(:id)
@@ -20,7 +20,7 @@ class Dashboard::RoutersController < ApplicationController
     }
   end
 
-  instrument_method
+  # instrument_method
   def show
     return raise_not_authorized(@router) unless RedisCache.cached_policy(@current_user, @router, 'show')
     render json: {
@@ -30,7 +30,7 @@ class Dashboard::RoutersController < ApplicationController
     }
   end
 
-  instrument_method
+  # instrument_method
   def create
     return raise_not_authorized(Router) unless RedisCache.cached_policy(@current_user, Router, 'create')
     router = Router.new(router_params)
@@ -50,7 +50,7 @@ class Dashboard::RoutersController < ApplicationController
     end
   end
 
-  instrument_method
+  # instrument_method
   def update
     return raise_not_authorized(@router) unless RedisCache.cached_policy(@current_user, @router, 'update')
     RedisCache.flush('router', @router.id)
@@ -61,7 +61,7 @@ class Dashboard::RoutersController < ApplicationController
     end
   end
 
-  instrument_method
+  # instrument_method
   def destroy
     return raise_not_authorized(@router) unless RedisCache.cached_policy(@current_user, @router, 'destroy')
     RedisCache.flush('router', @router.id)
@@ -101,12 +101,12 @@ class Dashboard::RoutersController < ApplicationController
   #
   private
 
-  instrument_method
+  # instrument_method
   def current_router
     @router = Router.find(@str_prms[:id])
   end
 
-  instrument_method
+  # instrument_method
   def parse_params
     @page = @str_prms[:page].to_i || 1
     @page = 1 if @page < 1

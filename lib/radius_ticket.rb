@@ -1,8 +1,8 @@
 # Library for radius tickets
 class RadiusTicket
-  include Skylight::Helpers
+  # include Skylight::Helpers
 
-  instrument_method
+  # instrument_method
   def self.create(session)
     # authorize end user on the router
     location = RedisCache.cached_location(session[:location_id]) unless session[:auth_expiration_time]
