@@ -9,7 +9,7 @@ require 'action_controller/railtie'
 require 'action_mailer/railtie'
 require 'action_view/railtie'
 require 'action_cable/engine'
-require 'skylight'
+# require 'skylight'
 require_relative 'initializers/log_before_timeout'
 # require "sprockets/railtie"
 # require "rails/test_unit/railtie"
@@ -47,7 +47,7 @@ module WifiManagement
     end
 
     config.active_record.schema_format = :sql
-    config.skylight.environments = %w[production]
-    config.skylight.probes += %w[active_model_serializers httpclient sequel action_controller redis action_view sequel]
+    # config.skylight.environments = %w[production]
+    # config.skylight.probes += %w[active_model_serializers httpclient sequel action_controller redis action_view sequel]
   end
 end

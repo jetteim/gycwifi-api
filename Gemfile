@@ -12,7 +12,7 @@ group :staging, :production do
   gem 'delayed_job'
   gem 'delayed_job_active_record'
   gem 'rmagick'
-  gem 'skylight'
+  # gem 'skylight'
   gem 'puma'
   # Servers
   # gem 'puma'

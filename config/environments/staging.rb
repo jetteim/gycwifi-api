@@ -89,7 +89,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-  config.skylight.authentication = 'ljG0jRV1x9-tL0Z2-AzxgUIbo-FOQgHAXxsfIyQHZos'
+  # config.skylight.authentication = 'ljG0jRV1x9-tL0Z2-AzxgUIbo-FOQgHAXxsfIyQHZos'
 
   config.after_initialize do
     Bullet.enable = true
