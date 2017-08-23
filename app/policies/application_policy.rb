@@ -67,7 +67,7 @@ class ApplicationPolicy
     end
 
     def resolve
-      return scope if user.super_user?
+      return scope.all if user.super_user?
       result = scope.where(user: user)
       result = result.or(scope.where(user: user.user)) if user.can_view_owner_items?
       result = result.or(scope.where(user: User.find_by(user: user.user))) if user.can_view_peer_items?

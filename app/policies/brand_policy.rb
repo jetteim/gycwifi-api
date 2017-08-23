@@ -12,7 +12,7 @@ class BrandPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      return scope if user.super_user?
+      return scope.all if user.super_user?
       scope.where(user: user).or(scope.where(public: true))
     end
   end

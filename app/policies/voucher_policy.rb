@@ -21,7 +21,7 @@ class VoucherPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      return scope if user.super_user?
+      return scope.all if user.super_user?
       scope.where(location_id: Pundit.policy_scope!(user, Location).pluck(:id))
     end
   end
