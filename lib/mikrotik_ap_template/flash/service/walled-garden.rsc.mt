@@ -5,6 +5,7 @@
     #GYC WiFI;
     /ip hotspot walled-garden add action=allow dst-host="*gycwifi.com" server=gyc-login-server;
     /ip hotspot walled-garden add action=allow dst-host="gycwifi.com" server=gyc-login-server;
+    /ip hotspot walled-garden add action=allow dst-host="${redirect_url}" server=gyc-login-server;
     /ip hotspot walled-garden add action=allow dst-host="*letsencrypt.org" server=gyc-login-server;
     /ip hotspot walled-garden add action=allow dst-host="*identrust.com" server=gyc-login-server;
     /ip hotspot walled-garden add action=allow dst-host="*gettwifi.com" server=gyc-login-server;

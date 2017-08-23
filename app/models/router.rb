@@ -37,6 +37,8 @@ require 'json'
 require 'ssl'
 require 'zip_file_generator'
 require 'fileutils'
+require 'uri/http'
+
 
 class Router < ApplicationRecord
   # Relations
@@ -158,6 +160,7 @@ class Router < ApplicationRecord
     data.update(@config['common'])
     data.update(attributes)
     data.update(location.attributes) if location
+    data['redirect_url'] = URI.parse(data['redirect_url']).host.downcase if data['redirect_url']
     new_file = File.read(file)
     mc = /\$\{(.+?)\}/.match(new_file)
     until mc.nil?
