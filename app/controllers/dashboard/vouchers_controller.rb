@@ -1,10 +1,10 @@
 class Dashboard::VouchersController < ApplicationController
-  include Skylight::Helpers
+  # include Skylight::Helpers
   before_action :current_voucher, only: %i[show update destroy]
   before_action :parse_params
   PAGESIZE = 20
 
-  instrument_method
+  # instrument_method
   def index
     return raise_not_authorized(Voucher) unless RedisCache.cached_policy(@current_user, Voucher, 'index')
     vouchers = @str_prms[:location_id] ? policy_scope(Voucher).where(location: @str_prms[:location_id].to_i) : policy_scope(Voucher)
@@ -22,13 +22,13 @@ class Dashboard::VouchersController < ApplicationController
     }
   end
 
-  instrument_method
+  # instrument_method
   def show
     return raise_not_authorized(@voucher) unless RedisCache.cached_policy(@current_user, @voucher, 'show')
     render json: success(voucher, 'show')
   end
 
-  instrument_method
+  # instrument_method
   def create
     return raise_not_authorized(Voucher) unless RedisCache.cached_policy(@current_user, Voucher, 'create')
     voucher = Voucher.new(voucher_params)
@@ -46,7 +46,7 @@ class Dashboard::VouchersController < ApplicationController
     render json: success(voucher, 'created')
   end
 
-  instrument_method
+  # instrument_method
   def update
     return raise_not_authorized(@voucher) unless RedisCache.cached_policy(@current_user, @voucher, 'update')
     @voucher.password = voucher_params[:password]
@@ -56,7 +56,7 @@ class Dashboard::VouchersController < ApplicationController
     render json: success(@voucher, 'updated')
   end
 
-  instrument_method
+  # instrument_method
   def destroy
     return raise_not_authorized(@voucher) unless RedisCache.cached_policy(@current_user, @voucher, 'destroy')
     RedisCache.flush('location', @voucher.location_id)

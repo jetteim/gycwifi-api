@@ -3,7 +3,7 @@ class ApplicationController < ActionController::API
   # protect_from_forgery with: :null_session
 
   include Pundit
-  include Skylight::Helpers
+  # # include Skylight::Helpers
   include ActionController::Helpers
 
   respond_to :json
@@ -45,12 +45,12 @@ class ApplicationController < ActionController::API
     user_not_authorized("User #{@current_user.inspect} not authorized to #{query} #{record.inspect}")
   end
 
-  instrument_method
+  # instrument_method
   def forbidden_handler(exception)
     user_not_authorized(exception.message)
   end
 
-  instrument_method
+  # instrument_method
   def authenticate_user
     user_not_authenticated unless authenticated_user?
   end
@@ -102,19 +102,19 @@ class ApplicationController < ActionController::API
     raise exception
   end
 
-  instrument_method
+  # instrument_method
   def current_user
     @current_user ||= token_user
   end
   helper_method :current_user
 
-  instrument_method
+  # instrument_method
   def authenticated_user?
     current_user.present?
   end
   helper_method :authenticated_user?
 
-  instrument_method
+  # instrument_method
   def unauthenticated_user?
     current_user.nil?
   end
@@ -125,12 +125,12 @@ class ApplicationController < ActionController::API
   end
   helper_method :permission_denied
 
-  instrument_method
+  # instrument_method
   def set_locale
     I18n.locale = @current_user ? @current_user[:lang].to_sym : I18n.default_locale
   end
 
-  instrument_method
+  # instrument_method
   def normalize_params
     params.permit!
     @str_prms = params.to_h.deep_symbolize_keys

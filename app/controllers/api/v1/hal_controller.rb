@@ -4,11 +4,11 @@ module Api
     # Authorization of router connetion
     class HalController < ApplicationController
       # Captive network assistant (curtain)
-      include Skylight::Helpers
+      # # include Skylight::Helpers
       before_action :router_make
       skip_before_action :authenticate_user
 
-      instrument_method
+      # instrument_method
       def configure
         mtik = Hal::Mikrotik.new
         res = @router ? { json: { data: { config: mtik.configure(@router) }, status: 'ok' } } : { json: { status: 'error' }, status: :unauthorized }
@@ -27,7 +27,7 @@ module Api
         logger.warn 'warning: abstract method called, use hardware layer library instead!'.bold.red
       end
 
-      instrument_method
+      # instrument_method
       def authorize_client
         # generate username & password if not sent
         username  = hal_params[:username] || SecureRandom.uuid.to_s
@@ -47,7 +47,7 @@ module Api
         mtik.authorize_client(mac, client_ip, username, passwd)
         # и теперь авторизуем клиента
         if @router
-          t = Thread.new {mtik.send_command(@router, mtik.command)}
+          t = Thread.new { mtik.send_command(@router, mtik.command) }
           t.join(3)
         end
         head :ok
@@ -107,7 +107,7 @@ module Api
 
       private
 
-      instrument_method
+      # instrument_method
       def router_make
         return @router = nil unless hal_params[:common_name] || hal_params[:ip_name] || hal_params[:id]
         return @router = RedisCache.cached_router(hal_params[:common_name].to_s) if hal_params[:common_name]

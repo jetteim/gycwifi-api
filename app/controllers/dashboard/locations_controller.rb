@@ -1,10 +1,10 @@
 class Dashboard::LocationsController < ApplicationController
-  include Skylight::Helpers
+  # include Skylight::Helpers
   before_action :current_location, only: %i[show update destroy]
   before_action :parse_params
   PAGESIZE = 20
 
-  instrument_method
+  # instrument_method
   def index
     return raise_not_authorized(Location) unless RedisCache.cached_policy(@current_user, Location, 'index')
     locations = @str_prms[:brand_id] ? policy_scope(Location).brand_locations(@str_prms[:brand_id].to_i) : policy_scope(Location)
@@ -22,7 +22,7 @@ class Dashboard::LocationsController < ApplicationController
     }
   end
 
-  instrument_method
+  # instrument_method
   def show
     return raise_not_authorized(@location) unless RedisCache.cached_policy(@current_user, @location, 'show')
     render json: {
@@ -32,7 +32,7 @@ class Dashboard::LocationsController < ApplicationController
     }
   end
 
-  instrument_method
+  # instrument_method
   def create
     return raise_not_authorized(Location) unless RedisCache.cached_policy(@current_user, Location, 'create')
     location = Location.new(location_params)

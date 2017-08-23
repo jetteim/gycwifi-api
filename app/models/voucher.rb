@@ -13,17 +13,17 @@
 #
 
 class Voucher < ApplicationRecord
-  include Skylight::Helpers
+  # include Skylight::Helpers
   belongs_to :location
   belongs_to :client
   has_many :auth_logs
 
-  instrument_method
+  # instrument_method
   def attributes
     super.merge(activated: activated, expired: expired)
   end
 
-  instrument_method
+  # instrument_method
   def activate(client)
     self.client_id = client
     self.expiration = DateTime.current + duration.minutes
@@ -33,7 +33,7 @@ class Voucher < ApplicationRecord
     save!
   end
 
-  instrument_method
+  # instrument_method
   delegate :user_id, to: :location
 
   def expired?

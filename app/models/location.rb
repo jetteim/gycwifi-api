@@ -39,7 +39,7 @@
 
 class Location < ApplicationRecord
   # Friendly urls
-  include Skylight::Helpers
+  # include Skylight::Helpers
   extend FriendlyId
   friendly_id :title_and_address, use: :slugged
   def title_and_address
@@ -53,7 +53,7 @@ class Location < ApplicationRecord
 
   # Methods
 
-  instrument_method
+  # instrument_method
   def attributes
     super
   end
@@ -62,7 +62,7 @@ class Location < ApplicationRecord
     slug
   end
 
-  instrument_method
+  # instrument_method
   def template
     tmp = RedisCache.cached_brand(brand_id)
     tmp[:template] ? tmp[:template] : 'default'

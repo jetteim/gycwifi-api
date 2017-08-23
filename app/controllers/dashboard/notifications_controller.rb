@@ -1,11 +1,11 @@
 class Dashboard::NotificationsController < ApplicationController
-  include Skylight::Helpers
+  # include Skylight::Helpers
   before_action :current_notification, only: %i[show update]
   before_action :all_notifications, only: %i[index unread_count]
   before_action :parse_params
   PAGESIZE = 20
 
-  instrument_method
+  # instrument_method
   def index
     items_count = @notifications.pluck(:id).count
     notifications = @notifications.order(favorite: :desc, id: :asc).page(@page).per(@itemsOnPage)
@@ -20,7 +20,7 @@ class Dashboard::NotificationsController < ApplicationController
     }
   end
 
-  instrument_method
+  # instrument_method
   def show
     render json: {
       data: { notification: @notification },
@@ -29,7 +29,7 @@ class Dashboard::NotificationsController < ApplicationController
     }
   end
 
-  instrument_method
+  # instrument_method
   def unread_count
     unread_count = @notifications.where(seen: false).pluck(:id).count
     render json: {

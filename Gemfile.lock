@@ -391,8 +391,6 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.1)
-    skylight (1.3.1)
-      activesupport (>= 3.0.0)
     slop (3.6.0)
     sprockets (3.7.1)
       concurrent-ruby (~> 1.0)
@@ -497,7 +495,6 @@ DEPENDENCIES
   shoulda-matchers
   simple_enum
   simplecov
-  skylight
   sqlite3
   telegram-bot-ruby
   twitter_oauth

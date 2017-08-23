@@ -23,9 +23,9 @@ class AuthLog < ApplicationRecord
   scope :authorizations, ->(locations) {
     joins(:client_accounting_logs).joins(:client_device).joins(:client).joins(:social_account).joins(:routers).where(location_id: locations)
   }
-  include Skylight::Helpers
+  # include Skylight::Helpers
 
-  instrument_method
+  # instrument_method
   def attributes
     super
   end

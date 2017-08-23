@@ -1,7 +1,7 @@
 class Dashboard::BrandsController < ApplicationController
   PAGESIZE = 20
 
-  include Skylight::Helpers
+  # include Skylight::Helpers
   before_action :get_brand, only: %i[show update destroy]
 
   def index

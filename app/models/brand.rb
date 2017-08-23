@@ -23,7 +23,7 @@
 
 class Brand < ApplicationRecord
   # Friendly urls
-  include Skylight::Helpers
+  # include Skylight::Helpers
   extend FriendlyId
   # Relations
   has_many   :locations, dependent: :destroy
@@ -53,7 +53,7 @@ class Brand < ApplicationRecord
     text.to_slug.normalize(transliterations: :russian).to_s
   end
 
-  instrument_method
+  # instrument_method
   def attributes
     super
   end

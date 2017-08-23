@@ -1,7 +1,7 @@
 # Класс для хранения часто загружаемых объектов в REDIS кэше
 class RedisCache
   include Pundit
-  include Skylight::Helpers
+  # include Skylight::Helpers
 
   LOCATION_LIFETIME = 15.minutes
   VOUCHER_LIFETIME = 2.minutes
@@ -13,7 +13,7 @@ class RedisCache
   USER_LIFETIME = 2.hours
   TOKEN_LIFETIME = 24.hours
 
-  instrument_method
+  # instrument_method
   def self.cached_location(location_id)
     cache_object('location', location_id, 'id',
                  methods: %i[extended_address template address_completed
@@ -23,33 +23,33 @@ class RedisCache
                  include: [:login_menu_items])
   end
 
-  instrument_method
+  # instrument_method
   def self.cached_poll(poll_id)
     cache_object('poll', poll_id, 'id', include: [questions: { include: [answers: { methods: [:attempts_count] }] }])
   end
 
-  instrument_method
+  # instrument_method
   def self.cached_brand(brand_id)
     cache_object('brand', brand_id, 'id', methods: [:template])
   end
 
-  instrument_method
+  # instrument_method
   def self.cached_router(router_common_name)
     cache_object('router', router_common_name, 'common_name', methods: %i[wan wlan])
   end
 
-  instrument_method
+  # instrument_method
   def self.cached_layout(layout_id)
     cache_object('layout', layout_id)
   end
 
-  instrument_method
+  # instrument_method
   def self.flush(object, id)
     Rails.logger.debug "flushing cache for #{object} with id=#{id}".blue
     REDIS.del("cached_#{object}_#{id}")
   end
 
-  instrument_method
+  # instrument_method
   def self.cached_location_style(session)
     key = "cached_location_style_#{session[:location_id]}"
     return cached_style(key, session[:client_id]) if REDIS.exists(key)
@@ -64,7 +64,7 @@ class RedisCache
     cache
   end
 
-  instrument_method
+  # instrument_method
   def self.cached_policy(current_user, resource, action = nil)
     s = resource.is_a?(Class) ? resource.to_s : resource.class.to_s
     id = resource.is_a?(Class) ? resource.to_s : resource.id
@@ -90,7 +90,7 @@ class RedisCache
 
   private
 
-  instrument_method
+  # instrument_method
   def self.cached_style(key, client_id)
     cached = JSON.parse!(REDIS.get(key), symbolize_names: true)
     Rails.logger.debug "loaded location style from cache #{cached.inspect}".cyan
@@ -102,7 +102,7 @@ class RedisCache
     cached
   end
 
-  instrument_method
+  # instrument_method
   def self.style_hash(location, poll, client_id)
     no_poll = no_poll?(client_id, poll)
     {
@@ -117,7 +117,7 @@ class RedisCache
     }
   end
 
-  instrument_method
+  # instrument_method
   def self.no_poll?(client_id, poll)
     return true unless poll
     return false unless poll[:run_once]
@@ -129,7 +129,7 @@ class RedisCache
     Attempt.exists?(client_id: client_id, answer_id: answers)
   end
 
-  instrument_method
+  # instrument_method
   def self.cache_object(name, id, id_attribute = 'id', json_params = nil)
     Rails.logger.debug "cache object #{name}, #{id_attribute}, #{id}".blue
     cache_candidate = Object.const_get(name.capitalize).find_by("#{id_attribute} = ?", id)
@@ -143,7 +143,7 @@ class RedisCache
     cached.symbolize_keys if cached
   end
 
-  instrument_method
+  # instrument_method
   def self.use(key:, lifetime: 15.minutes)
     return JSON.parse(REDIS.get(key), symbolize_names: true) if REDIS.exists(key)
     data = yield

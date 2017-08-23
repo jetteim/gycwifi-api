@@ -1,5 +1,5 @@
 class StatisticService
-  include Skylight::Helpers
+  # include Skylight::Helpers
   BASECOLORS = [
     {
       hover: 'rgba(28,157,237,1)',
@@ -35,7 +35,7 @@ class StatisticService
     @display_locations = display_locations
   end
 
-  instrument_method
+  # instrument_method
   def raw_new_old_users_pie(locations)
     return unless data = SocialLog.new_old_users_pie(locations, date_format[:start_date], date_format[:end_date])
     chart_data = %w[new_clients returning_clients].map { |val| [val, 0] }.to_h
@@ -48,7 +48,7 @@ class StatisticService
     }
   end
 
-  instrument_method
+  # instrument_method
   def raw_time_pie(locations)
     return unless data = SocialLog.time_pie(locations, date_format[:start_date], date_format[:end_date])
     chart_data = %w[morning afternoon evening night].map { |val| [val, 0] }.to_h
@@ -62,7 +62,7 @@ class StatisticService
     { labels: labels, data: chart_data.values, colors: compositeColorsV2 }
   end
 
-  instrument_method
+  # instrument_method
   def raw_social_pie(locations)
     return unless data = SocialLog.social_pie(locations, date_format[:start_date], date_format[:end_date])
     chart_data = %w[password google_oauth2 facebook twitter instagram vk].map { |val| [val, 0] }.to_h
@@ -78,7 +78,7 @@ class StatisticService
     { labels: labels, data: chart_data.values, colors: compositeColorsV2 }
   end
 
-  instrument_method
+  # instrument_method
   def raw_gender_pie(locations)
     return unless data = SocialLog.gender_pie(locations, date_format[:start_date], date_format[:end_date])
     chart_data = %w[male female].map { |val| [val, 0] }.to_h
@@ -87,7 +87,7 @@ class StatisticService
     { labels: labels, data: chart_data.values, colors: compositeColorsV2 }
   end
 
-  instrument_method
+  # instrument_method
   def raw_age_pie(locations)
     return unless data = SocialLog.age_pie(locations, date_format[:start_date], date_format[:end_date])
     keys = %w[age_interval_1 age_interval_2 age_interval_3 age_interval_4 age_interval_5 age_interval_6]
@@ -104,7 +104,7 @@ class StatisticService
     { labels: labels, data: chart_data.values, colors: compositeColorsV2 }
   end
 
-  instrument_method
+  # instrument_method
   def raw_visitors_pie(locations)
     return unless data = SocialLog.visitors_pie(
       locations,
@@ -121,7 +121,7 @@ class StatisticService
     { labels: labels, data: chart_data.values, colors: compositeColorsV2 }
   end
 
-  instrument_method
+  # instrument_method
   def raw_new_old_users(locations)
     # TODO: сделать перевод
     return unless users_data = SocialLog.new_users(
@@ -139,7 +139,7 @@ class StatisticService
     }
   end
 
-  instrument_method
+  # instrument_method
   def compositeColorsV2(src = BASECOLORS)
     result = []
     Array.new(src).each do |color|
@@ -160,7 +160,7 @@ class StatisticService
     result
   end
 
-  instrument_method
+  # instrument_method
   def date_format
     case @range
     when 'last7days'
@@ -196,17 +196,17 @@ class StatisticService
     end
   end
 
-  instrument_method
+  # instrument_method
   def total_clients_count
     ClientVisit.select('distinct client_id').where(location: @display_locations).count
   end
 
-  instrument_method
+  # instrument_method
   def last_month_clients_count
     ClientVisit.select('distinct client_id').where(location: @display_locations, updated_at: DateTime.current.months_ago(1).beginning_of_day..DateTime.current.end_of_day).count
   end
 
-  instrument_method
+  # instrument_method
   def last_week_clients_count
     ClientVisit.select('distinct client_id')
                .where(location: @display_locations,
@@ -214,17 +214,17 @@ class StatisticService
                .count
   end
 
-  instrument_method
+  # instrument_method
   def all_time_connections
     SocialLog.logs_total(@display_locations).count
   end
 
-  instrument_method
+  # instrument_method
   def last_month_connections
     SocialLog.logs_last_month(@display_locations).count
   end
 
-  instrument_method
+  # instrument_method
   def last_week_connections
     SocialLog.logs_last_week(@display_locations).count
   end

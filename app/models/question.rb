@@ -16,9 +16,9 @@ class Question < ApplicationRecord
   has_many   :answers, -> { order(:id) }, dependent: :destroy
   has_many   :attempts, through: :answers
 
-  include Skylight::Helpers
+  # include Skylight::Helpers
 
-  instrument_method
+  # instrument_method
   def attributes
     super
   end

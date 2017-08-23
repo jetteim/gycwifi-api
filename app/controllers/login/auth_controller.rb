@@ -2,7 +2,7 @@ module Login
   require 'uri'
   # Login auth controller
   class AuthController < ApplicationController
-    include Skylight::Helpers
+    # include Skylight::Helpers
     skip_before_action :authenticate_user
     # TODO: Вынести в .env
     GMAP_API_KEY = 'AIzaSyDjGQWbZqBJYHUd-W3MyLIiHrFV_lYU-1k'.freeze
@@ -17,14 +17,14 @@ module Login
     }.freeze
 
     # 1. Точка входа
-    instrument_method
+    # instrument_method
     def location_style
       session = receive_data_from_router(@str_prms)
       json = NextStep.render_json_output(session)
       render json: json
     end
 
-    instrument_method
+    # instrument_method
     def poll_results
       interview_uuid = SecureRandom.uuid
       data = JSON.parse(@str_prms[:questions]).deep_symbolize_keys if @str_prms[:questions].is_a? String
@@ -60,7 +60,7 @@ module Login
 
     private
 
-    instrument_method
+    # instrument_method
     def receive_data_from_router(params)
       router_data = MikroTik.fromCACHE(params)
       logger.info "запрос на авторизацию от роутера #{router_data.inspect}".yellow
@@ -101,7 +101,7 @@ module Login
       }
     end
 
-    instrument_method
+    # instrument_method
     def create_client_device_by(router_data, client_id)
       ClientDevice.create(
         mac:              router_data[:mac],

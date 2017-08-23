@@ -2,7 +2,7 @@ module Dashboard
   class PublicStatsController < StatsController
      skip_before_action :authenticate_user
     ##### Unauthorized methods
-    instrument_method
+    # instrument_method
     def all_connections
       all_connections = RedisCache.use key: 'public_all_connects', lifetime: TOTALS_CACHE_TIMEOUT do
         {
@@ -18,28 +18,28 @@ module Dashboard
       render json: all_connections
     end
 
-    instrument_method
+    # instrument_method
     def time_pie
       render json: @statistic_service.raw_time_pie(all_locations)
     end
 
-    instrument_method
+    # instrument_method
     def social_pie
       render json: @statistic_service.raw_social_pie(all_locations)
     end
 
-    instrument_method
+    # instrument_method
     def age_pie
       render json: @statistic_service.raw_age_pie(all_locations)
     end
 
-    instrument_method
+    # instrument_method
     def visitors_pie
       render json: @statistic_service.raw_visitors_pie(all_locations)
     end
 
     private
-    instrument_method
+    # instrument_method
     def all_locations
       @all_locations ||= Location.all.pluck(:id)
     end

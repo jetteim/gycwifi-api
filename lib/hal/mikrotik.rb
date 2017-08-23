@@ -1,10 +1,10 @@
 module Hal
   class Mikrotik
-    include Skylight::Helpers
+    # include Skylight::Helpers
 
     attr_reader :command
 
-    instrument_method
+    # instrument_method
     def send_command(router, command = nil)
       command ||= @command
       MTik.command(
@@ -16,7 +16,7 @@ module Hal
       )
     end
 
-    instrument_method
+    # instrument_method
     def configure(router)
       configs = []
       configs << auto_config(router)
@@ -57,7 +57,7 @@ module Hal
       configuration
     end
 
-    instrument_method
+    # instrument_method
     def get_reply(router, command = nil)
       command ||= @command
       logger.info "geting replies for command #{command.inspect}".green
@@ -124,7 +124,7 @@ module Hal
       @command = ['/ip/hotspot/user/profile/set', '=name=default', "=rate-limit=#{hotspotbalancerlimit}", '/quit']
     end
 
-    instrument_method
+    # instrument_method
     def radio_input(name, items, selected, style = 'radio', title = '')
       {
         title: title,
@@ -136,7 +136,7 @@ module Hal
       }
     end
 
-    instrument_method
+    # instrument_method
     def checkbox(items, style = 'checkbox', title = '')
       {
         title: title,
@@ -146,7 +146,7 @@ module Hal
       }
     end
 
-    instrument_method
+    # instrument_method
     def text_input(name, label, title = '', value = '', placeholder = '')
       {
         title: title,
@@ -158,7 +158,7 @@ module Hal
       }
     end
 
-    instrument_method
+    # instrument_method
     def auto_config(router)
       fetch = "/tool fetch mode=ftp address=login.gycwifi.com user=#{router[:common_name]} password=#{router[:admin_password]} src-path=flash/%{file} dst-path=flash/%{file}"
       command_set = []
@@ -230,7 +230,7 @@ module Hal
       config
     end
 
-    instrument_method
+    # instrument_method
     def download_files(router)
       fetch = "/tool fetch mode=ftp address=login.gycwifi.com user=#{router[:common_name]} password=#{router[:admin_password]} src-path=flash/%{file} dst-path=flash/%{file}"
       command_set = []
@@ -276,7 +276,7 @@ module Hal
       config
     end
 
-    instrument_method
+    # instrument_method
     def setup_vpn(_router)
       command_set = []
       command_set << '/import flash/service/environment.rsc'
@@ -302,7 +302,7 @@ module Hal
       config
     end
 
-    instrument_method
+    # instrument_method
     def setup_dns(_router)
       command_set = []
       command_set << '/import flash/service/environment.rsc'
@@ -326,7 +326,7 @@ module Hal
       config
     end
 
-    instrument_method
+    # instrument_method
     def setup_hotspot(router)
       command_set = []
       command_set << '/import flash/service/environment.rsc'
@@ -443,7 +443,7 @@ module Hal
       config
     end
 
-    instrument_method
+    # instrument_method
     def setup_radius(router)
       command_set = []
       command_set << '/import flash/service/environment.rsc'

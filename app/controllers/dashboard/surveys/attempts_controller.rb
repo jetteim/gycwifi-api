@@ -1,7 +1,7 @@
 module Dashboard
   module Surveys
     class AttemptsController < ApplicationController
-      include Skylight::Helpers
+      # include Skylight::Helpers
 
       skip_before_action :authenticate_user
       REPLY_OK = {
@@ -10,7 +10,7 @@ module Dashboard
         message: 'Thank you for your answer!'
       }.freeze
 
-      instrument_method
+      # instrument_method
       def create
         # Создаём объединяющий объект с уникальным номером
         interview_uuid = SecureRandom.uuid

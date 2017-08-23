@@ -22,7 +22,7 @@
 #
 
 class SocialAccount < ApplicationRecord
-  include Skylight::Helpers
+  # include Skylight::Helpers
   # Relations
   belongs_to :client, dependent: :destroy
   belongs_to :user
@@ -34,7 +34,7 @@ class SocialAccount < ApplicationRecord
 
   scope :with_emails, -> { where.not(email: nil) }
 
-  instrument_method
+  # instrument_method
   def attributes
     super
   end
@@ -43,7 +43,7 @@ class SocialAccount < ApplicationRecord
     DateTime.new(bdate_year, bdate_month, bdate_day) if bdate_year && bdate_month && bdate_day
   end
 
-  instrument_method
+  # instrument_method
   def self.pull_user_data(auth_data)
     case auth_data[:provider]
     when 'instagram'
@@ -61,7 +61,7 @@ class SocialAccount < ApplicationRecord
     user_data
   end
 
-  instrument_method
+  # instrument_method
   def self.find_social_account(user_data)
     social_account = where(provider: user_data[:provider], uid: user_data[:uid]).first_or_create
     social_account.username = user_data[:username]
@@ -76,7 +76,7 @@ class SocialAccount < ApplicationRecord
     social_account if social_account.save
   end
 
-  instrument_method
+  # instrument_method
   def linked_user
     return user if user
     username = self.username

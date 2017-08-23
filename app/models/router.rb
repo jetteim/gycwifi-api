@@ -40,7 +40,7 @@ require 'fileutils'
 
 class Router < ApplicationRecord
   # Relations
-  include Skylight::Helpers
+  # include Skylight::Helpers
   belongs_to :location
   belongs_to :user
   has_many :notifications
@@ -75,7 +75,7 @@ class Router < ApplicationRecord
     rebuild
   end
 
-  instrument_method
+  # instrument_method
   def attributes
     super
   end
@@ -105,18 +105,18 @@ class Router < ApplicationRecord
     save!
   end
 
-  instrument_method
+  # instrument_method
   def wan
     Location.exists?(location_id) ? location.wlan : '10M'
   end
 
-  instrument_method
+  # instrument_method
   def wlan
     Location.exists?(location_id) ? location.wlan : '1M'
   end
 
   # Обновление роутера и создание архива
-  instrument_method
+  # instrument_method
   def package
     @config ||= YAML.load_file(File.join(Rails.root, 'config', 'mtpackager.yml'))
     @destination_root = Rails.root.join('public', 'router_files', common_name)
@@ -129,7 +129,7 @@ class Router < ApplicationRecord
   end
 
   # Создание архива
-  instrument_method
+  # instrument_method
   def build_package(source, target)
     list = Dir.glob(File.join(source, '**'))
     # process each file in the give dir
@@ -152,7 +152,7 @@ class Router < ApplicationRecord
   end
 
   # Обновление переменных
-  instrument_method
+  # instrument_method
   def replace_variables(file)
     data = {}
     data.update(@config['common'])
@@ -184,13 +184,13 @@ class Router < ApplicationRecord
     File.open(ca_path, 'w') { |io| io.write File.read(ca_name) }
   end
 
-  instrument_method
+  # instrument_method
   def setup_sequence
     # fname = "#{Rails.root.join('public', 'router_files', common_name)}/flash/install.rsc"
     # fname = "#{Rails.root.join('public', 'router_files', common_name)}/flash/install.rsc"
   end
 
-  instrument_method
+  # instrument_method
   def update_router
     return unless status
     data = {}
