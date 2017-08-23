@@ -7,7 +7,7 @@ module UserRoles #:nodoc:
 
   def role
     role = type.match(/^(.+)User$/)[1].underscore.to_sym
-    return role unless expiration
+    return role if (%i[pro exclusive].exclude? role) || expiration.nil?
     DateTime.current < expiration ? role : :free
   end
 
