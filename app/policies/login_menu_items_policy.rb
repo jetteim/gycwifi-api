@@ -4,6 +4,22 @@ class LoginMenuItemPolicy < ApplicationPolicy
     true
   end
 
+  def show?
+    true
+  end
+
+  def create?
+    true
+  end
+
+  def update?
+    true
+  end
+
+  def delete?
+    true
+  end
+
   class Scope < Scope
     def resolve
       return scope if user.super_user?
