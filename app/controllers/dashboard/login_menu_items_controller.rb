@@ -37,7 +37,7 @@ class Dashboard::LoginMenuItemsController < ApplicationController
     login_menu_item.title_ru = login_menu_item_params[:title_ru]
     login_menu_item.url = login_menu_item_params[:url]
     login_menu_item.errors.each { |k, _v| return render json: { status: 'error', message: I18n.t("errors.login_menu_items.#{k}") } } unless login_menu_item.save
-    RedisCache.flush('location', login_menu_item.location_id)
+    RedisCache.flush('location_style', login_menu_item.location_id)
     render json: success(login_menu_item, 'created')
   end
 
@@ -48,15 +48,15 @@ class Dashboard::LoginMenuItemsController < ApplicationController
     @login_menu_item.title_en = login_menu_item_params[:title_en]
     @login_menu_item.title_ru = login_menu_item_params[:title_ru]
     @login_menu_item.errors.each { |k, _v| return render json: { status: 'error', message: I18n.t("errors.login_menu_items.#{k}") } } unless @login_menu_item.update(login_menu_item_params)
-    RedisCache.flush('location', @login_menu_item.location_id)
+    RedisCache.flush('location_style', @login_menu_item.location_id)
     render json: success(@login_menu_item, 'updated')
   end
 
   # instrument_method
   def destroy
     return raise_not_authorized(@login_menu_item) unless RedisCache.cached_policy(@current_user, @login_menu_item, 'destroy')
-    RedisCache.flush('location', @login_menu_item.location_id)
     @login_menu_item.errors.each { |k, _v| return render json: { status: 'error', message: I18n.t("errors.login_menu_items.#{k}") } } unless @login_menu_item.destroy
+    RedisCache.flush('location_style', @login_menu_item.location_id)
     render json: success(nil, 'deleted')
   end
 

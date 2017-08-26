@@ -44,12 +44,6 @@ class RedisCache
   end
 
   # instrument_method
-  def self.flush(object, id)
-    Rails.logger.debug "flushing cache for #{object} with id=#{id}".blue
-    REDIS.del("cached_#{object}_#{id}")
-  end
-
-  # instrument_method
   def self.cached_location_style(session)
     key = "cached_location_style_#{session[:location_id]}"
     return cached_style(key, session[:client_id]) if REDIS.exists(key)
@@ -150,5 +144,16 @@ class RedisCache
     data = yield
     REDIS.setex(key, lifetime, data.to_json)
     data
+  end
+
+  # instrument_method
+  def self.flush(object, id)
+    key = "cached_#{object}_#{id}"
+    REDIS.del(key) if REDIS.exists(key)
+  end
+
+  def self.flush_locations_list(user_id)
+    key = "locations_list_#{user_id}"
+    REDIS.del(key) if REDIS.exists(key)
   end
 end

@@ -39,12 +39,14 @@ class Dashboard::LocationsController < ApplicationController
     location.user_id ||= @current_user.id
     location.slug = nil
     location.errors.each { |k, _v| return render json: { status: 'error', message: I18n.t("errors.locations.#{k}") } } unless location.save
+    RedisCach.flush_locations_list(@current_user.id)
     render json: success(location, 'created')
   end
 
   def update
     return raise_not_authorized(@location) unless RedisCache.cached_policy(@current_user, @location, 'update')
     RedisCache.flush('location', @location.id)
+    RedisCache.flush('location_style', @location.id)
     @location.slug = nil
     @location.errors.each { |k, _v| return render json: { status: 'error', message: I18n.t("errors.locations.#{k}") } } unless @location.update(location_params)
     render json: success(@location, 'created')
@@ -53,6 +55,8 @@ class Dashboard::LocationsController < ApplicationController
   def destroy
     return raise_not_authorized(@location) unless RedisCache.cached_policy(@current_user, @location, 'destroy')
     RedisCache.flush('location', @location.id)
+    RedisCache.flush('location_style', @location.id)
+    RedisCache.flush_locations_list(@current_user.id)
     @location.errors.each { |k, _v| return render json: { status: 'error', message: I18n.t("errors.locations.#{k}") } } unless @location.destroy
     render json: success(@location, 'deleted')
   end

@@ -59,8 +59,8 @@ class Dashboard::VouchersController < ApplicationController
   # instrument_method
   def destroy
     return raise_not_authorized(@voucher) unless RedisCache.cached_policy(@current_user, @voucher, 'destroy')
-    RedisCache.flush('location', @voucher.location_id)
     @voucher.errors.each { |k, _v| return render json: { status: 'error', message: I18n.t("errors.vouchers.#{k}") } } unless @voucher.destroy
+    RedisCache.flush('location', @voucher.location_id)
     render json: success(nil, 'deleted')
   end
 
