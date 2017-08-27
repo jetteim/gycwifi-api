@@ -467,7 +467,9 @@ class RedisCache
     form_primary_color.a = 0.6
     form_link_color = form_base_color.paint.rgb
     form_link_color.a = 0.9
+    form_secondary_color = form_secondary_color.rgb
     form_secondary_color.a = 0.6
+    form_alternate_color = form_alternate_color.rgb
     form_alternate_color.a = 0.6
     palette = {
       gradient_start: gradient_start.to_rgb,
