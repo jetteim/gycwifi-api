@@ -451,7 +451,9 @@ class RedisCache
   end
 
   def self.build_palette(color)
-    color.paint.palette.analogous
+    palette = [color.paint.to_hex8]
+    color.paint.palette.tetrad(as: :hex8).each {|c| palette << c}
+    palette
   end
 
   # instrument_method
