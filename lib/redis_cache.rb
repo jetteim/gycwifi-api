@@ -451,7 +451,7 @@ class RedisCache
   end
 
   def self.build_palette(base_color)
-    tetrad = base_color.paint.palette.tetrad(as: :rgb)
+    tetrad = base_color.paint.palette.tetrad
     form_base_color = tetrad[0].rgb
     gradient_base_color = tetrad[1].rgb
     form_secondary_color = tetrad[2].rgb
