@@ -456,9 +456,9 @@ class RedisCache
     gradient_base_color = tetrad[1].rgb
     form_secondary_color = tetrad[2].rgb
     form_alternate_color = tetrad[3].rgb
-    form_primary_text_color = form_base_color.dark? ? '#FFFFFF'.paint : '#000000'.paint
-    form_secondary_text_color = form_secondary_color.dark? ? '#FFFFFF'.paint : '#000000'.paint
-    form_alternate_text_color = form_alternate_color.dark? ? '#FFFFFF'.paint : '#000000'.paint
+    form_primary_text_color = form_base_color.paint.dark? ? '#FFFFFF' : '#000000'
+    form_secondary_text_color = form_secondary_color.paint.dark? ? '#FFFFFF' : '#000000'
+    form_alternate_text_color = form_alternate_color.paint.dark? ? '#FFFFFF' : '#000000'
     gradient_start = form_base_color
     gradient_start.a = 0.6
     gradient_end = form_base_color
