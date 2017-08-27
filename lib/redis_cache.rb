@@ -450,22 +450,35 @@ class RedisCache
     }
   end
 
-  def self.build_palette(color)
-    tetrad = color.paint.palette.tetrad(as: :rgb)
-    fbc = tetrad[0][:rgb]
-    gbc = tetrad[1][:rgb]
-    fsc = tetrad[2][:rgb]
-    fac = tetrad[3][:rgb]
+  def self.build_palette(base_color)
+    tetrad = base_color.paint.palette.tetrad(as: :rgb)
+    form_base_color = tetrad[0].rgb
+    gradient_base_color = tetrad[1].rgb
+    form_secondary_color = tetrad[2].rgb
+    form_alternate_color = tetrad[3].rgb
+    form_primary_text_color = form_base_color.dark? ? '#FFFFFF'.paint : '#000000'.paint
+    form_secondary_text_color = form_secondary_color.dark? ? '#FFFFFF'.paint : '#000000'.paint
+    form_alternate_text_color = form_alternate_color.dark? ? '#FFFFFF'.paint : '#000000'.paint
+    gradient_start = form_base_color
+    gradient_start.a = 0.6
+    gradient_end = form_base_color
+    gradient_end.a = 0.8
+    form_primary_color = form_base_color
+    form_primary_color.a = 0.6
+    form_link_color = form_base_color
+    form_link_color.a = 0.9
+    form_secondary_color.a = 0.6
+    form_alternate_color.a = 0.6
     palette = {
-      gradient_start: "rgba(#{gbc[:r]}, #{gbc[:g]}, #{gbc[:g]}, 0.6)",
-      gradient_end: "rgba(#{gbc[:r]}, #{gbc[:g]}, #{gbc[:g]}, 0.8)",
-      form_primary_color: "rgba(#{fbc[:r]}, #{fbc[:g]}, #{fbc[:g]}, 0.4)",
-      form_primary_text_color: fbc.paint.dark? ? '#FFFFFF' : '#000000',
-      form_link_color: "rgba(#{fbc[:r]}, #{fbc[:g]}, #{fbc[:g]}, 0.9)",
-      form_secondary_color: "rgba(#{fsc[:r]}, #{fsc[:g]}, #{fsc[:g]}, 0.6)",
-      form_primary_text_color: fsc.paint.dark? ? '#FFFFFF' : '#000000',
-      form_alternate_color: "rgba(#{fac[:r]}, #{fac[:g]}, #{fac[:g]}, 0.6)",
-      form_primary_text_color: fac.paint.dark? ? '#FFFFFF' : '#000000'
+      gradient_start: gradient_start.to_rgb,
+      gradient_end: gradient_end.to_rgb,
+      form_primary_color: form_primary_color.to_rgb,
+      form_primary_text_color: form_primary_text_color.to_rgb,
+      form_link_color: form_link_color.to_rgb,
+      form_secondary_color: form_secondary_color.to_rgb,
+      form_secondary_text_color: form_secondary_text_color.to_rgb,
+      form_alternate_color: form_alternate_color.to_rgb,
+      form_alternate_text_color: form_alternate_text_color.to_rgb
     }
   end
 
