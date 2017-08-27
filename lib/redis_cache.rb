@@ -459,13 +459,13 @@ class RedisCache
     form_primary_text_color = form_base_color.paint.dark? ? '#FFFFFF' : '#000000'
     form_secondary_text_color = form_secondary_color.paint.dark? ? '#FFFFFF' : '#000000'
     form_alternate_text_color = form_alternate_color.paint.dark? ? '#FFFFFF' : '#000000'
-    gradient_start = form_base_color.rgb
+    gradient_start = form_base_color.paint.rgb
     gradient_start.a = 0.6
-    gradient_end = form_base_color.rgb
+    gradient_end = form_base_color.paint.rgb
     gradient_end.a = 0.8
-    form_primary_color = form_base_color.rgb
+    form_primary_color = form_base_color.paint.rgb
     form_primary_color.a = 0.6
-    form_link_color = form_base_color.rgb
+    form_link_color = form_base_color.paint.rgb
     form_link_color.a = 0.9
     form_secondary_color.a = 0.6
     form_alternate_color.a = 0.6
