@@ -34,7 +34,7 @@ class Dashboard::RoutersController < ApplicationController
     return raise_not_authorized(@router) unless RedisCache.cached_policy(@current_user, @router, 'show')
     data = File.read(@router.package)
     send_data(
-      data,
+      Base64.encode64(data),
       type: 'application/zip',
       filename: "#{@router.common_name}.zip",
       stream: false
