@@ -452,20 +452,20 @@ class RedisCache
 
   def self.build_palette(base_color)
     tetrad = base_color.paint.palette.tetrad
-    form_base_color = tetrad[0].rgb
-    gradient_base_color = tetrad[1].rgb
-    form_secondary_color = tetrad[2].rgb
-    form_alternate_color = tetrad[3].rgb
+    form_base_color = tetrad[0]
+    gradient_base_color = tetrad[1]
+    form_secondary_color = tetrad[2]
+    form_alternate_color = tetrad[3]
     form_primary_text_color = form_base_color.paint.dark? ? '#FFFFFF' : '#000000'
     form_secondary_text_color = form_secondary_color.paint.dark? ? '#FFFFFF' : '#000000'
     form_alternate_text_color = form_alternate_color.paint.dark? ? '#FFFFFF' : '#000000'
-    gradient_start = form_base_color
+    gradient_start = form_base_color.rgb
     gradient_start.a = 0.6
-    gradient_end = form_base_color
+    gradient_end = form_base_color.rgb
     gradient_end.a = 0.8
-    form_primary_color = form_base_color
+    form_primary_color = form_base_color.rgb
     form_primary_color.a = 0.6
-    form_link_color = form_base_color
+    form_link_color = form_base_color.rgb
     form_link_color.a = 0.9
     form_secondary_color.a = 0.6
     form_alternate_color.a = 0.6
