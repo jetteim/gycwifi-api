@@ -45,7 +45,7 @@ class RedisCache
   end
 
   # instrument_method
-  def self.(layout_id)
+  def self.cached_layout(layout_id)
     cache_object('layout', layout_id)
   end
 
