@@ -1,5 +1,5 @@
 class Dashboard::RoutersController < ApplicationController
-  before_action :current_router, only: %i[show update destroy config]
+  before_action :current_router, only: %i[show update destroy config package]
   before_action :parse_params
   # include Skylight::Helpers
   # before_action :check_access_rights
@@ -28,6 +28,11 @@ class Dashboard::RoutersController < ApplicationController
       status: 'ok',
       message: 'Router by ID'
     }
+  end
+
+  def package
+    return raise_not_authorized(@router) unless RedisCache.cached_policy(@current_user, @router, 'show')
+    send_file(@router.package)
   end
 
   # instrument_method
