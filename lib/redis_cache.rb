@@ -12,6 +12,12 @@ class RedisCache
   POLL_LIFETIME = 2.hours
   USER_LIFETIME = 2.hours
   TOKEN_LIFETIME = 24.hours
+  #colors
+  # BG_PRIMARY_RGB = '92, 144, 210'
+  # BG_FORM_LOGIN_RGB = '37, 40, 47'
+  DEFAULT_BG_COLOR_HEX = '#5c90d2'
+  DEFAULT_BG_COLOR_RGB = DEFAULT_BG_COLOR_HEX.paint.to_rgb
+  DEFAULT_BG_COLOR_HEX8 = DEFAULT_BG_COLOR_HEX.paint.to_hex8
 
   # instrument_method
   def self.cached_location(location_id)
@@ -103,13 +109,17 @@ class RedisCache
       location_id: location[:id], title: location[:title],
       background: location[:background], promo_text: location[:promo_text],
       social_networks: location[:providers], logo: location[:logo],
-      sms_auth: location[:sms_auth],
+      sms_auth: location[:sms_auth], bg_color: (location[:bg_color] || DEFAULT_BG_COLOR_HEX8
       vouchers: location[:available_vouchers], template: location[:template],
       login_menu_items: location[:login_menu_items],
       redirect_url: location[:redirect_url],
       last_page_content: no_poll ? 'text' : location[:last_page_content],
       poll: no_poll ? nil : poll
     }
+  end
+
+  def self.color_to_rgb(color)
+    return "#{clr[0]}, #{clr[1]}, #{clr[2]}" if clr = color.match /#(\d\d)(\d\d)(\d\d)/
   end
 
   # instrument_method

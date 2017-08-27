@@ -72,6 +72,7 @@ gem 'mini_magick'
 
 # Other gems
 # gem 'turbolinks'
+gem 'chroma'
 gem 'axlsx'
 gem 'axlsx_rails'
 gem 'babosa'
