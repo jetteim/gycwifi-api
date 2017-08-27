@@ -464,7 +464,7 @@ class RedisCache
     gradient_end = form_base_color.paint
     gradient_end.rgb.a = 0.8
     form_primary_color = form_base_color.paint
-    form_primary_color.rgb.a = 0.6
+    form_primary_color.rgb.a = 0.4
     form_link_color = form_base_color.paint
     form_link_color.rgb.a = 0.9
     form_secondary_color.rgb.a = 0.6
