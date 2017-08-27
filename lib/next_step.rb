@@ -98,16 +98,16 @@ class NextStep
   # instrument_method
   def self.targeting_info(session)
     targeting = {
-      adDivId: "smt-130299538",
-      publisherId: 1100021743,
-      adSpaceId: 130299538,
-      format: "all",
+      # adspacename: "GYCWiFi_#{session[:platform_os]}_320x50",
+      adDivId: 'smt-130299538',
+      publisherId: '1100021743',
+      adSpaceId: '130299538',
+      format: 'all',
       formatstrict: true,
-      dimension: "xlarge",
-      width: 300,
-      height: 50,
-      sync: false,
-      adspacename: "GYCWiFi_#{session[:platform_os]}_320x50",
+      dimension: 'xlarge',
+      width: '300',
+      height: '50',
+      sync: false
     }
     begin
       # собираем имеющиеся данные

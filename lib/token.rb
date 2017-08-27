@@ -4,9 +4,8 @@ class Token
   JWT_ALGORITHM = Rails.application.secrets.jwt_algorithm
 
   def initialize(token)
-    @payload = JWT.decode(token, JWT_SECRET, JWT_ALGORITHM).first.with_indifferent_access
-    @user_id = @payload[:user_id]
-    @user_id
+    @payload = JWT.decode(token, JWT_SECRET, JWT_ALGORITHM).first.with_indifferent_access if token
+    @user_id = @payload[:user_id] if @payload
   end
 
   def valid?
