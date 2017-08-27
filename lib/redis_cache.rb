@@ -56,7 +56,7 @@ class RedisCache
     location = cached_location(session[:location_id])
     if location[:sms_auth]
       user = User.find_by(id: location[:user_id])
-      location[:sms_auth] = (user.sms_count > 0)
+      location[:sms_auth] = user.sms_count.positive?
     end
     poll = RedisCache.cached_poll(location[:poll_id]) if location[:poll_id]
     cache = style_hash(location, poll, session[:client_id])
@@ -109,7 +109,8 @@ class RedisCache
       location_id: location[:id], title: location[:title],
       background: location[:background], promo_text: location[:promo_text],
       social_networks: location[:providers], logo: location[:logo],
-      sms_auth: location[:sms_auth], bg_color: location[:bg_color] || DEFAULT_BG_COLOR_HEX8, color_theme: build_palette(location[:bg_color]),
+      sms_auth: location[:sms_auth], bg_color: location[:bg_color] || DEFAULT_BG_COLOR_HEX8,
+      color_theme: build_palette(location[:bg_color]),
       vouchers: location[:available_vouchers], template: location[:template],
       login_menu_items: location[:login_menu_items],
       redirect_url: location[:redirect_url],
@@ -145,7 +146,7 @@ class RedisCache
     res = cached.to_json if cached
     REDIS.setex(key, const_get("#{name.upcase}_LIFETIME"), res) if res
     Rails.logger.debug "cached data: #{cached.inspect}".blue
-    cached.symbolize_keys if cached
+    cached&.symbolize_keys
   end
 
   # instrument_method
