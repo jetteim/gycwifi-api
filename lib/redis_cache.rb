@@ -12,10 +12,10 @@ class RedisCache
   POLL_LIFETIME = 2.hours
   USER_LIFETIME = 2.hours
   TOKEN_LIFETIME = 24.hours
-  #colors
+  # colors
   # BG_PRIMARY_RGB = '92, 144, 210'
   # BG_FORM_LOGIN_RGB = '37, 40, 47'
-  DEFAULT_BG_COLOR_HEX = '#5c90d2'
+  DEFAULT_BG_COLOR_HEX = '#5c90d2'.freeze
   DEFAULT_BG_COLOR_RGB = DEFAULT_BG_COLOR_HEX.paint.to_rgb
   DEFAULT_BG_COLOR_HEX8 = DEFAULT_BG_COLOR_HEX.paint.to_hex8
 
@@ -109,7 +109,7 @@ class RedisCache
       location_id: location[:id], title: location[:title],
       background: location[:background], promo_text: location[:promo_text],
       social_networks: location[:providers], logo: location[:logo],
-      sms_auth: location[:sms_auth], bg_color: location[:bg_color] || DEFAULT_BG_COLOR_HEX8, color_theme: build_color_theme(location[:bg_color])
+      sms_auth: location[:sms_auth], bg_color: location[:bg_color] || DEFAULT_BG_COLOR_HEX8, color_theme: build_color_theme(location[:bg_color]),
       vouchers: location[:available_vouchers], template: location[:template],
       login_menu_items: location[:login_menu_items],
       redirect_url: location[:redirect_url],
@@ -118,9 +118,9 @@ class RedisCache
     }
   end
 
-  def self.build_color_theme(color)
+  def self.build_color_theme(_color)
     {
-      
+
     }
   end
 
