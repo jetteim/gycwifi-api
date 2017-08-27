@@ -103,7 +103,7 @@ class NextStep
       publisherId: '1100021743',
       adSpaceId: '130299538',
       format: 'all',
-      formatstrict: true,
+      # formatstrict: true,
       dimension: 'xlarge',
       width: '300',
       height: '50',
