@@ -32,7 +32,7 @@ class Dashboard::RoutersController < ApplicationController
 
   def package
     return raise_not_authorized(@router) unless RedisCache.cached_policy(@current_user, @router, 'show')
-    send_file(@router.package, stream: false)
+    send_file(@router.package, stream: false, type: 'application/zip')
   end
 
   # instrument_method
