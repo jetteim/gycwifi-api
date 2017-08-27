@@ -109,7 +109,7 @@ class RedisCache
       location_id: location[:id], title: location[:title],
       background: location[:background], promo_text: location[:promo_text],
       social_networks: location[:providers], logo: location[:logo],
-      sms_auth: location[:sms_auth], bg_color: (location[:bg_color] || DEFAULT_BG_COLOR_HEX8
+      sms_auth: location[:sms_auth], bg_color: location[:bg_color] || DEFAULT_BG_COLOR_HEX8, color_theme: build_color_theme(location[:bg_color])
       vouchers: location[:available_vouchers], template: location[:template],
       login_menu_items: location[:login_menu_items],
       redirect_url: location[:redirect_url],
@@ -118,8 +118,10 @@ class RedisCache
     }
   end
 
-  def self.color_to_rgb(color)
-    return "#{clr[0]}, #{clr[1]}, #{clr[2]}" if clr = color.match /#(\d\d)(\d\d)(\d\d)/
+  def self.build_color_theme(color)
+    {
+      
+    }
   end
 
   # instrument_method
