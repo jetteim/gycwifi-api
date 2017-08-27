@@ -459,28 +459,26 @@ class RedisCache
     form_primary_text_color = form_base_color.paint.dark? ? '#FFFFFF' : '#000000'
     form_secondary_text_color = form_secondary_color.paint.dark? ? '#FFFFFF' : '#000000'
     form_alternate_text_color = form_alternate_color.paint.dark? ? '#FFFFFF' : '#000000'
-    gradient_start = form_base_color.paint.rgb
-    gradient_start.a = 0.6
-    gradient_end = form_base_color.paint.rgb
-    gradient_end.a = 0.8
-    form_primary_color = form_base_color.paint.rgb
-    form_primary_color.a = 0.6
-    form_link_color = form_base_color.paint.rgb
-    form_link_color.a = 0.9
-    form_secondary_color = form_secondary_color.rgb
-    form_secondary_color.a = 0.6
-    form_alternate_color = form_alternate_color.rgb
-    form_alternate_color.a = 0.6
+    gradient_start = form_base_color.paint
+    gradient_start.rgb.a = 0.6
+    gradient_end = form_base_color.paint
+    gradient_end.rgb.a = 0.8
+    form_primary_color = form_base_color.paint
+    form_primary_color.rgb.a = 0.6
+    form_link_color = form_base_color.paint
+    form_link_color.rgb.a = 0.9
+    form_secondary_color.rgb.a = 0.6
+    form_alternate_color.rgb.a = 0.6
     palette = {
-      gradient_start: gradient_start.to_rgb,
-      gradient_end: gradient_end.to_rgb,
-      form_primary_color: form_primary_color.to_rgb,
-      form_primary_text_color: form_primary_text_color.to_rgb,
-      form_link_color: form_link_color.to_rgb,
-      form_secondary_color: form_secondary_color.to_rgb,
-      form_secondary_text_color: form_secondary_text_color.to_rgb,
-      form_alternate_color: form_alternate_color.to_rgb,
-      form_alternate_text_color: form_alternate_text_color.to_rgb
+      gradient_start: gradient_start,
+      gradient_end: gradient_end,
+      form_primary_color: form_primary_color,
+      form_primary_text_color: form_primary_text_color,
+      form_link_color: form_link_color,
+      form_secondary_color: form_secondary_color,
+      form_secondary_text_color: form_secondary_text_color,
+      form_alternate_color: form_alternate_color,
+      form_alternate_text_color: form_alternate_text_color
     }
   end
 
