@@ -17,7 +17,7 @@ class RedisCache
   # BG_FORM_LOGIN_RGB = '37, 40, 47'
   DEFAULT_BG_COLOR_HEX = '#5c90d2'
   DEFAULT_BG_COLOR_RGB = DEFAULT_BG_COLOR_HEX.paint.to_rgb
-  DEFAULT_BG_COLOR_HEX8 = DEFAULT_BG_COLOR_HEX.paint.to_hex8
+  DEFAULT_BG_COLOR_HEX8 = DEFAULT_BG_COLOR_HEX.paint.to_hex
   RED = { '50' => '#ffebee',
    '100' => '#ffcdd2',
    '200' => '#ef9a9a',
@@ -451,9 +451,22 @@ class RedisCache
   end
 
   def self.build_palette(color)
-    palette = [color.paint.to_hex8]
-    color.paint.palette.tetrad(as: :hex8).each {|c| palette << c}
-    palette
+    tetrad = color.paint.palette.tetrad(as: :rgb)
+    fbc = tetrad[0][:rgb]
+    gbc = tetrad[1][:rgb]
+    fsc = tetrad[2][:rgb]
+    fac = tetrad[3][:rgb]
+    palette = {
+      gradient_start: "rgba(#{gbc[:r]}, #{gbc[:g]}, #{gbc[:g]}, 0.6)",
+      gradient_end: "rgba(#{gbc[:r]}, #{gbc[:g]}, #{gbc[:g]}, 0.8)",
+      form_primary_color: "rgba(#{fbc[:r]}, #{fbc[:g]}, #{fbc[:g]}, 0.4)",
+      form_primary_text_color: fbc.paint.dark? ? '#FFFFFF' : '#000000',
+      form_link_color: "rgba(#{fbc[:r]}, #{fbc[:g]}, #{fbc[:g]}, 0.9)",
+      form_secondary_color: "rgba(#{fsc[:r]}, #{fsc[:g]}, #{fsc[:g]}, 0.6)",
+      form_primary_text_color: fsc.paint.dark? ? '#FFFFFF' : '#000000',
+      form_alternate_color: "rgba(#{fac[:r]}, #{fac[:g]}, #{fac[:g]}, 0.6)",
+      form_primary_text_color: fac.paint.dark? ? '#FFFFFF' : '#000000'
+    }
   end
 
   # instrument_method
