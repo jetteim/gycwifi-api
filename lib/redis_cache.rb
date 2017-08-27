@@ -109,7 +109,7 @@ class RedisCache
       location_id: location[:id], title: location[:title],
       background: location[:background], promo_text: location[:promo_text],
       social_networks: location[:providers], logo: location[:logo],
-      sms_auth: location[:sms_auth], bg_color: location[:bg_color] || DEFAULT_BG_COLOR_HEX8, color_theme: build_color_theme(location[:bg_color]),
+      sms_auth: location[:sms_auth], bg_color: location[:bg_color] || DEFAULT_BG_COLOR_HEX8, color_theme: build_palette(location[:bg_color]),
       vouchers: location[:available_vouchers], template: location[:template],
       login_menu_items: location[:login_menu_items],
       redirect_url: location[:redirect_url],
@@ -118,10 +118,8 @@ class RedisCache
     }
   end
 
-  def self.build_color_theme(_color)
-    {
-
-    }
+  def self.build_palette(color)
+    color.paint.palette.analogous
   end
 
   # instrument_method
