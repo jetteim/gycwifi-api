@@ -85,7 +85,7 @@ class User < ApplicationRecord #:nodoc:
   def token
     logger.debug "building token for user #{id}".cyan
     token = Token.encode(id)
-    REDIS.sadd(redis_token_key(id), token)
+    REDIS.sadd(redis_token_key, token)
     token
   end
 
