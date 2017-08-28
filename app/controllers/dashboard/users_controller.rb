@@ -187,7 +187,7 @@ module Dashboard
     end
 
     def profile_params
-      params.require(:user).permit(:password, :avatar, :type, :tour, :email, :user)
+      params.require(:profile).permit(:password, :avatar, :type, :tour, :email, :user)
     end
   end
 end
