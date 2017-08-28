@@ -89,6 +89,10 @@ class User < ApplicationRecord #:nodoc:
     token
   end
 
+  def redis_token_key
+    "token_#{id}"
+  end
+
   def front_model
     {
       id: id,
