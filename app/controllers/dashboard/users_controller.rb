@@ -59,8 +59,18 @@ module Dashboard
 
     def update
       authorize(@object_user)
-      if @object_user.update(user_params)
-        render json: @object_user.front_model
+      if @object_user.update(profile_params)
+        render json: {
+          {
+            id: @object_user.id,
+            auth: true,
+            username: @object_user.username,
+            email: @object_user.email,
+            avatar: @object_user.avatar,
+            token: token(@object_user.id),
+            role: @object_user.role,
+            user_info: @object_user.front_model
+          }
       else
         render json: { error: user.errors.full_messages }
       end
@@ -184,6 +194,10 @@ module Dashboard
 
     def user_params
       params.require(:user).permit(:password, :avatar, :type, :tour, :email, :user)
+    end
+
+    def profile_params
+      params.require(:profile).permit(:password, :avatar, :type, :tour, :email, :user)
     end
   end
 end
