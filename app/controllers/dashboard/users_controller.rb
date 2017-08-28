@@ -60,7 +60,6 @@ module Dashboard
     def update
       authorize(@object_user)
       if @object_user.update(user_params)
-        PromoCode.generate_for_agent(@object_user.id)
         render json: @object_user.front_model
       else
         render json: { error: user.errors.full_messages }
