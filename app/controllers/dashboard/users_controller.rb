@@ -60,19 +60,19 @@ module Dashboard
     def update
       authorize(@object_user)
       if @object_user.update(profile_params)
-        render json: @object_user
+        render json: @object_user.profile
       else
         render json: { error: user.errors.full_messages }
       end
     end
 
     def destroy
-      authorize @brand
-      if @brand.destroy
+      authorize @object_user
+      if @object_user.destroy
         render json: {
           data: nil,
           status: 'ok',
-          message: I18n.t('errors.brands.deleted')
+          message: ''
         }
       else
         render json: {
@@ -187,7 +187,7 @@ module Dashboard
     end
 
     def profile_params
-      params.require(:profile).permit(:password, :avatar, :type, :tour, :email, :user)
+      params.require(:profile).permit(:password, :avatar, :email, :type, :user, :tour)
     end
   end
 end

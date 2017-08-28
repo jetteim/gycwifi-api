@@ -22,7 +22,7 @@ class AuthController < ApplicationController #:nodoc:
     user_data = SocialAccount.pull_user_data(auth_data)
     social_account = SocialAccount.find_social_account(user_data)
     user = social_account.linked_user
-    render json: auth_json(user), status: :ok
+    render json: user.profile, status: :ok
   end
 
   # авторизация в login - мы уже идентифицировали нашего Client, а для его авторизации достаточно того,
@@ -61,7 +61,7 @@ class AuthController < ApplicationController #:nodoc:
     user = sign_in_user
     if user
       logger.debug "found user #{user.inspect}".yellow
-      render json: auth_json(user), status: :created
+      render json: user.profile, status: :created
     else
       render json: { auth: false, error: 'Cant find user' }, status: :unprocessable_entity
     end
@@ -73,7 +73,7 @@ class AuthController < ApplicationController #:nodoc:
     user = build_user
     if user.save
       logger.debug "new user created #{user.inspect}".yellow
-      render json: auth_json(user)
+      render json: user.profile
       perform_sign_up_job(user)
     else
       render json: { error: user.errors.full_messages }
@@ -127,27 +127,6 @@ class AuthController < ApplicationController #:nodoc:
       voucher.activate(@session[:client_id])
     end
     true
-  end
-
-  def auth_json(user)
-    {
-      id: user.id,
-      auth: true,
-      username: user.username,
-      email: user.email,
-      avatar: user.avatar,
-      token: token(user.id),
-      role: user.role,
-      user_info: user.front_model
-    }
-  end
-
-  # instrument_method
-  def token(user_id)
-    logger.debug "building token for user #{user_id}".cyan
-    token = Token.encode(user_id)
-    REDIS.sadd(redis_token_key(user_id), token)
-    token
   end
 
   # instrument_method

@@ -152,6 +152,7 @@ class ApplicationController < ActionController::API
   def redis_token_key(user_id)
     "token_#{user_id}"
   end
+  helper_method :redis_token_key
 
   def acknowledge_token?(user_id, header_token)
     REDIS.smembers(redis_token_key(user_id)).include? header_token

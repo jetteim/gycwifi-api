@@ -69,6 +69,26 @@ class User < ApplicationRecord #:nodoc:
     agent&.id
   end
 
+  def profile
+    {
+      id: id,
+      auth: true,
+      username: username,
+      email: email,
+      avatar: avatar,
+      token: token,
+      role: role,
+      user_info: front_model
+    }
+  end
+
+  def token
+    logger.debug "building token for user #{id}".cyan
+    token = Token.encode(id)
+    REDIS.sadd(redis_token_key(id), token)
+    token
+  end
+
   def front_model
     {
       id: id,
