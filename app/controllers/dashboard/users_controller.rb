@@ -59,8 +59,8 @@ module Dashboard
 
     def update
       authorize(@object_user)
-      if @object_user.update(user_params)
-        render json: @object_user.front_model
+      if @object_user.update(profile_params)
+        render json: @object_user
       else
         render json: { error: user.errors.full_messages }
       end
