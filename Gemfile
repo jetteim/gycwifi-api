@@ -31,7 +31,7 @@ gem 'jwt'
 gem 'koala'
 gem 'omniauth-instagram'
 gem 'pundit'
-gem 'twitter_oauth'
+gem 'simple_oauth'
 
 # gem 'omniauth-google-oauth2'
 # gem 'oauth2'
