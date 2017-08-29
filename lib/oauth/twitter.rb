@@ -8,7 +8,8 @@ module Oauth
     CONSUMER_CONFIG = {
       site: 'https://api.twitter.com',
       request_token_path: '/oauth/request_token',
-      authorize_path: '/oauth/authorize',
+      # authorize_path: '/oauth/authorize',
+      authorize_path: '/oauth/authenticate',
       access_token_path: 'oauth/access_token'
     }.freeze
 
