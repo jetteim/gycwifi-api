@@ -44,9 +44,9 @@ module Oauth
 
     def self.signed_request(endpoint, method = 'POST', params = nil)
       Rails.logger.debug "signed request called, endpoint: #{endpoint}, method: #{method}, params: #{params.inspect}".cyan
-      signature = oauth_signature(method, endPoint, params)
+      signature = oauth_signature(method, endpoint, params)
       Rails.logger.debug "request signature: #{signature}".green
-      raw_reply = RestClient.post(endPoint,
+      raw_reply = RestClient.post(endpoint,
                                   params.merge(oauth_signature: signature))
       Rails.logger.debug "raw reply: #{raw_reply}".cyan
       JSON.parse(raw_reply, symbolize_names: true)
