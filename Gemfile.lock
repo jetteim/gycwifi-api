@@ -263,6 +263,7 @@ GEM
     omniauth-oauth2 (1.4.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
+    openssl (2.0.5)
     os (0.9.6)
     parallel (1.12.0)
     parser (2.4.0.0)
@@ -436,6 +437,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.8.3)
+  addressable
   annotate
   axlsx
   axlsx_rails
@@ -473,6 +475,7 @@ DEPENDENCIES
   mtik
   net-ssh
   omniauth-instagram
+  openssl
   pg
   pry-rails
   puma
