@@ -17,7 +17,7 @@ module Oauth
       Rails.logger.debug "Oauth consumer: #{@consumer.inspect}".magenta
       @request_token = @consumer.get_request_token(oauth_callback: callback_url)
       Rails.logger.debug "request_token: #{@request_token.inspect}".magenta
-      { oauth_token: @request_token.token, oauth_secret: @request_token.secret }
+      { oauth_token: @request_token.token, oauth_secret: @request_token.secret, oauth_callback_url: callback_url }
     end
 
     def self.user_data(auth_data)
