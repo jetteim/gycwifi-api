@@ -11,19 +11,17 @@ module Oauth
     DEFAULT_PARAMS = {
       oauth_consumer_key: TWITTER_KEY,
       oauth_signature_method: OAUTH_SIGNATURE_METHOD
-    }
+    }.freeze
 
     def self.get_request_token(url)
       endPoint = 'https://api.twitter.com/oauth/request_token'
-      params = DEFAULT_PARAMS.merge {
-        oauth_callback: url
-      }
+      params = DEFAULT_PARAMS.merge(oauth_callback: url)
       res = signed_request(endPoint, 'POST', params)
       Rails.logger.debug "twitter request_token call returned #{res.inspect}".green
       res
     end
 
-    def self.access_token(auth_data)
+    def self.access_token(_auth_data)
       # Rails.logger.debug "twitter access_token params #{auth_data.inspect}".magenta
       # res = JSON.parse(
       #   RestClient.post('https://api.twitter.com/oauth/access_token',
@@ -35,7 +33,7 @@ module Oauth
       # res
     end
 
-    def self.user_data(oauth_token, oauth_verifier)
+    def self.user_data(_oauth_token, _oauth_verifier)
       # # bearer_token_credentials = "#{ENV['TWITTER_KEY']}:#{ENV['TWITTER_SECRET']}"
       # Rails.logger.debug "twitter auth - oauth_token: #{oauth_token}, oauth_verifier: #{oauth_verifier}".green
       # # twitter_key = 'wrJz64NqtUnezFE2m86toABdV'
@@ -49,7 +47,7 @@ module Oauth
       signature = oauth_signature(method, endPoint, params)
       Rails.logger.debug "request signature: #{signature}".green
       raw_reply = RestClient.post(endPoint,
-                                  params.merge {oauth_signature: signature} )
+                                  params.merge(oauth_signature: signature))
       Rails.logger.debug "raw reply: #{raw_reply}".cyan
       JSON.parse(raw_reply, symbolize_names: true)
     end
