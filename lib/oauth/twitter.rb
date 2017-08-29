@@ -8,8 +8,7 @@ module Oauth
     CONSUMER_CONFIG = {
       site: 'https://api.twitter.com',
       request_token_path: '/oauth/request_token',
-      # authorize_path: '/oauth/authorize',
-      authorize_path: '/oauth/authenticate',
+      authorize_path: '/oauth/authorize',
       access_token_path: 'oauth/access_token'
     }.freeze
 
@@ -18,7 +17,7 @@ module Oauth
       Rails.logger.debug "Oauth consumer: #{@consumer.inspect}".magenta
       @request_token = @consumer.get_request_token(oauth_callback: callback_url)
       Rails.logger.debug "request_token: #{@request_token.inspect}".magenta
-      @request_token
+      { oauth_token: @request_token.token, oauth_secret: @request_token.secret }
     end
 
     def self.user_data(auth_data)
