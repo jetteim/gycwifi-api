@@ -3,7 +3,7 @@ module Oauth
     TWITTER_KEY = ENV['TWITTER_KEY'] || 'fI1qz0H8qdBhk95AFVE1b1S3k'
     TWITTER_SECRET = ENV['TWITTER_SECRET'] || 'ZLeoiweNZgw26pXXstC4qGbjAUD5NEb2aYYfDMWcwHQ5ILMHMN'
 
-    def self.request_token(oauth_callback)
+    def self.get_request_token(oauth_callback)
       res = JSON.parse(RestClient.post('https://api.twitter.com/oauth/request_token',
                                        oauth_callback: oauth_callback, oauth_consumer_key: TWITTER_KEY), symbolize_names: true)
       Rails.logger.debug "twitter request_token call returned #{res.inspect}".green
