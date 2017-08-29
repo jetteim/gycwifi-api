@@ -19,7 +19,7 @@ class AuthController < ApplicationController #:nodoc:
   def authorize_user(params)
     auth_data = auth_params(params)
     return password(params) if auth_data[:provider] == 'password'
-    return render json: request_token = oauth1_request_token(params[:url]) unless auth_data[:code]
+    return render json: request_token = oauth1_request_token(auth_data[:provider], params[:url]) unless auth_data[:code]
     user_data = SocialAccount.pull_user_data(auth_data[:provider])
     social_account = SocialAccount.find_social_account(user_data)
     user = social_account.linked_user
@@ -86,7 +86,7 @@ class AuthController < ApplicationController #:nodoc:
   def oauth1_request_token(provider, url)
     case provider
     when 'twitter'
-      Oauth::TwitterLibrary.get_request_token(url)
+      Oauth::TwitterLibrary.get_request_token(provider, url)
     end
   end
 
