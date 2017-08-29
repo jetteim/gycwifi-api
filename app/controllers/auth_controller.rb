@@ -86,7 +86,7 @@ class AuthController < ApplicationController #:nodoc:
   def oauth1_request_token(auth_data)
     case auth_data[:provider]
     when 'twitter'
-      Oauth::TwitterLibrary.get_request_token(Rails.url_for(only_path: false))
+      Oauth::TwitterLibrary.get_request_token(request.original_url)
     end
   end
 
