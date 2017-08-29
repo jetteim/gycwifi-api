@@ -1,6 +1,6 @@
 module Dashboard
   class PublicStatsController < StatsController
-     skip_before_action :authenticate_user
+    skip_before_action :authenticate_user
     ##### Unauthorized methods
     # instrument_method
     def all_connections
@@ -39,6 +39,7 @@ module Dashboard
     end
 
     private
+
     # instrument_method
     def all_locations
       @all_locations ||= Location.all.pluck(:id)

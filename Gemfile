@@ -59,10 +59,10 @@ gem 'redis'
 gem 'simple_enum'
 gem 'sqlite3'
 # gem 'high_voltage', '~> 3.0.0'
-gem 'kaminari'
-gem 'seed_dump'
 gem 'addressable'
+gem 'kaminari'
 gem 'openssl'
+gem 'seed_dump'
 # gem 'activerecord-session_store'
 # gem 'mysql2', '~> 0.3.17'
 # gem 'ar-octopus'
@@ -74,12 +74,12 @@ gem 'mini_magick'
 
 # Other gems
 # gem 'turbolinks'
-gem 'chroma'
 gem 'axlsx'
 gem 'axlsx_rails'
 gem 'babosa'
 gem 'binding_of_caller'
 gem 'bullet'
+gem 'chroma'
 gem 'colored'
 gem 'dotenv-rails'
 gem 'lograge'
@@ -110,12 +110,12 @@ end
 group :development, :test do
   # gem 'terminal-notifier-guard'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'rspec'
-  gem 'rspec-rails', '~> 3.5'
-  gem 'faker'
+  gem 'byebug', platform: :mri
   gem 'factory_girl'
   gem 'factory_girl_rails'
-  gem 'byebug', platform: :mri
+  gem 'faker'
+  gem 'rspec'
+  gem 'rspec-rails', '~> 3.5'
   gem 'rubocop-rspec'
 end
 

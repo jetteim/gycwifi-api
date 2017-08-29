@@ -5,7 +5,7 @@ class LogBeforeTimeout
 
   def call(env)
     thr = Thread.new do
-      timeout = Rails.env == 'development' ? 10000 : 9.5
+      timeout = Rails.env == 'development' ? 10_000 : 9.5
       sleep(timeout) # set this to Unicorn timeout - 1
       unless Thread.current[:done]
         path = env['PATH_INFO']

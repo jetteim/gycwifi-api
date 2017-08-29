@@ -13,7 +13,7 @@ module PollStatistic
         attempts_data(question_id).each do |attempt|
           q[:labels] << attempt['period'].to_time.strftime(time_format)
           q[:data][0] << attempt['amount']
-          q[:attempts] =  q[:data][0].sum
+          q[:attempts] = q[:data][0].sum
         end
         q
       end

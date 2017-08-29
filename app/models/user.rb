@@ -44,8 +44,6 @@ class User < ApplicationRecord #:nodoc:
 
   belongs_to :promo_code
 
-
-
   # Validations
   # validates :username, :email, :password, :role_cd, :tour, presence: true
   validates :username, length: { maximum: 100 }

@@ -3,7 +3,7 @@ module PollStatistic
     attr_reader :data
 
     def call
-      @data ||=  Question.includes(attempts: {client: :social_accounts}).where('poll_id = ?', @poll.id).map do |q|
+      @data ||= Question.includes(attempts: { client: :social_accounts }).where('poll_id = ?', @poll.id).map do |q|
         answers = q.answers.to_a.select { |answer| answer.custom == false }
         result = { title: q.title }
         result[:labels] = answers.map(&:title)
@@ -13,7 +13,7 @@ module PollStatistic
         result[:labels] << 'Свой ответ'
         result[:data] <<  q.attempts.select { |attempt| attempt.custom_answer.present? }.size
         result[:attempts] = q.attempts.sort_by(&:created_at).map do |attempt|
-          avatar = attempt.client&.social_accounts&.find{ |account| account.image.present? }&.image
+          avatar = attempt.client&.social_accounts&.find { |account| account.image.present? }&.image
           {
             attempt_date: attempt.created_at,
             phone_number: attempt.client&.phone_number,

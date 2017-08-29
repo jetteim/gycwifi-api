@@ -1,10 +1,10 @@
 class PromoCodePolicy < ApplicationPolicy
   def create?
-    true #все могут создавать промокоды
+    true # все могут создавать промокоды
   end
 
   def index?
-    true #все могут видеть промокоды
+    true # все могут видеть промокоды
   end
 
   class Scope < Scope
@@ -13,4 +13,3 @@ class PromoCodePolicy < ApplicationPolicy
     end
   end
 end
-

@@ -39,7 +39,6 @@ require 'zip_file_generator'
 require 'fileutils'
 require 'uri/http'
 
-
 class Router < ApplicationRecord
   # Relations
   # include Skylight::Helpers

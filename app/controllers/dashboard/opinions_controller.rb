@@ -40,10 +40,10 @@ class Dashboard::OpinionsController < ApplicationController
     authorize @opinion
     return render json: { status: 'error', message: @opinion.errors } unless @opinion.update(params[:opinion])
     render json: {
-        data: { opinion: @opinion.reload.as_json },
-        status: 'ok',
-        message: 'Opinion updated'
-      }
+      data: { opinion: @opinion.reload.as_json },
+      status: 'ok',
+      message: 'Opinion updated'
+    }
   end
 
   def destroy

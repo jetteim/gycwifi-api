@@ -18,9 +18,9 @@ class ApplicationPolicy
   end
 
   def index?
-    #все могут видеть, разница лишь в том что юзеры видят, поэтому всегда  true(TODO:  удалить все остальное, кроме true)
+    # все могут видеть, разница лишь в том что юзеры видят, поэтому всегда  true(TODO:  удалить все остальное, кроме true)
     user.super_user? ||
-      record.exists?(user: user)||
+      record.exists?(user: user) ||
       (user.can_view_owner_items? && record.exists?(user: user.user)) ||
       (user.can_view_child_items? && record.exists?(user: User.where(user: user).pluck(:id))) || true
   end

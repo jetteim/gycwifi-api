@@ -26,8 +26,8 @@ FactoryGirl.define do
     lang :en
     expiration nil
 
-    trait(:admin)     { type 'AdminUser' }
-    trait(:free)     { type 'FreeUser' }
+    trait(:admin) { type 'AdminUser' }
+    trait(:free) { type 'FreeUser' }
     trait(:pro)       { type 'ProUser' }
     trait(:exclusive) { type 'ExclusiveUser' }
     trait(:employee)  { type 'EmployeeUser' }

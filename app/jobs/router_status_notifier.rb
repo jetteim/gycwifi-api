@@ -14,8 +14,8 @@ class RouterStatusNotifier < ApplicationJob
       r.touch
       sent_at = DateTime.current
       title = "#{r.status ? 'INFO: Router online' : 'WARN: Router offline'} at #{r.location.title}: #{r.serial} - #{r.comment}"
-      details = ""
-      r.location.routers.each {|rtr| details = "#{details}\n#{rtr.serial} status: #{rtr.status ? 'online' : 'offline'}" }
+      details = ''
+      r.location.routers.each { |rtr| details = "#{details}\n#{rtr.serial} status: #{rtr.status ? 'online' : 'offline'}" }
       # : "WARN: Router online #{r.serial} - #{r.comment}"
       n = Notification.create(
         title: title,

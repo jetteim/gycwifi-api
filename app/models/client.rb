@@ -35,7 +35,7 @@ class Client < ApplicationRecord
   # Methods
   # instrument_method
   def social_info
-    info_keys = %i[username provider email image profile gender birthday].map{ |keys| [keys, nil] }.to_h
+    info_keys = %i[username provider email image profile gender birthday].map { |keys| [keys, nil] }.to_h
     social_accounts.inject(info_keys) { |info, s_a| info.each_key { |key| info[key] ||= s_a.send(key) } }
     info_keys
   end
