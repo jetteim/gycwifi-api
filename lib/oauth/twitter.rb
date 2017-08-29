@@ -15,7 +15,7 @@ module Oauth
 
     def self.get_request_token(url)
       endPoint = 'https://api.twitter.com/oauth/request_token'
-      params = DEFAULT_PARAMS.merge(oauth_callback: url)
+      params = DEFAULT_PARAMS.merge(oauth_callback: Addressable::URI.encode(url))
       res = signed_request(endPoint, 'POST', params)
       Rails.logger.debug "twitter request_token call returned #{res.inspect}".green
       res
@@ -71,7 +71,7 @@ module Oauth
     end
 
     def self.oauth_signature(method, url, params, token_secret = nil)
-      Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, signing_key(token_secret), signature_base(method, url, params))).chomp.delete("\n")
+      Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, signing_key(token_secret), signature_base(method, Addressable::URI.encode(url), params))).chomp.delete("\n")
     end
   end
 end
