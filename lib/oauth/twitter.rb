@@ -1,3 +1,6 @@
+require 'addressable/uri'
+require 'base64'
+
 module Oauth
   class TwitterLibrary
     TWITTER_KEY = ENV['TWITTER_KEY'] || 'fI1qz0H8qdBhk95AFVE1b1S3k'
@@ -5,7 +8,7 @@ module Oauth
 
     def self.get_request_token(url)
       res = JSON.parse(RestClient.post('https://api.twitter.com/oauth/request_token',
-                                       oauth_callback: url), symbolize_names: true)
+                                       callback: url, consumer_key: TWITTER_KEY, consumer_secret: TWITTER_SECRET), symbolize_names: true)
       Rails.logger.debug "twitter request_token call returned #{res.inspect}".green
       res
     end

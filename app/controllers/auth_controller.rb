@@ -83,10 +83,10 @@ class AuthController < ApplicationController #:nodoc:
 
   private
 
-  def oauth1_request_token(oauth_callback)
-    case auth_data[:provider]
+  def oauth1_request_token(provider, url)
+    case provider
     when 'twitter'
-      Oauth::TwitterLibrary.get_request_token(oauth_callback)
+      Oauth::TwitterLibrary.get_request_token(url)
     end
   end
 
