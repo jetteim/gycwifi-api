@@ -15,7 +15,7 @@ class RedisCache
   # colors
   # BG_PRIMARY_RGB = '92, 144, 210'
   # BG_FORM_LOGIN_RGB = '37, 40, 47'
-  DEFAULT_BG_COLOR_HEX = '#5c90d2'.freeze
+  DEFAULT_BG_COLOR_HEX = '#5c90d2'
   DEFAULT_BG_COLOR_RGB = DEFAULT_BG_COLOR_HEX.paint.to_rgb
   DEFAULT_BG_COLOR_HEX8 = DEFAULT_BG_COLOR_HEX.paint.to_hex
   RED = {
