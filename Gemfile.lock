@@ -247,7 +247,6 @@ GEM
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
-    oauth (0.5.3)
     oauth2 (1.4.0)
       faraday (>= 0.8, < 0.13)
       jwt (~> 1.0)
@@ -388,6 +387,7 @@ GEM
       multi_json (~> 1.10)
     simple_enum (2.3.0)
       activesupport (>= 4.0.0)
+    simple_oauth (0.3.1)
     simplecov (0.14.1)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
@@ -407,10 +407,6 @@ GEM
       virtus
     thor (0.19.4)
     thread_safe (0.3.6)
-    twitter_oauth (0.4.94)
-      json (>= 1.8.0)
-      mime-types (>= 1.16)
-      oauth (>= 0.4.7)
     tzinfo (1.2.3)
       thread_safe (~> 0.1)
     uber (0.1.0)
@@ -499,10 +495,10 @@ DEPENDENCIES
   shog
   shoulda-matchers
   simple_enum
+  simple_oauth
   simplecov
   sqlite3
   telegram-bot-ruby
-  twitter_oauth
   tzinfo-data
   zip-zip
 
