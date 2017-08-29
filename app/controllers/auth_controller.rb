@@ -19,7 +19,8 @@ class AuthController < ApplicationController #:nodoc:
   def authorize_user(params)
     auth_data = auth_params(params)
     return password(params) if auth_data[:provider] == 'password'
-    user_data = SocialAccount.pull_user_data(auth_data)
+    return render json: { request_token: oauth1_request_token(params) } unless auth_data[:code]
+    user_data = SocialAccount.pull_user_data(auth_data[:provider])
     social_account = SocialAccount.find_social_account(user_data)
     user = social_account.linked_user
     render json: user.profile, status: :ok
@@ -81,6 +82,13 @@ class AuthController < ApplicationController #:nodoc:
   end
 
   private
+
+  def self.oauth1_request_token(auth_data)
+    case auth_data[:provider]
+    when 'twitter'
+      Oauth::TwitterLibrary.get_request_token(Rails.url_for(only_path: false))
+    end
+  end
 
   def authorization_required?
     # TODO: здесь надо бы сделать диспетчер
