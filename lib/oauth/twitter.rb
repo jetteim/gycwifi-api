@@ -4,7 +4,7 @@ module Oauth
   class TwitterLibrary
     TWITTER_KEY = ENV['TWITTER_KEY'] || 'fI1qz0H8qdBhk95AFVE1b1S3k'
     TWITTER_SECRET = ENV['TWITTER_SECRET'] || 'ZLeoiweNZgw26pXXstC4qGbjAUD5NEb2aYYfDMWcwHQ5ILMHMN'
-    OAUTH_SIGNATURE_METHOD = 'HMAC-SHA1'.freeze
+
     CONSUMER_CONFIG = {
       site: 'https://api.twitter.com',
       request_token_path: '/oauth/request_token',
@@ -14,8 +14,10 @@ module Oauth
 
     def self.get_request_token(callback_url)
       @consumer = OAuth::Consumer.new(TWITTER_KEY, TWITTER_SECRET, CONSUMER_CONFIG)
-      Rails.logger.debug "Oauth consumer: #{@consumer.inspect}"
+      Rails.logger.debug "Oauth consumer: #{@consumer.inspect}".magenta
       @request_token = @consumer.get_request_token(oauth_callback: callback_url)
+      Rails.logger.debug "request_token: #{@request_token.inspect}".magenta
+      @request_token
     end
 
     def self.user_data(auth_data)
