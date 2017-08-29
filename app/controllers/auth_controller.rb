@@ -19,7 +19,7 @@ class AuthController < ApplicationController #:nodoc:
   def authorize_user(params)
     auth_data = auth_params(params)
     return password(params) if auth_data[:provider] == 'password'
-    return render json: request_token = oauth1_request_token(auth_data[:provider], params[:url]) unless auth_data[:code] || auth_data[:oauth_token]
+    return render json: oauth1_request_token(auth_data[:provider], params[:url]) unless auth_data[:code] || auth_data[:oauth_token]
     user_data = SocialAccount.pull_user_data(auth_data[:provider])
     social_account = SocialAccount.find_social_account(user_data)
     user = social_account.linked_user

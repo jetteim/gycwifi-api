@@ -1,28 +1,25 @@
-require 'addressable/uri'
-require 'base64'
-require 'openssl'
+require 'oauth'
 
 module Oauth
   class TwitterLibrary
     TWITTER_KEY = ENV['TWITTER_KEY'] || 'fI1qz0H8qdBhk95AFVE1b1S3k'
     TWITTER_SECRET = ENV['TWITTER_SECRET'] || 'ZLeoiweNZgw26pXXstC4qGbjAUD5NEb2aYYfDMWcwHQ5ILMHMN'
     OAUTH_SIGNATURE_METHOD = 'HMAC-SHA1'.freeze
+    REQUEST_ENDPOINT = 'https://api.twitter.com/oauth/request_token'.freeze
 
     DEFAULT_PARAMS = {
       oauth_consumer_key: TWITTER_KEY,
       oauth_signature_method: OAUTH_SIGNATURE_METHOD
     }.freeze
 
-    def self.get_request_token(url)
-      endPoint = 'https://api.twitter.com/oauth/request_token'
-      params = DEFAULT_PARAMS.merge(oauth_callback: Addressable::URI.encode(url))
-      res = signed_request(endPoint, 'POST', params)
-      Rails.logger.debug "twitter request_token call returned #{res.inspect}".green
-      res
+    def self.get_request_token(callback_url)
+      consumer = OAuth::Consumer.new(TWITTER_KEY, TWITTER_SECRET, site: REQUEST_ENDPOINT)
+      @request_token = consumer.get_request_token(oauth_callback: callback_url)
     end
 
-    def self.access_token(_auth_data)
-      # Rails.logger.debug "twitter access_token params #{auth_data.inspect}".magenta
+    def self.access_token(auth_data)
+      Rails.logger.debug "twitter access_token params #{auth_data.inspect}".magenta
+
       # res = JSON.parse(
       #   RestClient.post('https://api.twitter.com/oauth/access_token',
       #                   oauth_token: auth_data[:oauth_token],
@@ -40,38 +37,6 @@ module Oauth
       # # twitter_secret = '4bDGx7GXDi1ouCpudpVx2qmeaMCX4ZzkHuos9fvQdFk3b1Zw0Y'
       #
       # access_token
-    end
-
-    def self.signed_request(endpoint, method = 'POST', params = nil)
-      Rails.logger.debug "signed request called, endpoint: #{endpoint}, method: #{method}, params: #{params.inspect}".cyan
-      signature = oauth_signature(method, endpoint, params)
-      Rails.logger.debug "request signature: #{signature}".green
-      raw_reply = RestClient.post(endpoint,
-                                  params.merge(oauth_signature: signature))
-      Rails.logger.debug "raw reply: #{raw_reply}".cyan
-      JSON.parse(raw_reply, symbolize_names: true)
-    end
-
-    def self.signature_base(method, url, params)
-      # POST&https%3A%2F%2Fapi.twitter.com%2F1.1%2Fstatuses%2Fupdate.json&include_entities%3Dtrue%26oauth_consumer_key%3Dxvz1evFS4wEEPTGEFPHBog%26oauth_nonce%3DkYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1318622958%26oauth_token%3D370773112-GmHxMAgYyLbNEtIKZeRNFsMKPR9EyMZeS9weJAEb%26oauth_version%3D1.0%26status%3DHello%2520Ladies%2520%252B%2520Gentlemen%252C%2520a%2520signed%2520OAuth%2520request%2521
-      Rails.logger.debug "calculating signature base, params: #{params.inspect}".cyan
-      uri = Addressable::URI.new
-      uri.query_values = params
-      query = uri.query
-      Rails.logger.debug "encoded params: #{params.inspect}".magenta
-      res = "#{method.upcase}&#{Addressable::URI.encode(url)}&#{Addressable::URI.encode(query)}"
-      Rails.logger.debug "resulting base: #{res}".magenta
-      res
-    end
-
-    def self.signing_key(token_secret = nil)
-      res = token_secret ? "#{Addressable::URI.encode(TWITTER_SECRET)}&#{Addressable::URI.encode(token_secret)}" : "#{Addressable::URI.encode(TWITTER_SECRET)}&"
-      Rails.logger.debug "signing key: #{res}"
-      res
-    end
-
-    def self.oauth_signature(method, url, params, token_secret = nil)
-      Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, signing_key(token_secret), signature_base(method, Addressable::URI.encode(url), params))).chomp.delete("\n")
     end
   end
 end
