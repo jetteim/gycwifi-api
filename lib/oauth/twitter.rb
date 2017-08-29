@@ -42,7 +42,7 @@ module Oauth
       # access_token
     end
 
-    def signed_request(endpoint, method = 'POST', params = nil)
+    def self.signed_request(endpoint, method = 'POST', params = nil)
       Rails.logger.debug "signed request called, endpoint: #{endpoint}, method: #{method}, params: #{params.inspect}".cyan
       signature = oauth_signature(method, endPoint, params)
       Rails.logger.debug "request signature: #{signature}".green
@@ -52,7 +52,7 @@ module Oauth
       JSON.parse(raw_reply, symbolize_names: true)
     end
 
-    def signature_base(method, url, params)
+    def self.signature_base(method, url, params)
       # POST&https%3A%2F%2Fapi.twitter.com%2F1.1%2Fstatuses%2Fupdate.json&include_entities%3Dtrue%26oauth_consumer_key%3Dxvz1evFS4wEEPTGEFPHBog%26oauth_nonce%3DkYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1318622958%26oauth_token%3D370773112-GmHxMAgYyLbNEtIKZeRNFsMKPR9EyMZeS9weJAEb%26oauth_version%3D1.0%26status%3DHello%2520Ladies%2520%252B%2520Gentlemen%252C%2520a%2520signed%2520OAuth%2520request%2521
       Rails.logger.debug "calculating signature base, params: #{params.inspect}".cyan
       uri = Addressable::URI.new
@@ -64,13 +64,13 @@ module Oauth
       res
     end
 
-    def signing_key(token_secret = nil)
+    def self.signing_key(token_secret = nil)
       res = token_secret ? "#{Addressable::URI.encode(TWITTER_SECRET)}&#{Addressable::URI.encode(token_secret)}" : "#{Addressable::URI.encode(TWITTER_SECRET)}&"
       Rails.logger.debug "signing key: #{res}"
       res
     end
 
-    def oauth_signature(method, url, params, token_secret = nil)
+    def self.oauth_signature(method, url, params, token_secret = nil)
       Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, signing_key(token_secret), signature_base(method, url, params))).chomp.delete("\n")
     end
   end
