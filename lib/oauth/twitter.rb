@@ -32,7 +32,7 @@ module Oauth
         uid: account['id'],
         username: account['name'],
         image: account['profile_image_url_https'],
-        profile: "https://twitter.com/intent/user?user_id=#{account['id']}"
+        profile: "https://twitter.com/intent/user?user_id=#{account['id']}",
         location: account['location'],
         email: account['email']
       }
