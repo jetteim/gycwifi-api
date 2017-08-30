@@ -22,12 +22,20 @@ module Oauth
 
     def self.user_data(oauth_token:, oauth_verifier:)
       @consumer ||= OAuth::Consumer.new(TWITTER_KEY, TWITTER_SECRET, CONSUMER_CONFIG)
-      @request_token = OAuth::RequestToken.from_hash(@consumer, oauth_token: oauth_token, oauth_verifier: oauth_token_secret)
+      @request_token = OAuth::RequestToken.from_hash(@consumer, oauth_token: oauth_token, oauth_verifier: oauth_verifier)
       @access_token = @request_token.get_access_token
       # pull user info now
       account = @access_token.get('/1.1/account/verify_credentials.json', include_email: true, skip_status: true)
       Rails.logger.debug "twitter ccount data: #{account.inspect}"
-      account
+      {
+        provider: 'twitter',
+        uid: account['id'],
+        username: account['name'],
+        image: account['profile_image_url_https'],
+        profile: "https://twitter.com/intent/user?user_id=#{account['id']}"
+        location: account['location'],
+        email: account['email']
+      }
     end
   end
 end
