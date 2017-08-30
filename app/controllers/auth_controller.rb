@@ -18,11 +18,15 @@ class AuthController < ApplicationController #:nodoc:
   # поэтому здесь мы должны дождаться ответа от соцсетки и только потом отдать управление
   # instrument_method
   def authorize_user(params)
+    logger.debug "authenticating request: #{parms.inspect}".blue
     auth_data = auth_params(params)
+    logger.debug "extracted auth data: #{auth_data}".blue
     return password(params) if auth_data[:provider] == 'password'
     return render json: oauth1_request_token(auth_data[:provider], params[:url]) unless auth_data[:code] || auth_data[:oauth_token]
     user_data = SocialAccount.pull_user_data(auth_data)
+    logger.debug "pulled user data: #{user_data.inspect}".blue
     social_account = SocialAccount.find_social_account(user_data)
+    logger.debug "social account: #{social_account.inspect}".green
     user = social_account.linked_user
     render json: user.profile, status: :ok
   end
