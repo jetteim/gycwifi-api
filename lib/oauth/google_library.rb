@@ -2,7 +2,7 @@ require 'googleauth'
 
 module Oauth
   class GoogleLibrary
-    def self.user_data(access_code, redirect_url)
+    def self.user_data(access_code:, redirect_url:)
       token = client.auth_code.get_token(access_code, redirect_uri: redirect_url)
       response = token.get 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json'
       Rails.logger.debug "google raw response: #{response.inspect}".red.bold

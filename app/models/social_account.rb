@@ -47,15 +47,15 @@ class SocialAccount < ApplicationRecord
   def self.pull_user_data(auth_data)
     case auth_data[:provider]
     when 'instagram'
-      user_data = Oauth::InstagramLibrary.user_data(auth_data[:access_code], auth_data[:redirect_url])
+      user_data = Oauth::InstagramLibrary.user_data(auth_data)
     when 'twitter'
-      user_data = Oauth::TwitterLibrary.user_data(auth_data[:access_code], auth_data[:redirect_url])
+      user_data = Oauth::TwitterLibrary.user_data(auth_data)
     when 'vk'
-      user_data = Oauth::VkLibrary.user_data(auth_data[:access_code], auth_data[:redirect_url])
+      user_data = Oauth::VkLibrary.user_data(auth_data)
     when 'google_oauth2'
-      user_data = Oauth::GoogleLibrary.user_data(auth_data[:access_code], auth_data[:redirect_url])
+      user_data = Oauth::GoogleLibrary.user_data(auth_data)
     when 'facebook'
-      user_data = Oauth::FacebookLibrary.user_data(auth_data[:access_code], auth_data[:redirect_url])
+      user_data = Oauth::FacebookLibrary.user_data(auth_data)
     end
     logger.info "вытащили данные из профиля соцсети: #{user_data}".cyan
     user_data

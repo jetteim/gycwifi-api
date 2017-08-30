@@ -1,6 +1,6 @@
 module Oauth
   class VkLibrary
-    def self.user_data(access_code, redirect_url)
+    def self.user_data(access_code:, redirect_url:)
       # service_token = ENV['VK_SERVICE_TOKEN'] # '2c9153d82c9153d82c503b32f72cc5262722c912c9153d874364065842216d690d4fcd1'
       result = JSON.parse(
         RestClient.post(

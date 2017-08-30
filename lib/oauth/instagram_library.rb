@@ -2,7 +2,7 @@ require 'instagram'
 
 module Oauth
   class InstagramLibrary
-    def self.user_data(access_code, redirect_url)
+    def self.user_data(access_code:, redirect_url:)
       raw = Instagram.get_access_token(access_code, redirect_uri: redirect_url)
       {
         provider: 'instagram',

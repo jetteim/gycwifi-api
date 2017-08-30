@@ -1,6 +1,6 @@
 module Oauth
   class FacebookLibrary
-    def self.user_data(access_code, redirect_url)
+    def self.user_data(access_code:, redirect_url:)
       token_request = JSON.parse(
         RestClient.post(
           'https://graph.facebook.com/v2.8/oauth/access_token',

@@ -5,7 +5,8 @@ class AuthController < ApplicationController #:nodoc:
   # instrument_method
   def authenticate
     subdomain = @str_prms[:redirectUri].split('.').first if @str_prms[:redirectUri]
-    target = subdomain =~ /dashboard.*/ ? 'user' : 'client'
+    target = @str_prms[:target] if @str_prms[:target]
+    target ||= subdomain =~ /dashboard.*/ ? 'user' : 'client'
     send("authorize_#{target}".to_sym, @str_prms)
   end
 
@@ -20,7 +21,7 @@ class AuthController < ApplicationController #:nodoc:
     auth_data = auth_params(params)
     return password(params) if auth_data[:provider] == 'password'
     return render json: oauth1_request_token(auth_data[:provider], params[:url]) unless auth_data[:code] || auth_data[:oauth_token]
-    user_data = SocialAccount.pull_user_data(auth_data[:provider])
+    user_data = SocialAccount.pull_user_data(auth_data)
     social_account = SocialAccount.find_social_account(user_data)
     user = social_account.linked_user
     render json: user.profile, status: :ok
