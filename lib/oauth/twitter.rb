@@ -31,7 +31,7 @@ module Oauth
       {
         provider: 'twitter',
         uid: account['id'],
-        username: account['name'],
+        username: account['name'] || account['id'],
         image: account['profile_image_url_https'],
         profile: "https://twitter.com/intent/user?user_id=#{account['id']}",
         location: account['location'],
