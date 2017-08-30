@@ -22,7 +22,7 @@ module Oauth
     end
 
     def self.user_data(oauth_token:, oauth_verifier:)
-      @consumer ||= OAuth::Consumer.new(TWITTER_KEY, TWITTER_SECRET, CONSUMER_CONFIG.merge)
+      @consumer ||= OAuth::Consumer.new(TWITTER_KEY, TWITTER_SECRET, CONSUMER_CONFIG)
       oauth_secret = REDIS.get("oauth_token_#{oauth_token}_secret") if REDIS.exists("oauth_token_#{oauth_token}_secret")
       @access_token ||= OAuth::AccessToken.from_hash(@consumer, oauth_secret: oauth_secret, oauth_token: oauth_token, oauth_verifier: oauth_verifier)
       # pull user info now
