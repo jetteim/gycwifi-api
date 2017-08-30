@@ -31,7 +31,7 @@ module Oauth
       @access_token = @request_token.get_access_token
       Rails.logger.debug "access token: #{@access_token.inspect}".green
       # pull user info now
-      account = @access_token.get('/1.1/account/verify_credentials.json', include_email: 'true',skip_status: 'true')
+      account = @access_token.get('/account/verify_credentials.json', include_email: 'true',skip_status: 'true')
       Rails.logger.debug "twitter ccount data: #{account.inspect}"
       {
         provider: 'twitter',
