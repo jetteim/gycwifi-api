@@ -26,7 +26,7 @@ module Oauth
       oauth_secret = REDIS.get("oauth_token_#{oauth_token}_secret") if REDIS.exists("oauth_token_#{oauth_token}_secret")
       @access_token ||= OAuth::AccessToken.from_hash(@consumer, oauth_secret: oauth_secret, oauth_token: oauth_token, oauth_verifier: oauth_verifier)
       # pull user info now
-      account = @access_token.get('/1.1/account/verify_credentials.json', include_email: true, skip_status: true)
+      account = @access_token.get('/1.1/account/verify_credentials.json', include_email: 'true',skip_status: 'true')
       Rails.logger.debug "twitter ccount data: #{account.inspect}"
       {
         provider: 'twitter',
