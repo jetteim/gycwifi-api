@@ -18,11 +18,13 @@ module Oauth
       @request_token = @consumer.get_request_token(oauth_callback: callback_url)
       Rails.logger.debug "request_token: #{@request_token.inspect}".magenta
       { oauth_token: @request_token.token, oauth_secret: @request_token.secret, oauth_callback_url: callback_url }
+      REDIS.setex("oauth_token_#{@request_token.token}_secret", 15.minutes, @request_token.secret)
     end
 
     def self.user_data(oauth_token:, oauth_verifier:)
       @consumer ||= OAuth::Consumer.new(TWITTER_KEY, TWITTER_SECRET, CONSUMER_CONFIG)
-      @request_token = OAuth::RequestToken.from_hash(@consumer, oauth_token: oauth_token, oauth_verifier: oauth_verifier)
+      oauth_secret = REDIS.get("oauth_token_#{oauth_token}_secret") if REDIS.exists("oauth_token_#{oauth_token}_secret")
+      @request_token ||= OAuth::RequestToken.from_hash(@consumer, oauth_secret: oauth_secret, oauth_token: oauth_token, oauth_verifier: oauth_verifier)
       @access_token = @request_token.get_access_token
       # pull user info now
       account = @access_token.get('/1.1/account/verify_credentials.json', include_email: true, skip_status: true)
