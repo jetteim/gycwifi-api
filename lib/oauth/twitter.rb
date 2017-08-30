@@ -22,10 +22,9 @@ module Oauth
     end
 
     def self.user_data(oauth_token:, oauth_verifier:)
-      @consumer ||= OAuth::Consumer.new(TWITTER_KEY, TWITTER_SECRET, CONSUMER_CONFIG)
+      @consumer ||= OAuth::Consumer.new(TWITTER_KEY, TWITTER_SECRET, CONSUMER_CONFIG.merge)
       oauth_secret = REDIS.get("oauth_token_#{oauth_token}_secret") if REDIS.exists("oauth_token_#{oauth_token}_secret")
-      @request_token ||= OAuth::RequestToken.from_hash(@consumer, oauth_secret: oauth_secret, oauth_token: oauth_token, oauth_verifier: oauth_verifier)
-      @access_token = @request_token.get_access_token
+      @access_token ||= OAuth::AccessToken.from_hash(@consumer, oauth_secret: oauth_secret, oauth_token: oauth_token)
       # pull user info now
       account = @access_token.get('/1.1/account/verify_credentials.json', include_email: true, skip_status: true)
       Rails.logger.debug "twitter ccount data: #{account.inspect}"
