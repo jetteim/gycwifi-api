@@ -22,7 +22,7 @@ class AuthController < ApplicationController #:nodoc:
     auth_data = auth_params(params)
     logger.debug "extracted auth data: #{auth_data.inspect}".blue
     return password(params) if auth_data[:provider] == 'password'
-    return render json: oauth1_request_token(auth_data[:provider], params[:url]) unless auth_data[:code] || auth_data[:oauth_token]
+    return render json: oauth1_request_token(auth_data[:provider], params[:url]) unless auth_data[:access_code] || auth_data[:oauth_token]
     user_data = SocialAccount.pull_user_data(auth_data)
     logger.debug "pulled user data: #{user_data.inspect}".blue
     social_account = SocialAccount.find_social_account(user_data)
