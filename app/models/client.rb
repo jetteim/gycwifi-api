@@ -36,7 +36,13 @@ class Client < ApplicationRecord
   # instrument_method
   def social_info
     info_keys = %i[username provider email image profile gender birthday].map { |keys| [keys, nil] }.to_h
-    social_accounts.inject(info_keys) { |info, s_a| info.each_key { |key| info[key] ||= s_a.send(key) } }
+    social_accounts.inject(info_keys) do |info, s_a|
+      info.each_key do |key|
+        # если SocialAccount.provider password или voucher, пропускаем его, потому что остальные поля будут nil
+        next if (key == :provider) && (value == 'password' || value == 'voucher')
+        info[key] ||= s_a.send(key)
+      end
+    end
     info_keys
   end
 
