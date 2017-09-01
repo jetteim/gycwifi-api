@@ -26,6 +26,8 @@ module Oauth
     def self.user_data(oauth_token:, oauth_verifier:)
       # stored_secret = REDIS.get(redis_key(oauth_token))
       # token_options = { oauth_token: oauth_token, oauth_token_secret: @request_token&.secret || stored_secret, oauth_verifier: oauth_verifier }
+      Rails.logger.debug "Oauth consumer: #{@@consumer.inspect}".yellow
+      Rails.logger.debug "request_token: #{@request_token.inspect}".red
       options = { oauth_token: @request_token.token, oauth_token_secret: @request_token.secret, oauth_verifier: oauth_verifier }
       @request_token = OAuth::RequestToken.from_hash(@@consumer, options)
       access_token = @request_token.get_access_token(options)
