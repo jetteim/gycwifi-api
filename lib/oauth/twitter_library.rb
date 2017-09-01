@@ -48,7 +48,7 @@ module Oauth
         location: account['location'],
         email: account['email']
       }
-      REDIS.setex(redis_user_data_key(@request_token.token), 1.minute, @user_data.to_json)
+      REDIS.setex(redis_user_data_key(@request_token.token), 15.minutes, @user_data.to_json)
       @user_data
     end
 
