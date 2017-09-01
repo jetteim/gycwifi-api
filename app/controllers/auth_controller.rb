@@ -40,6 +40,7 @@ class AuthController < ApplicationController #:nodoc:
   def authorize_client(params)
     @auth_data = auth_params(params)
     @session = login_params[:session]
+    return render json: oauth1_request_token(auth_data[:provider], params[:url]) unless auth_data[:access_code] || auth_data[:oauth_token]
     logger.info "авторизуем клиента #{@session[:client_id]} с данными авторизации #{@auth_data}".green
     logger.debug "session data: #{@session.inspect}".magenta
     authorized = authorization_required? ? verify_authorization : true
