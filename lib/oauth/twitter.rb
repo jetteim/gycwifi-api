@@ -32,7 +32,7 @@ module Oauth
       Rails.logger.debug "access token: #{access_token.inspect}".magenta
       # pull user info now
       account = JSON.parse(access_token.get('https://api.twitter.com/1.1/account/verify_credentials.json', include_email: 'true', skip_status: 'true').body)
-      Rails.logger.debug "twitter account data: #{account.inspect}"
+      Rails.logger.debug "twitter account data: #{account.inspect}".green
       Rails.logger.debug "consumer is #{@@consumer.inspect}".yellow
       Rails.logger.debug "request token: #{@request_token.inspect}".red
       {
