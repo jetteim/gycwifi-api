@@ -39,8 +39,9 @@ class AuthController < ApplicationController #:nodoc:
   # instrument_method
   def authorize_client(params)
     @auth_data = auth_params(params)
-    @session = login_params[:session]
-    return render json: oauth1_request_token(auth_data[:provider], params[:url]) unless auth_data[:access_code] || auth_data[:oauth_token]
+    oauth_data = login_params(params)
+    return render json: oauth1_request_token(@auth_data[:provider], params[:url]) unless oauth_data
+    @session = oauth_data[:session] if oauth_data
     logger.info "авторизуем клиента #{@session[:client_id]} с данными авторизации #{@auth_data}".green
     logger.debug "session data: #{@session.inspect}".magenta
     authorized = authorization_required? ? verify_authorization : true
@@ -149,7 +150,7 @@ class AuthController < ApplicationController #:nodoc:
       provider: params[:provider],
       access_code: params[:code],
       oauth_token: params[:oauth_token],
-      oauth_secret: params[:oauth_secret],
+      oauth_secret: params[:oauth_secret] || REDIS.get("oauth_request_#{params[:oauth_token]}_secret"),
       oauth_verifier: params[:oauth_verifier],
       redirect_url: params[:redirectUri]
     }

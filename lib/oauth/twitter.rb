@@ -1,4 +1,3 @@
-
 require 'oauth'
 
 module Oauth
@@ -25,7 +24,7 @@ module Oauth
     def self.user_data(oauth_token:, oauth_verifier:)
       Rails.logger.debug "request_token: #{@request_token.inspect}".red
 
-      Rails.logger.debug "REDIS stored token: #{token}".green if token = REDIS.get(redis_token_key(@request_token&.token || oauth_token))
+      Rails.logger.debug "REDIS stored token: #{token = REDIS.get(redis_token_key(@request_token&.token || oauth_token))}".green
 
       Rails.logger.debug "instance contains user data: #{@user_data.inspect}".green if @user_data
       return @user_data if @user_data
