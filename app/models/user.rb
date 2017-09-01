@@ -52,7 +52,31 @@ class User < ApplicationRecord #:nodoc:
 
   # Uploaders
   # mount_uploader :avatar, AvatarUploader
-
+  FRONT_ROUTES = %w[dashboard.statistic
+                    dashboard.authorizations
+                    dashboard.profile
+                    dashboard.inbox
+                    dashboard.brands
+                    dashboard.brand
+                    dashboard.brand.new
+                    dashboard.locations
+                    dashboard.location
+                    dashboard.location.new
+                    dashboard.manage
+                    dashboard.clients
+                    dashboard.routers
+                    dashboard.router
+                    dashboard.router.new
+                    dashboard.market
+                    dashboard.vips
+                    dashboard.congratulations
+                    dashboard.help
+                    dashboard.layouts
+                    dashboard.layout
+                    dashboard.sales
+                    dashboard.polls
+                    dashboard.poll
+                    dashboard.opinions].freeze
   include UserRoles
 
   def owner
@@ -95,27 +119,14 @@ class User < ApplicationRecord #:nodoc:
     {
       id: id,
       role: role,
-      permissions: front_permssions,
+      permissions: front_permissions,
       customizations: {
 
       }
     }
   end
 
-  def front_permssions
-    { statistic: true,
-      clients: true,
-      authorizations: true,
-      congratulations: true,
-      sales: true,
-      polls: true,
-      brands: true,
-      locations: true,
-      routers: true,
-      integrations: true,
-      market: true,
-      vips: true,
-      help: true,
-      opinions: true }
+  def front_permissions
+    FRONT_ROUTES.map{|route| [route, true]}.to_h
   end
 end

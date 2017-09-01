@@ -19,4 +19,7 @@
 #
 
 class FreeUser < User #:nodoc:
+  def front_permissions
+    super.merge('dashboard.opinions' => false)
+  end
 end

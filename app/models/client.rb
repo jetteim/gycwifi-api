@@ -39,7 +39,7 @@ class Client < ApplicationRecord
     social_accounts.inject(info_keys) do |info, s_a|
       info.each_key do |key|
         # если SocialAccount.provider password или voucher, пропускаем его, потому что остальные поля будут nil
-        next if (key == :provider) && (value == 'password' || value == 'voucher')
+        next if key == :provider && %w[password voucher].include?(s_a.send(key))
         info[key] ||= s_a.send(key)
       end
     end
