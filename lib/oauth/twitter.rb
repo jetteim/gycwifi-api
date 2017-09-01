@@ -15,7 +15,6 @@ module Oauth
     @@consumer = OAuth::Consumer.new(TWITTER_KEY, TWITTER_SECRET, CONSUMER_CONFIG)
 
     def self.get_request_token(callback_url)
-      Rails.logger.debug "Oauth consumer: #{@@consumer.inspect}".yellow
       @request_token = @@consumer.get_request_token(oauth_callback: callback_url)
       Rails.logger.debug "request_token: #{@request_token.inspect}".red
       REDIS.setex(redis_key, 15.minutes, @request_token.secret)
@@ -24,10 +23,12 @@ module Oauth
     end
 
     def self.user_data(oauth_token:, oauth_verifier:)
-      # stored_secret = REDIS.get(redis_key(oauth_token))
-      # token_options = { oauth_token: oauth_token, oauth_token_secret: @request_token&.secret || stored_secret, oauth_verifier: oauth_verifier }
-      Rails.logger.debug "Oauth consumer: #{@@consumer.inspect}".yellow
       Rails.logger.debug "request_token: #{@request_token.inspect}".red
+      Rails.logger.debug "instance contains user data: #{@user_data.inspect}".green if @user_data
+      redis_data = JSON.parse(REDIS.get(redis_user_data_key), symbolize_keys: true)
+      Rails.logger.debug "REDIS stored data: #{redis_data.inspect}".green if redis_data
+      return @user_data if @user_data
+      return redis_data if redis_data
       options = { oauth_token: @request_token.token, oauth_token_secret: @request_token.secret, oauth_verifier: oauth_verifier }
       @request_token = OAuth::RequestToken.from_hash(@@consumer, options)
       access_token = @request_token.get_access_token(options)
@@ -35,9 +36,7 @@ module Oauth
       # pull user info now
       account = JSON.parse(access_token.get('https://api.twitter.com/1.1/account/verify_credentials.json', include_email: 'true', skip_status: 'true').body)
       Rails.logger.debug "twitter account data: #{account.inspect}".green
-      Rails.logger.debug "consumer is #{@@consumer.inspect}".yellow
-      Rails.logger.debug "request token: #{@request_token.inspect}".red
-      {
+      @user_data = {
         provider: 'twitter',
         uid: account['id'],
         username: account['name'] || account['id'],
@@ -46,11 +45,18 @@ module Oauth
         location: account['location'],
         email: account['email']
       }
+      REDIS.setex(redis_user_data_key, 1.minute, @user_data.to_json)
+      @user_data
     end
 
-    def self.redis_key(token = nil)
+    def self.redis_token_key(token = nil)
       token ||= @request_token.token
       "oauth_request_#{token}_secret"
+    end
+
+    def self.redis_user_data_key(token = nil)
+      token ||= @request_token.token
+      "oauth_request_#{token}_user"
     end
   end
 end
