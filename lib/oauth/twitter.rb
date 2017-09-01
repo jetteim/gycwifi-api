@@ -17,15 +17,17 @@ module Oauth
     def self.get_request_token(callback_url)
       @request_token = @@consumer.get_request_token(oauth_callback: callback_url)
       Rails.logger.debug "request_token: #{@request_token.inspect}".red
-      REDIS.setex(redis_key, 15.minutes, @request_token.secret)
+      REDIS.setex(redis_token_key, 15.minutes, @request_token.secret)
       # REDIS.setex("oauth_token_#{@request_token.token}_secret", 15.minutes, @request_token.secret)
       { oauth_token: @request_token.token, oauth_secret: @request_token.secret, oauth_callback_url: callback_url }
     end
 
     def self.user_data(oauth_token:, oauth_verifier:)
-      Rails.logger.debug "request_token: #{@request_token.inspect}".red
+      Rails.logger.debug "request_token: #{@request_token.inspect}".red if @request_token
+      token = REDIS.get(redis_token_key(oauth_token)) unless @request_token
+      Rails.logger.debug "REDIS stored token: #{token}".green if token
       Rails.logger.debug "instance contains user data: #{@user_data.inspect}".green if @user_data
-      redis_data = JSON.parse(REDIS.get(redis_user_data_key), symbolize_keys: true)
+      redis_data = JSON.parse(REDIS.get(redis_user_data_key(@request_token&.token || token)), symbolize_keys: true)
       Rails.logger.debug "REDIS stored data: #{redis_data.inspect}".green if redis_data
       return @user_data if @user_data
       return redis_data if redis_data
@@ -45,7 +47,7 @@ module Oauth
         location: account['location'],
         email: account['email']
       }
-      REDIS.setex(redis_user_data_key, 1.minute, @user_data.to_json)
+      REDIS.setex(redis_user_data_key(@request_token.token), 1.minute, @user_data.to_json)
       @user_data
     end
 
@@ -54,8 +56,7 @@ module Oauth
       "oauth_request_#{token}_secret"
     end
 
-    def self.redis_user_data_key(token = nil)
-      token ||= @request_token.token
+    def self.redis_user_data_key(token)
       "oauth_request_#{token}_user"
     end
   end
