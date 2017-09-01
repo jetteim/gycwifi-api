@@ -92,7 +92,7 @@ class Location < ApplicationRecord
 
   def providers
     {
-      twitter:    twitter && false,
+      twitter:    twitter,
       google:     google,
       vk:         vk,
       instagram:  insta,
