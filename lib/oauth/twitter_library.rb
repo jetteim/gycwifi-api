@@ -16,26 +16,25 @@ module Oauth
     def self.get_request_token(callback_url)
       @request_token = @@consumer.get_request_token(oauth_callback: callback_url)
       Rails.logger.debug "request_token: #{@request_token.inspect}".red
-      REDIS.setex(redis_token_key, 15.minutes, @request_token.secret)
+      REDIS.setex(redis_token_key(@request_token.token), 15.minutes, @request_token.secret)
       # REDIS.setex("oauth_token_#{@request_token.token}_secret", 15.minutes, @request_token.secret)
       { oauth_token: @request_token.token, oauth_secret: @request_token.secret, oauth_callback_url: callback_url }
     end
 
     def self.user_data(oauth_token:, oauth_verifier:, oauth_secret: nil)
-      Rails.logger.debug "instance contains user data: #{@user_data.inspect}".green if @user_data
-      return @user_data if @user_data
-      Rails.logger.debug "request_token: #{@request_token.inspect}".yellow if @request_token
-      token = @request_token&.token || oauth_token
+      Rails.logger.warn "instance-stored token #{@request_token&.token} does not match parameters #{oauth_token}".red if @request_token&.token != oauth_token
 
-      Rails.logger.debug "REDIS stored user data: #{redis_data.inspect}".green if redis_data = REDIS.get(redis_user_data_key(token))
+      Rails.logger.debug "instance contains user data: #{@user_data.inspect}".green if @user_data
+      return @user_data if @user_data &&  @request_token&.token == oauth_token
+
+      Rails.logger.debug "REDIS stored user data: #{redis_data.inspect}".green if redis_data = REDIS.get(redis_user_data_key(oauth_token))
       return JSON.parse(redis_data, symbolize_keys: true) if redis_data
 
-      Rails.logger.debug "REDIS stored secret: #{redis_secret = REDIS.get(redis_token_key(token))}".green
-      secret = @request_token&.secret || oauth_secret || redis_secret
+      Rails.logger.debug "REDIS stored secret: #{redis_secret = REDIS.get(redis_token_key(oauth_token))}".green
 
-      options = { oauth_token: token, oauth_token_secret: secret,  oauth_verifier: oauth_verifier }
-
+      options = { oauth_token: oauth_token, oauth_token_secret: oauth_secret || redis_secret,  oauth_verifier: oauth_verifier }
       @request_token = OAuth::RequestToken.from_hash(@@consumer, options)
+
       access_token = @request_token.get_access_token(options)
       Rails.logger.debug "access token: #{access_token.inspect}".magenta
       # pull user info now
@@ -54,12 +53,13 @@ module Oauth
       @user_data
     end
 
-    def self.redis_token_key(token = nil)
+    def self.redis_token_key(token)
       token ||= @request_token&.token
       "oauth_request_#{token}_secret"
     end
 
-    def self.redis_user_data_key(token)
+    def self.redis_user_data_key
+(token)
       "oauth_request_#{token}_user"
     end
   end
