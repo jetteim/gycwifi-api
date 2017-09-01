@@ -296,7 +296,7 @@ Rails.application.routes.draw do
 
   # Auth
   match '/auth/:provider', to: 'auth#authenticate', via: %i[get post],
-                           constraints: { subdomain: /api.*/ }
+                           constraints: { subdomain: /api.*|dashboard.*|login.*/ }
   # post '/without_social',   to: 'auth#without_social'
   # get  '/without_social',   to: 'auth#without_social'
   # post '/voucher',   to: 'auth#voucher'
