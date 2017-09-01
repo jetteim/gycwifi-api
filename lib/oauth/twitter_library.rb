@@ -58,8 +58,7 @@ module Oauth
       "oauth_request_#{token}_secret"
     end
 
-    def self.redis_user_data_key
-(token)
+    def self.redis_user_data_key(token)
       "oauth_request_#{token}_user"
     end
   end
