@@ -32,10 +32,16 @@ FactoryGirl.define do
     email { Faker::Internet.email }
     gender { %w[male female].sample }
     location 'Москва, Россия'
-    bdate_day { rand(1..30) }
-    bdate_month { rand(1..12) }
+    bdate_day { Faker::Date.birthday(18, 65).day }
+    bdate_month { Faker::Date.birthday(18, 65).month }
     bdate_year { Faker::Date.birthday(18, 65).year }
     client
     user
+
+    trait :nil_info do
+      %i[username image profile email gender bdate_day bdate_month bdate_year provider location].each do |method|
+        send(method, nil)
+      end
+    end
   end
 end
